@@ -66,7 +66,7 @@ public class Cell {
         ArrayList<Unit> res = new ArrayList<>();
 
         for(Unit u : _units) {
-            if(u.getClass() == c){
+            if(c.isInstance(u)){
                 res.add(u);
             }
         }
