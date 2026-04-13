@@ -1,4 +1,4 @@
-package Model.gamefield;
+package Model.services;
 
 public class CollisionDetector {
 }
