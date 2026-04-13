@@ -1,6 +1,7 @@
 package Model.services;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class LevelConfig {
@@ -23,6 +24,62 @@ public class LevelConfig {
 
         _height = height;
         _width = width;
+    }
+
+    public int getHeight() {
+        return _height;
+    }
+
+    public int getWidth() {
+        return _width;
+    }
+
+    public Position getPlayerPosition() {
+        return _playerPosition;
+    }
+
+    public void setPlayerPosition(Position playerPosition) {
+        _playerPosition = playerPosition;
+    }
+
+    public Position getExitPosition() {
+        return _exitPosition;
+    }
+
+    public void setExitPosition(Position exitPosition) {
+        _exitPosition = exitPosition;
+    }
+
+    public void addWall(Position position) {
+        _walls.add(position);
+    }
+
+    public void addIronBlock(Position position) {
+        _ironBlocks.add(position);
+    }
+
+    public void addLava(Position position) {
+        _lava.add(position);
+    }
+
+    public void addWater(Position position) {
+        _water.add(position);
+    }
+
+    public List<Position> getWalls() {
+        return Collections.unmodifiableList(_walls);
+    }
+
+    public List<Position> getIronBlocks() {
+        return Collections.unmodifiableList(_ironBlocks);
+    }
+
+    public List<Position> getLava() {
+        return Collections.unmodifiableList(_lava);
+    }
+
+    public List<Position> getWater() {
+        return Collections.unmodifiableList(_water);
     }
     
 }
