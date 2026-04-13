@@ -9,7 +9,8 @@ import java.util.ArrayList;
 
 public abstract class Liquid extends Unit {
 
-    private boolean canEnter(Cell cell) {
+    @Override
+    protected boolean canBelongTo(Cell cell) {
         if(cell == null) {
             return false;
         }
@@ -29,7 +30,7 @@ public abstract class Liquid extends Unit {
         for(Cell c : field) {
             if(c.getUnit(this.getClass()) != null) {
                 for(Cell neighbour : c.getNeighbours().values()) {
-                    if(canEnter(neighbour)) {
+                    if(canBelongTo(neighbour)) {
                         newCellsForExpand.add(neighbour);
                     }
                 }
