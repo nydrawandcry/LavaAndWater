@@ -1,4 +1,4 @@
 package Model.units.liquids;
 
-public class Liquid {
+public abstract class Liquid {
 }
