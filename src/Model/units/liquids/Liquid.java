@@ -1,4 +1,8 @@
 package Model.units.liquids;
 
-public abstract class Liquid {
+import Model.units.Unit;
+
+public abstract class Liquid extends Unit {
+
+    protected abstract Liquid createInstance();
 }
