@@ -41,7 +41,7 @@ public abstract class Liquid extends Unit {
             Liquid l = createInstance();
             l.setOwner(c);
             l.activate();
-            //c.putUnit(l); //todo реализовать метод putUnit в классе Cell
+            c.putUnit(l); //todo реализовать метод putUnit в классе Cell
         }
     }
 

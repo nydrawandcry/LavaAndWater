@@ -19,6 +19,41 @@ public class Cell {
         _field = field;
     }
 
+    public boolean putUnit(Unit u) {
+        if(u == null) {
+            return false;
+        }
+
+        if(u.owner() != null) {
+            u.owner()._units.remove(u);
+            u.removeOwner();
+        }
+
+        if(u.owner() != null) {
+            return false;
+        }
+
+        _units.add(u);
+        u.setOwner(this);
+        u.activate();
+
+        return true;
+    }
+
+    public boolean extractUnit(Unit u) {
+        if(u == null) {
+            return false;
+        }
+        if(this._units.isEmpty()) {
+            return false;
+        }
+
+        u.removeOwner();
+        _units.remove(u);
+
+        return true;
+    }
+
     public Gamefield getOwner(){
         return _field;
     }
