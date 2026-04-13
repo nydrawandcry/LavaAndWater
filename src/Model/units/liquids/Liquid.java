@@ -39,8 +39,6 @@ public abstract class Liquid extends Unit {
 
         for(Cell c : newCellsForExpand) {
             Liquid l = createInstance();
-            l.setOwner(c);
-            l.activate();
             c.putUnit(l);
         }
     }
