@@ -39,4 +39,6 @@ public abstract class Unit {
     public void deactivate(){
         _isActive = false;
     }
+
+    protected abstract boolean canBelongTo();
 }
