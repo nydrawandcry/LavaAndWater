@@ -48,4 +48,45 @@ public class LevelConfigReader {
 
         return new LevelConfig(height, width);
     }
+
+    private void parseLines(List<String> lines, LevelConfig config) {
+        for (int row = 0; row < lines.size(); row++) {
+            parseLine(lines.get(row), row, config);
+        }
+    }
+
+    private void parseLine(String line, int row, LevelConfig config) {
+        for (int col = 0; col < line.length(); col++) {
+            parseSymbol(line.charAt(col), row, col, config);
+        }
+    }
+
+    private void parseSymbol(char symbol, int row, int col, LevelConfig config) {
+        Position position = new Position(row, col);
+
+        switch (symbol) { //мне не нравится этот switch. я только начала разбираться в конфигах, поэтому пока не знаю, как сделать лучше
+            case '#':
+                config.addWall(position);
+                break;
+            case 'P':
+                config.setPlayerPosition(position);
+                break;
+            case 'E':
+                config.setExitPosition(position);
+                break;
+            case 'L':
+                config.addLava(position);
+                break;
+            case 'W':
+                config.addWater(position);
+                break;
+            case 'I':
+                config.addIronBlock(position);
+                break;
+            case '.':
+                break;
+            default:
+                throw new IllegalArgumentException("Неизвестный символ уровня '" + symbol + "' в позиции (" + row + ", " + col + ")");
+        }
+    }
 }
