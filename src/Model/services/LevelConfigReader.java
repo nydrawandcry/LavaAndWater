@@ -41,4 +41,11 @@ public class LevelConfigReader {
             }
         }
     }
+
+    private LevelConfig createConfig(List<String> lines) {
+        int height = lines.size();
+        int width = lines.get(0).length();
+
+        return new LevelConfig(height, width);
+    }
 }
