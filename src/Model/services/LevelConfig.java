@@ -81,5 +81,13 @@ public class LevelConfig {
     public List<Position> getWater() {
         return Collections.unmodifiableList(_water);
     }
-    
+
+    public void validate() {
+        if (_playerPosition == null) {
+            throw new IllegalStateException("Не задана стартовая позиция игрока");
+        }
+        if (_exitPosition == null) {
+            throw new IllegalStateException("Не задана позиция выхода");
+        }
+    }
 }
