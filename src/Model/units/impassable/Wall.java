@@ -1,4 +1,4 @@
 package Model.units.impassable;
 
-public class Wall {
+public class Wall implements Impassable {
 }
