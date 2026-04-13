@@ -26,7 +26,7 @@ public class Gamefield implements Iterable<Cell> {
     private void initializeCells() {
         //создание клеток
         for(int i = 0; i < _height; ++i){
-            for(int j = 0; i < _width; ++j){
+            for(int j = 0; j < _width; ++j){
                 _cells.add(new Cell(this));
             }
         }
@@ -56,7 +56,7 @@ public class Gamefield implements Iterable<Cell> {
             throw new IllegalArgumentException("Клетки с такой позицией не существует");
         }
 
-        int index = posX * getWidth() * posY;
+        int index = posX * getWidth() + posY;
 
         return _cells.get(index);
     }
