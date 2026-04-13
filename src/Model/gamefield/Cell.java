@@ -20,4 +20,37 @@ public class Cell {
 
         _field = field;
     }
+
+    public Gamefield getOwner(){
+        return _field;
+    }
+
+    public boolean isEmpty(){
+        return _units.isEmpty();
+    }
+
+    public ArrayList<Unit> getUnits(Class<?> c){
+        ArrayList<Unit> res = new ArrayList<>();
+
+        for(Unit u : _units) {
+            if(u.getClass() == c){
+                res.add(u);
+            }
+        }
+
+        return res;
+    }
+
+    public Unit getUnit(Class<?> c){
+        if(_units.isEmpty()){
+            return null;
+        }
+
+        for(Unit u : _units){
+            if(c.isInstance(u)){
+                return u;
+            }
+        }
+        return null;
+    }
 }
