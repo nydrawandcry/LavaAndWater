@@ -11,6 +11,17 @@ public class Gamefield implements Iterable<Cell> {
     private ArrayList<Cell> _cells = new ArrayList<>();
     private boolean _isDestroyed;
 
+    public Gamefield(int height, int width) {
+        if(height <= 0 || width <= 0) {
+            throw new IllegalArgumentException("Размеры поля должны быть положительные");
+        }
+
+        _height = height;
+        _width = width;
+
+        initializeCells();
+    }
+
     public int getHeight(){
         return _height;
     }
