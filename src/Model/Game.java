@@ -1,5 +1,6 @@
 package Model;
 
+import Model.gamefield.Direction;
 import Model.gamefield.Gamefield;
 import Model.services.CollisionDetector;
 import Model.services.Maze;
@@ -18,6 +19,24 @@ public class Game {
     private CollisionDetector _collisionDetector = new CollisionDetector();
 
     
+
+    public void makeTurn(Direction dir) {
+        if (_isOver) {
+            return;
+        }
+
+        boolean moved = _player.moveTo(dir);
+
+        if (!moved) {
+            return;
+        }
+
+        spreadLiquids();
+        _collisionDetector.resolve(_field);
+
+        //обновление
+        updateGameState();
+    }
 
     private void spreadLiquids() {
         new Lava().expand(_field);
