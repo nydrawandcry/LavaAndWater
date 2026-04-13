@@ -72,17 +72,6 @@ public class Gamefield implements Iterable<Cell> {
         return _cells.get(index);
     }
 
-    public void setSize(Dimension2D size) {
-        if(size == null) {
-            throw new NullPointerException("Размер не может быть null!");
-        }
-
-        this._height = (int)size.getHeight();
-        this._width = (int)size.getWidth();
-
-        initializeCells(); //пока не думаю, что это правильное решение, чтобы метод setSize еще и клетки инициализировал. стоит метод переименовать тогда думаю
-    }
-
     @Override
     public Iterator<Cell> iterator() {
         return _cells.iterator();
