@@ -1,8 +1,11 @@
 package Model.units.liquids;
 
 import Model.gamefield.Cell;
+import Model.gamefield.Gamefield;
 import Model.units.Unit;
 import Model.units.impassable.Impassable;
+
+import java.util.ArrayList;
 
 public abstract class Liquid extends Unit {
 
@@ -18,6 +21,27 @@ public abstract class Liquid extends Unit {
         }
 
         return true;
+    }
+
+    public void expand(Gamefield field) {
+        ArrayList<Cell> newCellsForExpand = new ArrayList();
+        //отбор клеток, где будет происходить распространение жидкости
+        for(Cell c : field) {
+            if(c.getUnit(this.getClass()) != null) {
+                for(Cell neighbour : c.getNeighbours().values()) {
+                    if(canEnter(neighbour)) {
+                        newCellsForExpand.add(neighbour);
+                    }
+                }
+            }
+        }
+
+        for(Cell c : newCellsForExpand) {
+            Liquid l = createInstance();
+            l.setOwner(c);
+            l.activate();
+            //c.putUnit(l); //todo реализовать метод putUnit в классе Cell
+        }
     }
 
     protected abstract Liquid createInstance();
