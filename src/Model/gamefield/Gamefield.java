@@ -1,8 +1,9 @@
 package Model.gamefield;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
-public class Gamefield {
+public class Gamefield implements Iterable<Cell> {
 
     private int _height;
     private int _width;
@@ -29,5 +30,10 @@ public class Gamefield {
         int index = posX * getWidth() * posY;
 
         return _cells.get(index);
+    }
+
+    @Override
+    public Iterator<Cell> iterator() {
+        return _cells.iterator();
     }
 }
