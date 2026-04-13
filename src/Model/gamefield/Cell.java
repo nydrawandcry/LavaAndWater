@@ -2,9 +2,7 @@ package Model.gamefield;
 
 import Model.units.Unit;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Cell {
 
@@ -53,4 +51,24 @@ public class Cell {
         }
         return null;
     }
+
+    public boolean isNeighbour(Cell cell) {
+        return _neighbours.containsValue(cell);
+    }
+
+    public void setNeighbour(Direction dir, Cell neighbour) {
+        if(neighbour == null || neighbour == this) {
+            return;
+        }
+        _neighbours.put(dir, neighbour);
+    }
+
+    public Map<Direction, Cell> getNeighbours() {
+        return Collections.unmodifiableMap(_neighbours);
+    }
+
+    public Cell getNeighbour(Direction dir) {
+        return _neighbours.get(dir);
+    }
+    
 }
