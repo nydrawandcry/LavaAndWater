@@ -8,6 +8,19 @@ import java.util.List;
 
 public class LevelConfigReader {
 
+    public LevelConfig read(String fileName) throws IOException {
+        List<String> lines = readLines(fileName);
+
+        validateNotEmpty(lines);
+        validateRectangular(lines);
+
+        LevelConfig config = createConfig(lines);
+        parseLines(lines, config);
+        config.validate();
+
+        return config;
+    }
+
     private List<String> readLines(String fileName) throws IOException {
         List<String> lines = new ArrayList<>();
 
