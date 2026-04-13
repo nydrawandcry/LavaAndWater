@@ -17,7 +17,7 @@ public class Cell {
         if(field == null) {
             throw new NullPointerException("Игровое поле не может быть null");
         }
-        
+
         _field = field;
     }
 }
