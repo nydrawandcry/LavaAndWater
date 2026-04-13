@@ -14,7 +14,7 @@ public abstract class Liquid extends Unit {
         if(cell == null) {
             return false;
         }
-        if(cell.getUnit(Impassable.class) != null) { //переработать метод надо, чтобы с интерфейсами тоже работало
+        if(cell.getUnit(Impassable.class) != null) {
             return false;
         }
         if(cell.getUnit(this.getClass()) != null) {
@@ -41,7 +41,7 @@ public abstract class Liquid extends Unit {
             Liquid l = createInstance();
             l.setOwner(c);
             l.activate();
-            c.putUnit(l); //todo реализовать метод putUnit в классе Cell
+            c.putUnit(l);
         }
     }
 
