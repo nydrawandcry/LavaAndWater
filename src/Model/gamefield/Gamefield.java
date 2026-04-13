@@ -8,4 +8,26 @@ public class Gamefield {
     private int _width;
     private ArrayList<Cell> _cells = new ArrayList<>();
     private boolean _isDestroyed;
+
+    public int getHeight(){
+        return _height;
+    }
+
+    public int getWidth(){
+        return _width;
+    }
+
+    public boolean isDestroyed(){
+        return _isDestroyed;
+    }
+
+    public Cell getCell(int posX, int posY){
+        if(posX < 0 || posY < 0 || posX >= getHeight() || posY >= getWidth()) {
+            throw new IllegalArgumentException("Клетки с такой позицией не существует");
+        }
+
+        int index = posX * getWidth() * posY;
+
+        return _cells.get(index);
+    }
 }
