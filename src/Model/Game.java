@@ -3,11 +3,15 @@ package Model;
 import Model.gamefield.Direction;
 import Model.gamefield.Gamefield;
 import Model.services.CollisionDetector;
+import Model.services.LevelConfig;
+import Model.services.LevelConfigReader;
 import Model.services.Maze;
 import Model.units.Exit;
 import Model.units.Player;
 import Model.units.liquids.Lava;
 import Model.units.liquids.Water;
+
+import java.io.IOException;
 
 public class Game {
 
@@ -18,7 +22,17 @@ public class Game {
     private Player _player;
     private CollisionDetector _collisionDetector = new CollisionDetector();
 
-    
+    public void loadLevel(String fileName) throws IOException {
+        LevelConfigReader reader = new LevelConfigReader();
+        LevelConfig config = reader.read(fileName);
+
+        Maze maze = new Maze(config);
+        _field = maze.buildField();
+        _player = findPlayer();
+
+        _isOver = false;
+        _isWon = false;
+    }
 
     public void makeTurn(Direction dir) {
         if (_isOver) {
