@@ -16,7 +16,8 @@ import java.util.function.Supplier;
 
 public class Maze {
 
-    private final LevelConfig _config;
+    private LevelConfig _config;
+    private boolean _isDestroyed;
 
     public Maze(LevelConfig config){
         if(config == null) {
@@ -51,5 +52,18 @@ public class Maze {
         Unit unit = factory.get();
 
         cell.putUnit(unit);
+    }
+
+    public boolean isDestroyed(){
+        return _isDestroyed;
+    }
+
+    public void deactivate() {
+        _isDestroyed = true;
+    }
+
+    public void destroy() {
+        deactivate();
+        _config = null;
     }
 }
