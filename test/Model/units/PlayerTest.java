@@ -16,6 +16,13 @@ public class PlayerTest extends AbstractUnitTest<Player>{
     }
 
     @Test
+    void newPlayer_isAlive() {
+        Player player = new Player();
+
+        assertTrue(player.isAlive());
+    }
+
+    @Test
     void moveTo_freeCell_movesPlayer() {
         Cell start = field.getCell(1, 1);
         start.putUnit(unit);
