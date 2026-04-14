@@ -1,29 +1,10 @@
 package Model.units;
 
-public class PlayerTest extends UnitTest{
+public class PlayerTest extends AbstractUnitTest{
+
 
     @Override
-    public void setOwnerTest() {
-
-    }
-
-    @Override
-    public void removeOwnerTest() {
-
-    }
-
-    @Override
-    public void activateTest() {
-
-    }
-
-    @Override
-    public void deactivateTest() {
-
-    }
-
-    @Override
-    public void destroy_removesUnitFromCell() {
-
+    protected Unit createUnit() {
+        return null;
     }
 }

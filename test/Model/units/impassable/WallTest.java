@@ -1,31 +1,12 @@
 package Model.units.impassable;
 
-import Model.units.UnitTest;
+import Model.units.AbstractUnitTest;
+import Model.units.Unit;
 
-public class WallTest extends UnitTest {
-
-    @Override
-    public void setOwnerTest() {
-
-    }
+public class WallTest extends AbstractUnitTest {
 
     @Override
-    public void removeOwnerTest() {
-
-    }
-
-    @Override
-    public void activateTest() {
-
-    }
-
-    @Override
-    public void deactivateTest() {
-
-    }
-
-    @Override
-    public void destroy_removesUnitFromCell() {
-
+    protected Unit createUnit() {
+        return null;
     }
 }
