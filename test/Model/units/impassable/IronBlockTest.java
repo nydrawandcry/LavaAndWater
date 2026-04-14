@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.*;
 
-public class IronBlockTest extends AbstractUnitTest {
+public class IronBlockTest extends AbstractUnitTest<IronBlock> {
 
     @Override
-    protected Unit createUnit() {
+    protected IronBlock createUnit() {
         return new IronBlock();
     }
 
@@ -25,9 +25,9 @@ public class IronBlockTest extends AbstractUnitTest {
         Cell start = field.getCell(1, 1);
         start.putUnit(unit);
 
-        //boolean result = unit.moveByPlayer(Direction.EAST);
+        boolean result = unit.moveByPlayer(Direction.EAST);
 
-        //assertTrue(result);
+        assertTrue(result);
         assertNull(start.getUnit(IronBlock.class));
         assertEquals(unit, field.getCell(1, 2).getUnit(IronBlock.class));
     }
@@ -40,9 +40,9 @@ public class IronBlockTest extends AbstractUnitTest {
         Cell target = field.getCell(1, 2);
         target.putUnit(new Wall());
 
-        //boolean result = unit.moveByPlayer(Direction.EAST);
+        boolean result = unit.moveByPlayer(Direction.EAST);
 
-        //assertFalse(result);
+        assertFalse(result);
         assertEquals(unit, start.getUnit(IronBlock.class));
     }
 
@@ -51,9 +51,9 @@ public class IronBlockTest extends AbstractUnitTest {
         Cell start = field.getCell(1, 2);
         start.putUnit(unit);
 
-        //boolean result = unit.moveByPlayer(Direction.EAST);
+        boolean result = unit.moveByPlayer(Direction.EAST);
 
-        //assertFalse(result);
+        assertFalse(result);
         assertEquals(unit, start.getUnit(IronBlock.class));
     }
 }

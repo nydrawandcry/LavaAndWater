@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.*;
 
-public class PlayerTest extends AbstractUnitTest{
+public class PlayerTest extends AbstractUnitTest<Player>{
 
     @Override
-    protected Unit createUnit() {
+    protected Player createUnit() {
         return new Player();
     }
 

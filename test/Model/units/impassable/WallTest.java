@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class WallTest extends AbstractUnitTest {
+public class WallTest extends AbstractUnitTest<Wall> {
 
     @Override
-    protected Unit createUnit() {
+    protected Wall createUnit() {
         return new Wall();
     }
 

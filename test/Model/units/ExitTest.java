@@ -1,9 +1,9 @@
 package Model.units;
 
-public class ExitTest extends AbstractUnitTest {
+public class ExitTest extends AbstractUnitTest<Exit> {
 
     @Override
-    protected Unit createUnit() {
-        return null;
+    protected Exit createUnit() {
+        return new Exit();
     }
 }
