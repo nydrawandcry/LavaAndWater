@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public abstract class Liquid extends Unit {
 
     @Override
-    protected boolean canBelongTo(Cell cell) {
+    public boolean canBelongTo(Cell cell) {
         if(cell == null) {
             return false;
         }

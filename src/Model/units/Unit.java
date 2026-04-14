@@ -40,5 +40,5 @@ public abstract class Unit {
         _isActive = false;
     }
 
-    protected abstract boolean canBelongTo(Cell cell);
+    public abstract boolean canBelongTo(Cell cell);
 }
