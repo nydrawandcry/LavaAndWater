@@ -1,4 +1,6 @@
-package Model.services;
+package Model.services.configs;
+
+import Model.services.Position;
 
 import java.util.ArrayList;
 import java.util.Collections;

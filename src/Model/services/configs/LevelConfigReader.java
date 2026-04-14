@@ -1,4 +1,6 @@
-package Model.services;
+package Model.services.configs;
+
+import Model.services.Position;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

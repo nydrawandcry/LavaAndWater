@@ -2,6 +2,7 @@ package Model.services;
 
 import Model.gamefield.Cell;
 import Model.gamefield.Gamefield;
+import Model.services.configs.LevelConfig;
 import Model.units.Exit;
 import Model.units.Player;
 import Model.units.impassable.IronBlock;
