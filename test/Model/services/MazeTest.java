@@ -146,4 +146,72 @@ public class MazeTest {
 
         return config;
     }
+
+    //доп тесты на несколько источников лавы
+
+    @Test
+    void buildField_placesMultipleLavaSources() {
+        LevelConfig config = new LevelConfig(5, 5);
+        config.setPlayerPosition(new Position(1, 1));
+        config.setExitPosition(new Position(4, 4));
+
+        config.addLava(new Position(0, 2));
+        config.addLava(new Position(2, 2));
+        config.addLava(new Position(3, 1));
+
+        Maze maze = new Maze(config);
+        Gamefield field = maze.buildField();
+
+        assertNotNull(field.getCell(0, 2).getUnit(Lava.class));
+        assertNotNull(field.getCell(2, 2).getUnit(Lava.class));
+        assertNotNull(field.getCell(3, 1).getUnit(Lava.class));
+    }
+
+    @Test
+    void buildField_placesMultipleWaterSources() {
+        LevelConfig config = new LevelConfig(5, 5);
+        config.setPlayerPosition(new Position(1, 1));
+        config.setExitPosition(new Position(4, 4));
+
+        config.addWater(new Position(0, 3));
+        config.addWater(new Position(2, 1));
+        config.addWater(new Position(4, 0));
+
+        Maze maze = new Maze(config);
+        Gamefield field = maze.buildField();
+
+        assertNotNull(field.getCell(0, 3).getUnit(Water.class));
+        assertNotNull(field.getCell(2, 1).getUnit(Water.class));
+        assertNotNull(field.getCell(4, 0).getUnit(Water.class));
+    }
+
+    @Test
+    void buildField_placesMultipleWallsAndLiquidsTogetherCorrectly() {
+        LevelConfig config = new LevelConfig(6, 6);
+        config.setPlayerPosition(new Position(1, 1));
+        config.setExitPosition(new Position(5, 5));
+
+        config.addWall(new Position(0, 0));
+        config.addWall(new Position(0, 1));
+        config.addWall(new Position(1, 0));
+
+        config.addLava(new Position(2, 2));
+        config.addLava(new Position(3, 3));
+
+        config.addWater(new Position(2, 3));
+        config.addWater(new Position(3, 2));
+
+        Maze maze = new Maze(config);
+        Gamefield field = maze.buildField();
+
+        assertNotNull(field.getCell(0, 0).getUnit(Wall.class));
+        assertNotNull(field.getCell(0, 1).getUnit(Wall.class));
+        assertNotNull(field.getCell(1, 0).getUnit(Wall.class));
+
+        assertNotNull(field.getCell(2, 2).getUnit(Lava.class));
+        assertNotNull(field.getCell(3, 3).getUnit(Lava.class));
+
+        assertNotNull(field.getCell(2, 3).getUnit(Water.class));
+        assertNotNull(field.getCell(3, 2).getUnit(Water.class));
+    }
 }
