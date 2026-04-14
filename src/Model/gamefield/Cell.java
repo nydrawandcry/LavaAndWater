@@ -33,6 +33,10 @@ public class Cell {
             return false;
         }
 
+        if(!u.canBelongTo(this)){
+            return false;
+        }
+
         _units.add(u);
         u.setOwner(this);
         u.activate();
