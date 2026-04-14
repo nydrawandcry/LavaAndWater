@@ -153,4 +153,23 @@ public class GameTest {
         file.toFile().deleteOnExit();
         return file;
     }
+
+    @Test
+    void makeTurn_playerDiesIfStepsDirectlyIntoLava() throws IOException {
+        Path file = createTempLevel(
+                "#####",
+                "#PL.#",
+                "#..E#",
+                "#####"
+        );
+
+        Game game = new Game();
+        game.loadLevel(file.toString());
+
+        game.makeTurn(Direction.EAST);
+
+        assertTrue(game.isOver());
+        assertFalse(game.isWon());
+        assertFalse(game.getPlayer().isAlive());
+    }
 }
