@@ -40,5 +40,13 @@ public abstract class Unit {
         _isActive = false;
     }
 
+    public void destroy() {
+        if (_owner != null) {
+            _owner.extractUnit(this);
+        }
+        _isDestroyed = true;
+        _isActive = false;
+    }
+
     public abstract boolean canBelongTo(Cell cell);
 }
