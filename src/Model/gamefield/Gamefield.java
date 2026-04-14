@@ -76,7 +76,7 @@ public class Gamefield implements Iterable<Cell> {
 
     public Cell getCell(int posX, int posY){
         if(posX < 0 || posY < 0 || posX >= getHeight() || posY >= getWidth()) {
-            throw new IllegalArgumentException("Клетки с такой позицией не существует");
+            throw new IndexOutOfBoundsException("Клетки с такой позицией не существует");
         }
 
         int index = posX * getWidth() + posY;
