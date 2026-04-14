@@ -5,10 +5,14 @@ import Model.gamefield.Gamefield;
 import Model.services.configs.LevelConfig;
 import Model.units.Exit;
 import Model.units.Player;
+import Model.units.Unit;
 import Model.units.impassable.IronBlock;
 import Model.units.impassable.Wall;
 import Model.units.liquids.Lava;
 import Model.units.liquids.Water;
+
+import java.util.List;
+import java.util.function.Supplier;
 
 public class Maze {
 
@@ -28,51 +32,24 @@ public class Maze {
     }
 
     private void equipCells(Gamefield field) {
-        placeWalls(field);
-        placeIronBlocks(field);
-        placeLava(field);
-        placeWater(field);
-        placePlayer(field);
-        placeExit(field);
+        placeAll(field, _config.getWalls(),      Wall::new);
+        placeAll(field, _config.getIronBlocks(), IronBlock::new);
+        placeAll(field, _config.getLava(),       Lava::new);
+        placeAll(field, _config.getWater(),      Water::new);
+        place(field, _config.getPlayerPosition(), Player::new);
+        place(field, _config.getExitPosition(),   Exit::new);
     }
 
-    private void placeWalls(Gamefield field) {
-        for (Position position : _config.getWalls()) {
-            Cell cell = field.getCell(position.row(), position.col());
-            cell.putUnit(new Wall());
+    private void placeAll(Gamefield field, List<Position> positions, Supplier<Unit> factory) {
+        for (Position position : positions) {
+            place(field, position, factory);
         }
     }
 
-    private void placeIronBlocks(Gamefield field) {
-        for (Position position : _config.getIronBlocks()) {
-            Cell cell = field.getCell(position.row(), position.col());
-            cell.putUnit(new IronBlock());
-        }
-    }
-
-    private void placeLava(Gamefield field) {
-        for (Position position : _config.getLava()) {
-            Cell cell = field.getCell(position.row(), position.col());
-            cell.putUnit(new Lava());
-        }
-    }
-
-    private void placeWater(Gamefield field) {
-        for (Position position : _config.getWater()) {
-            Cell cell = field.getCell(position.row(), position.col());
-            cell.putUnit(new Water());
-        }
-    }
-
-    private void placePlayer(Gamefield field) {
-        Position position = _config.getPlayerPosition();
+    private void place(Gamefield field, Position position, Supplier<Unit> factory) {
         Cell cell = field.getCell(position.row(), position.col());
-        cell.putUnit(new Player());
-    }
+        Unit unit = factory.get();
 
-    private void placeExit(Gamefield field) {
-        Position position = _config.getExitPosition();
-        Cell cell = field.getCell(position.row(), position.col());
-        cell.putUnit(new Exit());
+        cell.putUnit(unit);
     }
 }
