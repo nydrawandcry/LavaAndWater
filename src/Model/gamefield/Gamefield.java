@@ -1,5 +1,7 @@
 package Model.gamefield;
 
+import Model.units.Unit;
+
 import java.awt.geom.Dimension2D;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,7 +15,7 @@ public class Gamefield implements Iterable<Cell> {
 
     public Gamefield(int height, int width) {
         if(height <= 0 || width <= 0) {
-            throw new IllegalArgumentException("Размеры поля должны быть положительные");
+            throw new IndexOutOfBoundsException("Размеры поля должны быть положительные");
         }
 
         _height = height;
@@ -32,6 +34,16 @@ public class Gamefield implements Iterable<Cell> {
 
     public boolean isDestroyed(){
         return _isDestroyed;
+    }
+
+    public void destroy() {
+        for(Cell cell : _cells){
+            ArrayList<Unit> units = cell.getUnits(Unit.class);
+            for(Unit u : units){
+                u.deactivate();
+            }
+        }
+        _isDestroyed = true;
     }
 
     private void initializeCells() {
