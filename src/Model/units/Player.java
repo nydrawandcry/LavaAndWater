@@ -7,7 +7,7 @@ import Model.units.impassable.IronBlock;
 
 public class Player extends Unit {
 
-    private boolean _isAlive;
+    private boolean _isAlive = true;
 
     public boolean isAlive() {
         return _isAlive;
