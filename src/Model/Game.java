@@ -58,7 +58,8 @@ public class Game {
     }
 
     private void updateGameState() {
-        if (!_player.isAlive()) {
+        if (isPlayerInLava()) {
+            _player.kill();
             _isOver = true;
             _isWon = false;
             return;
@@ -68,6 +69,10 @@ public class Game {
             _isOver = true;
             _isWon = true;
         }
+    }
+
+    private boolean isPlayerInLava() {
+        return _player.owner().getUnit(Lava.class) != null;
     }
 
     private boolean isPlayerOnExit() {
