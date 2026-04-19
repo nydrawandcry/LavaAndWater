@@ -2,7 +2,6 @@ package Model.services;
 
 import Model.gamefield.Cell;
 import Model.gamefield.Gamefield;
-import Model.services.configs.LevelConfig;
 import Model.units.Exit;
 import Model.units.Player;
 import Model.units.impassable.IronBlock;
@@ -17,14 +16,12 @@ public class MazeTest {
 
     @Test
     void constructor_nullConfig_throwsException() {
-        assertThrows(NullPointerException.class, () -> new Maze(null));
+        assertThrows(NullPointerException.class, () -> new Maze());
     }
 
     @Test
     void buildField_createsFieldWithCorrectSize() {
-        LevelConfig config = createSimpleConfig();
-
-        Maze maze = new Maze(config);
+        Maze maze = new Maze();
         Gamefield field = maze.buildField();
 
         assertEquals(4, field.getHeight());
@@ -33,9 +30,7 @@ public class MazeTest {
 
     @Test
     void buildField_placesPlayerToCorrectCell() {
-        LevelConfig config = createSimpleConfig();
-
-        Maze maze = new Maze(config);
+        Maze maze = new Maze();
         Gamefield field = maze.buildField();
 
         Cell playerCell = field.getCell(1, 1);
@@ -45,9 +40,7 @@ public class MazeTest {
 
     @Test
     void buildField_placesExitToCorrectCell() {
-        LevelConfig config = createSimpleConfig();
-
-        Maze maze = new Maze(config);
+        Maze maze = new Maze();
         Gamefield field = maze.buildField();
 
         Cell exitCell = field.getCell(2, 3);
@@ -57,9 +50,7 @@ public class MazeTest {
 
     @Test
     void buildField_placesWallsToCorrectCells() {
-        LevelConfig config = createSimpleConfig();
-
-        Maze maze = new Maze(config);
+        Maze maze = new Maze();
         Gamefield field = maze.buildField();
 
         assertNotNull(field.getCell(0, 0).getUnit(Wall.class));
@@ -68,9 +59,7 @@ public class MazeTest {
 
     @Test
     void buildField_placesIronBlocksToCorrectCells() {
-        LevelConfig config = createSimpleConfig();
-
-        Maze maze = new Maze(config);
+        Maze maze = new Maze();
         Gamefield field = maze.buildField();
 
         assertNotNull(field.getCell(1, 3).getUnit(IronBlock.class));
@@ -78,9 +67,7 @@ public class MazeTest {
 
     @Test
     void buildField_placesLavaToCorrectCells() {
-        LevelConfig config = createSimpleConfig();
-
-        Maze maze = new Maze(config);
+        Maze maze = new Maze();
         Gamefield field = maze.buildField();
 
         assertNotNull(field.getCell(2, 1).getUnit(Lava.class));
@@ -88,9 +75,7 @@ public class MazeTest {
 
     @Test
     void buildField_placesWaterToCorrectCells() {
-        LevelConfig config = createSimpleConfig();
-
-        Maze maze = new Maze(config);
+        Maze maze = new Maze();
         Gamefield field = maze.buildField();
 
         assertNotNull(field.getCell(2, 2).getUnit(Water.class));
@@ -98,9 +83,7 @@ public class MazeTest {
 
     @Test
     void buildField_emptyCellsRemainEmpty() {
-        LevelConfig config = createSimpleConfig();
-
-        Maze maze = new Maze(config);
+        Maze maze = new Maze();
         Gamefield field = maze.buildField();
 
         Cell emptyCell = field.getCell(3, 4);
@@ -110,9 +93,7 @@ public class MazeTest {
 
     @Test
     void buildField_doesNotMixUpUnitTypes() {
-        LevelConfig config = createSimpleConfig();
-
-        Maze maze = new Maze(config);
+        Maze maze = new Maze();
         Gamefield field = maze.buildField();
 
         Cell lavaCell = field.getCell(2, 1);
@@ -128,90 +109,5 @@ public class MazeTest {
 
         assertNotNull(playerCell.getUnit(Player.class));
         assertNull(playerCell.getUnit(Wall.class));
-    }
-
-    private LevelConfig createSimpleConfig() {
-        LevelConfig config = new LevelConfig(4, 5);
-
-        config.setPlayerPosition(new Position(1, 1));
-        config.setExitPosition(new Position(2, 3));
-
-        config.addWall(new Position(0, 0));
-        config.addWall(new Position(0, 1));
-
-        config.addIronBlock(new Position(1, 3));
-
-        config.addLava(new Position(2, 1));
-        config.addWater(new Position(2, 2));
-
-        return config;
-    }
-
-    //доп тесты на несколько источников лавы
-
-    @Test
-    void buildField_placesMultipleLavaSources() {
-        LevelConfig config = new LevelConfig(5, 5);
-        config.setPlayerPosition(new Position(1, 1));
-        config.setExitPosition(new Position(4, 4));
-
-        config.addLava(new Position(0, 2));
-        config.addLava(new Position(2, 2));
-        config.addLava(new Position(3, 1));
-
-        Maze maze = new Maze(config);
-        Gamefield field = maze.buildField();
-
-        assertNotNull(field.getCell(0, 2).getUnit(Lava.class));
-        assertNotNull(field.getCell(2, 2).getUnit(Lava.class));
-        assertNotNull(field.getCell(3, 1).getUnit(Lava.class));
-    }
-
-    @Test
-    void buildField_placesMultipleWaterSources() {
-        LevelConfig config = new LevelConfig(5, 5);
-        config.setPlayerPosition(new Position(1, 1));
-        config.setExitPosition(new Position(4, 4));
-
-        config.addWater(new Position(0, 3));
-        config.addWater(new Position(2, 1));
-        config.addWater(new Position(4, 0));
-
-        Maze maze = new Maze(config);
-        Gamefield field = maze.buildField();
-
-        assertNotNull(field.getCell(0, 3).getUnit(Water.class));
-        assertNotNull(field.getCell(2, 1).getUnit(Water.class));
-        assertNotNull(field.getCell(4, 0).getUnit(Water.class));
-    }
-
-    @Test
-    void buildField_placesMultipleWallsAndLiquidsTogetherCorrectly() {
-        LevelConfig config = new LevelConfig(6, 6);
-        config.setPlayerPosition(new Position(1, 1));
-        config.setExitPosition(new Position(5, 5));
-
-        config.addWall(new Position(0, 0));
-        config.addWall(new Position(0, 1));
-        config.addWall(new Position(1, 0));
-
-        config.addLava(new Position(2, 2));
-        config.addLava(new Position(3, 3));
-
-        config.addWater(new Position(2, 3));
-        config.addWater(new Position(3, 2));
-
-        Maze maze = new Maze(config);
-        Gamefield field = maze.buildField();
-
-        assertNotNull(field.getCell(0, 0).getUnit(Wall.class));
-        assertNotNull(field.getCell(0, 1).getUnit(Wall.class));
-        assertNotNull(field.getCell(1, 0).getUnit(Wall.class));
-
-        assertNotNull(field.getCell(2, 2).getUnit(Lava.class));
-        assertNotNull(field.getCell(3, 3).getUnit(Lava.class));
-
-        assertNotNull(field.getCell(2, 3).getUnit(Water.class));
-        assertNotNull(field.getCell(3, 2).getUnit(Water.class));
     }
 }

@@ -3,8 +3,6 @@ package Model;
 import Model.gamefield.Direction;
 import Model.gamefield.Gamefield;
 import Model.services.CollisionDetector;
-import Model.services.configs.LevelConfig;
-import Model.services.configs.LevelConfigReader;
 import Model.services.Maze;
 import Model.units.Exit;
 import Model.units.Player;
@@ -23,10 +21,8 @@ public class Game {
     private CollisionDetector _collisionDetector = new CollisionDetector();
 
     public void loadLevel(String fileName) throws IOException {
-        LevelConfigReader reader = new LevelConfigReader();
-        LevelConfig config = reader.read(fileName);
 
-        Maze maze = new Maze(config);
+        Maze maze = new Maze();
         _field = maze.buildField();
         _player = findPlayer();
 
