@@ -33,9 +33,14 @@ public class Player extends Unit {
         Unit blocking = destination.getUnit(Solid.class);
 
         if(blocking instanceof Pushable) {
-            if(!((Pushable) blocking).canBePushedTo(destination)){
+            Cell next = destination.getNeighbour(dir);
+
+            if(!((Pushable) blocking).canBePushedTo(next)){
                 return false;
             }
+
+            destination.extractUnit(blocking);
+            next.putUnit(blocking);
         } 
         else if(blocking != null){
             return false;
