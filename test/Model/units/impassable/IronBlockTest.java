@@ -21,39 +21,37 @@ public class IronBlockTest extends AbstractUnitTest<IronBlock> {
     }
 
     @Test
-    void moveByPlayer_toFreeCell_movesBlock() {
-        Cell start = field.getCell(1, 1);
-        start.putUnit(unit);
+    void canBelongTo_cellWithSolid_returnsFalse() {
+        cell.putUnit(new Wall());
 
-        boolean result = unit.moveByPlayer(Direction.EAST);
-
-        assertTrue(result);
-        assertNull(start.getUnit(IronBlock.class));
-        assertEquals(unit, field.getCell(1, 2).getUnit(IronBlock.class));
+        assertFalse(unit.canBelongTo(cell));
     }
 
     @Test
-    void moveByPlayer_toBlockedCell_returnsFalse() {
-        Cell start = field.getCell(1, 1);
-        start.putUnit(unit);
+    void canBePushedTo_freeCell_returnsTrue() {
+        Cell target = field.getCell(1, 2);
 
+        assertTrue(unit.canBePushedTo(target));
+    }
+
+    @Test
+    void canBePushedTo_null_returnsFalse() {
+        assertFalse(unit.canBePushedTo(null));
+    }
+
+    @Test
+    void canBePushedTo_cellWithWall_returnsFalse() {
         Cell target = field.getCell(1, 2);
         target.putUnit(new Wall());
 
-        boolean result = unit.moveByPlayer(Direction.EAST);
-
-        assertFalse(result);
-        assertEquals(unit, start.getUnit(IronBlock.class));
+        assertFalse(unit.canBePushedTo(target));
     }
 
     @Test
-    void moveByPlayer_outOfBounds_returnsFalse() {
-        Cell start = field.getCell(1, 2);
-        start.putUnit(unit);
+    void canBePushedTo_cellWithAnotherIronBlock_returnsFalse() {
+        Cell target = field.getCell(1, 2);
+        target.putUnit(new IronBlock());
 
-        boolean result = unit.moveByPlayer(Direction.EAST);
-
-        assertFalse(result);
-        assertEquals(unit, start.getUnit(IronBlock.class));
+        assertFalse(unit.canBePushedTo(target));
     }
 }
