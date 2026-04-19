@@ -3,7 +3,7 @@ package Model.units.liquids;
 import Model.gamefield.Cell;
 import Model.gamefield.Gamefield;
 import Model.units.Unit;
-import Model.units.impassable.Impassable;
+import Model.units.impassable.Solid;
 
 import java.util.ArrayList;
 
@@ -14,7 +14,7 @@ public abstract class Liquid extends Unit {
         if(cell == null) {
             return false;
         }
-        if(cell.getUnit(Impassable.class) != null) {
+        if(cell.getUnit(Solid.class) != null) {
             return false;
         }
         if(cell.getUnit(this.getClass()) != null) {

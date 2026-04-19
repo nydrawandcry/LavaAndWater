@@ -3,10 +3,10 @@ package Model.units.impassable;
 import Model.gamefield.Cell;
 import Model.units.Unit;
 
-public class Wall extends Unit implements Impassable {
+public class Wall extends Unit implements Solid {
 
     @Override
     public boolean canBelongTo(Cell cell) {
-        return cell != null && cell.getUnit(Impassable.class) == null; //может стоять на клетках, где еще нет барьеров и если клетка существует
+        return cell != null && cell.getUnit(Solid.class) == null; //может стоять на клетках, где еще нет барьеров и если клетка существует
     }
 }

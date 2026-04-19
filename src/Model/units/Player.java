@@ -2,7 +2,7 @@ package Model.units;
 
 import Model.gamefield.Cell;
 import Model.gamefield.Direction;
-import Model.units.impassable.Impassable;
+import Model.units.impassable.Solid;
 import Model.units.impassable.IronBlock;
 
 public class Player extends Unit {
@@ -20,7 +20,7 @@ public class Player extends Unit {
 
     @Override
     public boolean canBelongTo(Cell cell) {
-        return cell != null && cell.getUnit(Impassable.class) == null;
+        return cell != null && cell.getUnit(Solid.class) == null;
     }
 
     public boolean moveTo(Direction dir) {
@@ -30,7 +30,7 @@ public class Player extends Unit {
             return false;
         }
 
-        Unit blocking = destination.getUnit(Impassable.class);
+        Unit blocking = destination.getUnit(Solid.class);
 
         if(blocking instanceof IronBlock) { //мне не нравится тут эта проверка на конкретный класс...
             if(!((IronBlock) blocking).moveByPlayer(dir)){

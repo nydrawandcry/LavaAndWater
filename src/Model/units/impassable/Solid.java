@@ -1,6 +1,6 @@
 package Model.units.impassable;
 
-public interface Impassable {
+public interface Solid {
     //Маркерный интерфейс.
     //Используется для обозначения непроходимых объектов на поле
 }
