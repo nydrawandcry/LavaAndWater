@@ -2,8 +2,8 @@ package Model.units;
 
 import Model.gamefield.Cell;
 import Model.gamefield.Direction;
+import Model.units.impassable.Pushable;
 import Model.units.impassable.Solid;
-import Model.units.impassable.IronBlock;
 
 public class Player extends Unit {
 
@@ -32,8 +32,8 @@ public class Player extends Unit {
 
         Unit blocking = destination.getUnit(Solid.class);
 
-        if(blocking instanceof IronBlock) { //мне не нравится тут эта проверка на конкретный класс...
-            if(!((IronBlock) blocking).moveByPlayer(dir)){
+        if(blocking instanceof Pushable) {
+            if(!((Pushable) blocking).canBePushedTo(destination)){
                 return false;
             }
         } 
