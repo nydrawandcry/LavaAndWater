@@ -44,7 +44,7 @@ public abstract class LiquidSystemTest<T extends LiquidSystem> {
     }
 
     @Test
-    void expand_spreadsToNeighbourCells() {
+    void spread_spreadsToNeighbourCells() {
         Cell source = field.getCell(1, 1);
         liquid.addSource(source);
 
@@ -57,7 +57,7 @@ public abstract class LiquidSystemTest<T extends LiquidSystem> {
     }
 
     @Test
-    void expand_doesNotSpreadThroughWalls() {
+    void spread_doesNotSpreadThroughWalls() {
         Cell source = field.getCell(1, 1);
         liquid.addSource(source);
 
@@ -72,7 +72,7 @@ public abstract class LiquidSystemTest<T extends LiquidSystem> {
     }
 
     @Test
-    void expand_doesNotDuplicateCellsWhenTwoSourcesReachSameCell() {
+    void spread_doesNotDuplicateCellsWhenTwoSourcesReachSameCell() {
         liquid.addSource(field.getCell(1, 0));
         liquid.addSource(field.getCell(1, 2));
 
@@ -85,7 +85,7 @@ public abstract class LiquidSystemTest<T extends LiquidSystem> {
     }
 
     @Test
-    void expand_doesNotGoOutsideField() {
+    void spread_doesNotGoOutsideField() {
         Cell source = field.getCell(0, 0);
         liquid.addSource(source);
 
