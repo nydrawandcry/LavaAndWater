@@ -104,15 +104,4 @@ public class GameTest {
         assertTrue(game.isOver());
         assertFalse(game.isWon());
     }
-
-    private boolean isBorderWall(Cell cell, Model.gamefield.Gamefield field) {
-        for (int row = 0; row < field.getHeight(); row++) {
-            for (int col = 0; col < field.getWidth(); col++) {
-                if (field.getCell(row, col) == cell) {
-                    return row == 0 || col == 0 || row == field.getHeight() - 1 || col == field.getWidth() - 1;
-                }
-            }
-        }
-        return false;
-    }
 }
