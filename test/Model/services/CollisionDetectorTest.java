@@ -16,111 +16,184 @@ public class CollisionDetectorTest {
 
     private CollisionDetector detector;
     private Gamefield field;
+    private Lava lava;
+    private Water water;
 
     @BeforeEach
     void setUp() {
         detector = new CollisionDetector();
         field = new Gamefield(3, 3);
+        lava = new Lava();
+        water = new Water();
     }
 
     @Test
-    void resolve_cellWithLavaAndWater_replacesThemWithWall() {
+    void resolve_singleConflictCell_createsWall() {
         Cell cell = field.getCell(1, 1);
-        cell.putUnit(new Lava());
-        cell.putUnit(new Water());
 
-        detector.resolve(field);
+        lava.addSource(cell);
+        water.addSource(cell);
 
-        assertNull(cell.getUnit(Lava.class));
-        assertNull(cell.getUnit(Water.class));
+        detector.resolve(lava, water);
+
         assertNotNull(cell.getUnit(Wall.class));
     }
 
     @Test
-    void resolve_cellWithOnlyLava_doesNothing() {
+    void resolve_singleConflictCell_removesLavaFromSystem() {
         Cell cell = field.getCell(1, 1);
-        Lava lava = new Lava();
-        cell.putUnit(lava);
 
-        detector.resolve(field);
+        lava.addSource(cell);
+        water.addSource(cell);
 
-        assertEquals(lava, cell.getUnit(Lava.class));
-        assertNull(cell.getUnit(Water.class));
+        detector.resolve(lava, water);
+
+        assertFalse(lava.contains(cell));
+    }
+
+    @Test
+    void resolve_singleConflictCell_removesWaterFromSystem() {
+        Cell cell = field.getCell(1, 1);
+
+        lava.addSource(cell);
+        water.addSource(cell);
+
+        detector.resolve(lava, water);
+
+        assertFalse(water.contains(cell));
+    }
+
+    @Test
+    void resolve_onlyLava_doesNothing() {
+        Cell cell = field.getCell(1, 1);
+
+        lava.addSource(cell);
+
+        detector.resolve(lava, water);
+
+        assertTrue(lava.contains(cell));
+        assertFalse(water.contains(cell));
         assertNull(cell.getUnit(Wall.class));
     }
 
     @Test
-    void resolve_cellWithOnlyWater_doesNothing() {
+    void resolve_onlyWater_doesNothing() {
         Cell cell = field.getCell(1, 1);
-        Water water = new Water();
-        cell.putUnit(water);
 
-        detector.resolve(field);
+        water.addSource(cell);
 
-        assertEquals(water, cell.getUnit(Water.class));
-        assertNull(cell.getUnit(Lava.class));
+        detector.resolve(lava, water);
+
+        assertFalse(lava.contains(cell));
+        assertTrue(water.contains(cell));
         assertNull(cell.getUnit(Wall.class));
     }
 
     @Test
-    void resolve_multipleConflictCells_resolvesAllOfThem() {
+    void resolve_noConflicts_doesNothing() {
+        Cell lavaCell = field.getCell(0, 0);
+        Cell waterCell = field.getCell(2, 2);
+
+        lava.addSource(lavaCell);
+        water.addSource(waterCell);
+
+        detector.resolve(lava, water);
+
+        assertTrue(lava.contains(lavaCell));
+        assertTrue(water.contains(waterCell));
+
+        assertNull(lavaCell.getUnit(Wall.class));
+        assertNull(waterCell.getUnit(Wall.class));
+    }
+
+    @Test
+    void resolve_multipleConflictCells_resolvesAll() {
         Cell first = field.getCell(0, 0);
         Cell second = field.getCell(2, 2);
 
-        first.putUnit(new Lava());
-        first.putUnit(new Water());
+        lava.addSource(first);
+        water.addSource(first);
 
-        second.putUnit(new Lava());
-        second.putUnit(new Water());
+        lava.addSource(second);
+        water.addSource(second);
 
-        detector.resolve(field);
+        detector.resolve(lava, water);
 
         assertNotNull(first.getUnit(Wall.class));
-        assertNull(first.getUnit(Lava.class));
-        assertNull(first.getUnit(Water.class));
-
         assertNotNull(second.getUnit(Wall.class));
-        assertNull(second.getUnit(Lava.class));
-        assertNull(second.getUnit(Water.class));
+
+        assertFalse(lava.contains(first));
+        assertFalse(water.contains(first));
+
+        assertFalse(lava.contains(second));
+        assertFalse(water.contains(second));
     }
 
     @Test
-    void resolve_conflictInOneCell_doesNotAffectOtherCells() {
+    void resolve_conflictInOneCell_doesNotAffectSafeCells() {
         Cell conflict = field.getCell(1, 1);
-        Cell safe = field.getCell(0, 0);
+        Cell safeLava = field.getCell(0, 0);
+        Cell safeWater = field.getCell(2, 2);
 
-        conflict.putUnit(new Lava());
-        conflict.putUnit(new Water());
+        lava.addSource(conflict);
+        water.addSource(conflict);
 
-        Lava safeLava = new Lava();
-        safe.putUnit(safeLava);
+        lava.addSource(safeLava);
+        water.addSource(safeWater);
 
-        detector.resolve(field);
+        detector.resolve(lava, water);
 
         assertNotNull(conflict.getUnit(Wall.class));
-        assertEquals(safeLava, safe.getUnit(Lava.class));
-        assertNull(safe.getUnit(Wall.class));
-    }
 
-    @Test
-    void resolve_emptyField_doesNotThrow() {
-        assertDoesNotThrow(() -> detector.resolve(field));
+        assertFalse(lava.contains(conflict));
+        assertFalse(water.contains(conflict));
+
+        assertTrue(lava.contains(safeLava));
+        assertTrue(water.contains(safeWater));
+
+        assertNull(safeLava.getUnit(Wall.class));
+        assertNull(safeWater.getUnit(Wall.class));
     }
 
     @Test
     void resolve_playerInConflictCell_playerRemainsInCell() {
         Cell cell = field.getCell(1, 1);
         Player player = new Player();
-
         cell.putUnit(player);
-        cell.putUnit(new Lava());
-        cell.putUnit(new Water());
 
-        detector.resolve(field);
+        lava.addSource(cell);
+        water.addSource(cell);
+
+        detector.resolve(lava, water);
 
         assertNotNull(cell.getUnit(Player.class));
         assertNotNull(cell.getUnit(Wall.class));
-        assertNull(cell.getUnit(Lava.class));
-        assertNull(cell.getUnit(Water.class));
+        assertFalse(lava.contains(cell));
+        assertFalse(water.contains(cell));
+    }
+
+    @Test
+    void resolve_emptySystems_doesNotThrow() {
+        assertDoesNotThrow(() -> detector.resolve(lava, water));
+    }
+
+    @Test
+    void resolve_firstSystemEmpty_doesNotThrow() {
+        water.addSource(field.getCell(1, 1));
+
+        assertDoesNotThrow(() -> detector.resolve(lava, water));
+
+        assertTrue(water.contains(field.getCell(1, 1)));
+        assertNull(field.getCell(1, 1).getUnit(Wall.class));
+    }
+
+    @Test
+    void resolve_secondSystemEmpty_doesNotThrow() {
+        lava.addSource(field.getCell(1, 1));
+
+        assertDoesNotThrow(() -> detector.resolve(lava, water));
+
+        assertTrue(lava.contains(field.getCell(1, 1)));
+        assertNull(field.getCell(1, 1).getUnit(Wall.class));
     }
 }

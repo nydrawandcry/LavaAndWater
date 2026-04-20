@@ -4,25 +4,22 @@ import Model.gamefield.Cell;
 import Model.gamefield.Gamefield;
 import Model.units.impassable.Wall;
 import Model.units.liquids.Lava;
+import Model.units.liquids.LiquidSystem;
 import Model.units.liquids.Water;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class CollisionDetector {
 
-    public void resolve(Gamefield field) {
-        for(Cell c : field) {
-            boolean hasLava = c.getUnit(Lava.class) != null;
-            boolean hasWater = c.getUnit(Water.class) != null;
+    public void resolve(LiquidSystem first, LiquidSystem second) {
+        Set<Cell> conflicts = new HashSet<>(first.getCells());
+        conflicts.retainAll(second.getCells());
 
-            if(hasLava && hasWater) {
-                createWallsInCell(c);
-            }
+        for (Cell cell : conflicts) {
+            first.remove(cell);
+            second.remove(cell);
+            cell.putUnit(new Wall());
         }
-    }
-
-    private void createWallsInCell(Cell cell) {
-        cell.extractUnit(cell.getUnit(Lava.class));
-        cell.extractUnit(cell.getUnit(Water.class));
-
-        cell.putUnit(new Wall());
     }
 }
