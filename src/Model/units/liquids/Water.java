@@ -1,9 +1,5 @@
 package Model.units.liquids;
 
-public class Water extends Liquid{
+public class Water extends LiquidSystem {
 
-    @Override
-    protected Liquid createInstance() {
-        return new Water();
-    }
 }
