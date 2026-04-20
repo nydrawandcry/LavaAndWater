@@ -1,8 +1,8 @@
 package Model.units.liquids;
 
-public class WaterTest extends AbstractLiquidTest<Water> {
+public class WaterTest extends LiquidSystemTest<Water> {
     @Override
-    protected Water createUnit() {
+    protected Water createLiquid() {
         return new Water();
     }
 }

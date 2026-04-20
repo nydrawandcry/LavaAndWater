@@ -1,9 +1,9 @@
 package Model.units.liquids;
 
-public class LavaTest extends AbstractLiquidTest<Lava> {
+public class LavaTest extends LiquidSystemTest<Lava> {
 
     @Override
-    protected Lava createUnit() {
+    protected Lava createLiquid() {
         return new Lava();
     }
 }
