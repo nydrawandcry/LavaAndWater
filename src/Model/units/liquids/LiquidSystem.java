@@ -19,13 +19,14 @@ public abstract class LiquidSystem {
 
         for(Cell c : _cells) {
             for(Cell neighbour : c.getNeighbours().values()) {
-                if(canOccupy(neighbour)) {
+                if(canOccupy(neighbour) && !_cells.contains(neighbour)) {
                     next.add(neighbour);
                 }
             }
         }
-    }
 
+        _cells.addAll(next);
+    }
 
     public boolean canOccupy(Cell cell) {
         return cell != null && cell.getUnit(Solid.class) == null;
@@ -33,5 +34,15 @@ public abstract class LiquidSystem {
 
     public void remove(Cell cell) {
         _cells.remove(cell);
+    }
+
+    public void addSource(Cell cell) {
+        if (canOccupy(cell)) {
+            _cells.add(cell);
+        }
+    }
+
+    public Set<Cell> getCells() {
+        return Set.copyOf(_cells);
     }
 }
