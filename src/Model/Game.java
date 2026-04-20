@@ -3,28 +3,32 @@ package Model;
 import Model.gamefield.Direction;
 import Model.gamefield.Gamefield;
 import Model.services.CollisionDetector;
-import Model.services.GameFactory;
 import Model.units.Exit;
 import Model.units.Player;
 import Model.units.liquids.Lava;
 import Model.units.liquids.Water;
-
-import java.io.IOException;
 
 public class Game {
 
     private boolean _isOver;
     private boolean _isWon;
 
-    private Gamefield _field;
-    private Player _player;
-    private CollisionDetector _collisionDetector = new CollisionDetector();
+    private final Gamefield _field;
+    private final Player _player;
+    private final Lava _lava;
+    private final Water _water;
+    private final CollisionDetector _collisionDetector;
 
-    public void loadLevel(String fileName) throws IOException {
+    public Game(Gamefield field, Player player, Lava lava, Water water) {
+        if (field == null || player == null || lava == null || water == null) {
+            throw new NullPointerException("Параметры игры не должны быть null");
+        }
 
-        GameFactory gameFactory = new GameFactory();
-        _field = gameFactory.buildField();
-        _player = findPlayer();
+        _field = field;
+        _player = player;
+        _lava = lava;
+        _water = water;
+        _collisionDetector = new CollisionDetector();
 
         _isOver = false;
         _isWon = false;
@@ -42,15 +46,13 @@ public class Game {
         }
 
         spreadLiquids();
-        _collisionDetector.resolve(_field);
-
-        //обновление
+        _collisionDetector.resolve(_lava, _water);
         updateGameState();
     }
 
     private void spreadLiquids() {
-        new Lava().expand(_field);
-        new Water().expand(_field);
+        _lava.spread();
+        _water.spread();
     }
 
     private void updateGameState() {
@@ -68,22 +70,11 @@ public class Game {
     }
 
     private boolean isPlayerInLava() {
-        return _player.owner().getUnit(Lava.class) != null;
+        return _lava.contains(_player.owner());
     }
 
     private boolean isPlayerOnExit() {
         return _player.owner().getUnit(Exit.class) != null;
-    }
-
-    private Player findPlayer() {
-        for (var cell : _field) {
-            Player p = (Player) cell.getUnit(Player.class);
-            if (p != null) {
-                return p;
-            }
-        }
-
-        throw new IllegalStateException("Игрок не найден на поле");
     }
 
     public Gamefield getField() {
@@ -92,6 +83,14 @@ public class Game {
 
     public Player getPlayer() {
         return _player;
+    }
+
+    public Lava getLava() {
+        return _lava;
+    }
+
+    public Water getWater() {
+        return _water;
     }
 
     public boolean isOver() {
