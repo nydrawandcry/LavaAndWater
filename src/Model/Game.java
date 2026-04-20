@@ -3,7 +3,7 @@ package Model;
 import Model.gamefield.Direction;
 import Model.gamefield.Gamefield;
 import Model.services.CollisionDetector;
-import Model.services.Maze;
+import Model.services.GameFactory;
 import Model.units.Exit;
 import Model.units.Player;
 import Model.units.liquids.Lava;
@@ -22,8 +22,8 @@ public class Game {
 
     public void loadLevel(String fileName) throws IOException {
 
-        Maze maze = new Maze();
-        _field = maze.buildField();
+        GameFactory gameFactory = new GameFactory();
+        _field = gameFactory.buildField();
         _player = findPlayer();
 
         _isOver = false;

@@ -2,7 +2,7 @@ package Model.services;
 
 import Model.gamefield.Gamefield;
 
-public class Maze {
+public class GameFactory {
 
     private boolean _isDestroyed = false;
     

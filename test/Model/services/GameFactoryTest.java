@@ -12,17 +12,17 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.*;
 
-public class MazeTest {
+public class GameFactoryTest {
 
     @Test
     void constructor_nullConfig_throwsException() {
-        assertThrows(NullPointerException.class, () -> new Maze());
+        assertThrows(NullPointerException.class, () -> new GameFactory());
     }
 
     @Test
     void buildField_createsFieldWithCorrectSize() {
-        Maze maze = new Maze();
-        Gamefield field = maze.buildField();
+        GameFactory gameFactory = new GameFactory();
+        Gamefield field = gameFactory.buildField();
 
         assertEquals(4, field.getHeight());
         assertEquals(5, field.getWidth());
@@ -30,8 +30,8 @@ public class MazeTest {
 
     @Test
     void buildField_placesPlayerToCorrectCell() {
-        Maze maze = new Maze();
-        Gamefield field = maze.buildField();
+        GameFactory gameFactory = new GameFactory();
+        Gamefield field = gameFactory.buildField();
 
         Cell playerCell = field.getCell(1, 1);
 
@@ -40,8 +40,8 @@ public class MazeTest {
 
     @Test
     void buildField_placesExitToCorrectCell() {
-        Maze maze = new Maze();
-        Gamefield field = maze.buildField();
+        GameFactory gameFactory = new GameFactory();
+        Gamefield field = gameFactory.buildField();
 
         Cell exitCell = field.getCell(2, 3);
 
@@ -50,8 +50,8 @@ public class MazeTest {
 
     @Test
     void buildField_placesWallsToCorrectCells() {
-        Maze maze = new Maze();
-        Gamefield field = maze.buildField();
+        GameFactory gameFactory = new GameFactory();
+        Gamefield field = gameFactory.buildField();
 
         assertNotNull(field.getCell(0, 0).getUnit(Wall.class));
         assertNotNull(field.getCell(0, 1).getUnit(Wall.class));
@@ -59,32 +59,32 @@ public class MazeTest {
 
     @Test
     void buildField_placesIronBlocksToCorrectCells() {
-        Maze maze = new Maze();
-        Gamefield field = maze.buildField();
+        GameFactory gameFactory = new GameFactory();
+        Gamefield field = gameFactory.buildField();
 
         assertNotNull(field.getCell(1, 3).getUnit(IronBlock.class));
     }
 
     @Test
     void buildField_placesLavaToCorrectCells() {
-        Maze maze = new Maze();
-        Gamefield field = maze.buildField();
+        GameFactory gameFactory = new GameFactory();
+        Gamefield field = gameFactory.buildField();
 
         assertNotNull(field.getCell(2, 1).getUnit(Lava.class));
     }
 
     @Test
     void buildField_placesWaterToCorrectCells() {
-        Maze maze = new Maze();
-        Gamefield field = maze.buildField();
+        GameFactory gameFactory = new GameFactory();
+        Gamefield field = gameFactory.buildField();
 
         assertNotNull(field.getCell(2, 2).getUnit(Water.class));
     }
 
     @Test
     void buildField_emptyCellsRemainEmpty() {
-        Maze maze = new Maze();
-        Gamefield field = maze.buildField();
+        GameFactory gameFactory = new GameFactory();
+        Gamefield field = gameFactory.buildField();
 
         Cell emptyCell = field.getCell(3, 4);
 
@@ -93,8 +93,8 @@ public class MazeTest {
 
     @Test
     void buildField_doesNotMixUpUnitTypes() {
-        Maze maze = new Maze();
-        Gamefield field = maze.buildField();
+        GameFactory gameFactory = new GameFactory();
+        Gamefield field = gameFactory.buildField();
 
         Cell lavaCell = field.getCell(2, 1);
         Cell wallCell = field.getCell(0, 0);
