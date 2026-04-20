@@ -32,10 +32,10 @@ public class CellTest {
         Gamefield field = new Gamefield(4,4);
         Cell cell = field.getCell(0,0);
 
-        Water r = new Water();
+        Exit exit = new Exit();
         Player p = new Player();
 
-        cell.putUnit(r);
+        cell.putUnit(exit);
         cell.putUnit(p);
 
         assertEquals(2, cell.getUnits(Unit.class).size());
