@@ -7,17 +7,6 @@ import Model.units.impassable.Solid;
 
 public class Player extends Unit {
 
-    private boolean _isAlive = true;
-
-    public boolean isAlive() {
-        return _isAlive;
-    }
-
-    public void kill() {
-        _isAlive = false;
-        deactivate();
-    }
-
     @Override
     public boolean canBelongTo(Cell cell) {
         return cell != null && cell.getUnit(Solid.class) == null;

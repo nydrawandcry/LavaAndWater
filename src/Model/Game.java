@@ -57,7 +57,7 @@ public class Game {
 
     private void updateGameState() {
         if (isPlayerInLava()) {
-            _player.kill();
+            _player.deactivate();
             _isOver = true;
             _isWon = false;
             return;

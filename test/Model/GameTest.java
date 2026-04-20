@@ -85,7 +85,7 @@ public class GameTest {
 
         assertTrue(game.isOver());
         assertFalse(game.isWon());
-        assertFalse(game.getPlayer().isAlive());
+        assertFalse(game.getPlayer().isActive());
     }
 
     @Test
