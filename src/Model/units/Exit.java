@@ -1,7 +1,7 @@
 package Model.units;
 
 import Model.gamefield.Cell;
-import Model.units.impassable.Solid;
+import Model.units.solid.Solid;
 
 public class Exit extends Unit {
 

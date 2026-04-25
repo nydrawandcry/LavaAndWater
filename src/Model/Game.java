@@ -4,7 +4,7 @@ import Model.gamefield.Direction;
 import Model.gamefield.Gamefield;
 import Model.services.CollisionDetector;
 import Model.units.Exit;
-import Model.units.Player;
+import Model.units.moving.Player;
 import Model.units.liquids.Lava;
 import Model.units.liquids.Water;
 

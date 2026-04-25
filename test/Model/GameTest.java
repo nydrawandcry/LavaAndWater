@@ -2,15 +2,9 @@ package Model;
 
 import Model.gamefield.Cell;
 import Model.gamefield.Direction;
-import Model.gamefield.Gamefield;
 import Model.services.GameFactory;
-import Model.units.Player;
-import Model.units.liquids.Lava;
+import Model.units.moving.Player;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import static org.junit.Assert.*;
 

@@ -1,8 +1,8 @@
-package Model.units.impassable;
+package Model.units.moving;
 
 import Model.gamefield.Cell;
-import Model.gamefield.Direction;
 import Model.units.Unit;
+import Model.units.solid.Solid;
 
 public class IronBlock extends Unit implements Solid, Pushable {
 

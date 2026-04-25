@@ -2,7 +2,7 @@ package Model.units.liquids;
 
 import Model.gamefield.Cell;
 import Model.gamefield.Gamefield;
-import Model.units.impassable.Wall;
+import Model.units.solid.Wall;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

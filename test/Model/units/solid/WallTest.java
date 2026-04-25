@@ -1,7 +1,6 @@
-package Model.units.impassable;
+package Model.units.solid;
 
 import Model.units.AbstractUnitTest;
-import Model.units.Unit;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertFalse;

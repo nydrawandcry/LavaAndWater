@@ -2,8 +2,8 @@ package Model.services;
 
 import Model.gamefield.Cell;
 import Model.gamefield.Gamefield;
-import Model.units.Player;
-import Model.units.impassable.Wall;
+import Model.units.moving.Player;
+import Model.units.solid.Wall;
 import Model.units.liquids.Lava;
 import Model.units.liquids.Water;
 import org.junit.jupiter.api.BeforeEach;

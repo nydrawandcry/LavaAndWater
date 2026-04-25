@@ -1,11 +1,8 @@
 package Model.services;
 
 import Model.gamefield.Cell;
-import Model.gamefield.Gamefield;
-import Model.units.impassable.Wall;
-import Model.units.liquids.Lava;
+import Model.units.solid.Wall;
 import Model.units.liquids.LiquidSystem;
-import Model.units.liquids.Water;
 
 import java.util.HashSet;
 import java.util.Set;

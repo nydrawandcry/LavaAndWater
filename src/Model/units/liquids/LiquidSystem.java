@@ -1,7 +1,7 @@
 package Model.units.liquids;
 
 import Model.gamefield.Cell;
-import Model.units.impassable.Solid;
+import Model.units.solid.Solid;
 
 import java.util.HashSet;
 import java.util.Set;

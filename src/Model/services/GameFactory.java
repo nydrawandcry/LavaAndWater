@@ -3,9 +3,9 @@ package Model.services;
 import Model.Game;
 import Model.gamefield.Gamefield;
 import Model.units.Exit;
-import Model.units.Player;
-import Model.units.impassable.IronBlock;
-import Model.units.impassable.Wall;
+import Model.units.moving.Player;
+import Model.units.moving.IronBlock;
+import Model.units.solid.Wall;
 import Model.units.liquids.Lava;
 import Model.units.liquids.Water;
 

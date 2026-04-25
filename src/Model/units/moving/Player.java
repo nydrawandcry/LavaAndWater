@@ -1,9 +1,9 @@
-package Model.units;
+package Model.units.moving;
 
 import Model.gamefield.Cell;
 import Model.gamefield.Direction;
-import Model.units.impassable.Pushable;
-import Model.units.impassable.Solid;
+import Model.units.Unit;
+import Model.units.solid.Solid;
 
 public class Player extends Unit {
 

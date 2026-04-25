@@ -1,11 +1,9 @@
 package Model.gamefield;
 
 import Model.units.Exit;
-import Model.units.Player;
-import Model.units.impassable.Wall;
+import Model.units.moving.Player;
+import Model.units.solid.Wall;
 import org.junit.jupiter.api.Test;
-
-import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;

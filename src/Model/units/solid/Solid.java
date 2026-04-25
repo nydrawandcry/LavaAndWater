@@ -1,4 +1,4 @@
-package Model.units.impassable;
+package Model.units.solid;
 
 public interface Solid {
     //Маркерный интерфейс.

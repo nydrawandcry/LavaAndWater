@@ -1,4 +1,4 @@
-package Model.units.impassable;
+package Model.units.moving;
 
 import Model.gamefield.Cell;
 

@@ -2,8 +2,9 @@ package Model.units;
 
 import Model.gamefield.Cell;
 import Model.gamefield.Direction;
-import Model.units.impassable.IronBlock;
-import Model.units.impassable.Wall;
+import Model.units.moving.IronBlock;
+import Model.units.solid.Wall;
+import Model.units.moving.Player;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.*;

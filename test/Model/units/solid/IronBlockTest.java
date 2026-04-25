@@ -1,9 +1,8 @@
-package Model.units.impassable;
+package Model.units.solid;
 
 import Model.gamefield.Cell;
-import Model.gamefield.Direction;
 import Model.units.AbstractUnitTest;
-import Model.units.Unit;
+import Model.units.moving.IronBlock;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.*;

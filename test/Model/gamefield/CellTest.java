@@ -1,13 +1,11 @@
 package Model.gamefield;
 
 import Model.units.Exit;
-import Model.units.Player;
+import Model.units.moving.Player;
 import Model.units.Unit;
-import Model.units.impassable.IronBlock;
-import Model.units.liquids.Water;
+import Model.units.moving.IronBlock;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
