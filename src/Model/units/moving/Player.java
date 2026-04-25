@@ -21,15 +21,8 @@ public class Player extends Unit {
 
         Unit blocking = destination.getUnit(Solid.class);
 
-        if(blocking instanceof Pushable) {
-            Cell next = destination.getNeighbour(dir);
-
-            if(!((Pushable) blocking).canBePushedTo(next)){
-                return false;
-            }
-
-            destination.extractUnit(blocking);
-            next.putUnit(blocking);
+        if(blocking instanceof IronBlock) { //тут все равно был уже instanceof, убрала в целом Pushable (есть ли теперь вообще в нем смысл?)
+            ((IronBlock) blocking).push(dir); //в будущем при неудачной попытке сдвинуть блок будет посылаться событие, что игрок ход не сделал
         } 
         else if(blocking != null){
             return false;
