@@ -3,5 +3,5 @@ package Model.units.moving;
 import Model.gamefield.Cell;
 
 public interface Pushable {
-    boolean canBePushedTo(Cell target);
+    //пока мной было принято решение сделать этот интерфейс маркерным
 }

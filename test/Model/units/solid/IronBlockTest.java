@@ -30,12 +30,12 @@ public class IronBlockTest extends AbstractUnitTest<IronBlock> {
     void canBePushedTo_freeCell_returnsTrue() {
         Cell target = field.getCell(1, 2);
 
-        assertTrue(unit.canBePushedTo(target));
+        assertTrue(unit.canBelongTo(target));
     }
 
     @Test
     void canBePushedTo_null_returnsFalse() {
-        assertFalse(unit.canBePushedTo(null));
+        assertFalse(unit.canBelongTo(null));
     }
 
     @Test
@@ -43,7 +43,7 @@ public class IronBlockTest extends AbstractUnitTest<IronBlock> {
         Cell target = field.getCell(1, 2);
         target.putUnit(new Wall());
 
-        assertFalse(unit.canBePushedTo(target));
+        assertFalse(unit.canBelongTo(target));
     }
 
     @Test
@@ -51,6 +51,6 @@ public class IronBlockTest extends AbstractUnitTest<IronBlock> {
         Cell target = field.getCell(1, 2);
         target.putUnit(new IronBlock());
 
-        assertFalse(unit.canBePushedTo(target));
+        assertFalse(unit.canBelongTo(target));
     }
 }
