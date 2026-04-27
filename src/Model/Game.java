@@ -1,5 +1,6 @@
 package Model;
 
+import Model.events.PlayerActionListener;
 import Model.gamefield.Direction;
 import Model.gamefield.Gamefield;
 import Model.services.CollisionDetector;
@@ -8,7 +9,7 @@ import Model.units.moving.Player;
 import Model.units.liquids.Lava;
 import Model.units.liquids.Water;
 
-public class Game {
+public class Game implements PlayerActionListener {
 
     private boolean _isOver;
     private boolean _isWon;
@@ -26,6 +27,7 @@ public class Game {
 
         _field = field;
         _player = player;
+        _player.addPlayerActionListener(this);
         _lava = lava;
         _water = water;
         _collisionDetector = new CollisionDetector();
@@ -34,20 +36,10 @@ public class Game {
         _isWon = false;
     }
 
-    public void makeTurn(Direction dir) {
-        if (_isOver) {
-            return;
-        }
-
-        boolean moved = _player.moveTo(dir);
-
-        if (!moved) {
-            return;
-        }
-
-        spreadLiquids();
-        _collisionDetector.resolve(_lava, _water);
+    @Override
+    public void playerMoved() {
         updateGameState();
+        spreadLiquids();
     }
 
     private void spreadLiquids() {
@@ -60,12 +52,12 @@ public class Game {
             _player.deactivate();
             _isOver = true;
             _isWon = false;
-            return;
+            return; //тут в будущем будет сообщение о гибели игрока для GUI-классов (для изменения модельки игрока и вывода панели "поражение")
         }
 
         if (isPlayerOnExit()) {
             _isOver = true;
-            _isWon = true;
+            _isWon = true; //тут в будущем будет сообщение о победе для GUI-классов
         }
     }
 
