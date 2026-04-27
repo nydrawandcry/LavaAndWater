@@ -27,7 +27,10 @@ public class Player extends Unit {
         Unit blocking = destination.getUnit(Solid.class);
 
         if(blocking instanceof IronBlock) { //тут все равно был уже instanceof, убрала в целом Pushable (есть ли теперь вообще в нем смысл?)
-            ((IronBlock) blocking).push(dir);
+            boolean pushed = ((IronBlock) blocking).push(dir);
+            if(!pushed) {
+                return false;
+            }
         } 
         else if(blocking != null){
             return false;

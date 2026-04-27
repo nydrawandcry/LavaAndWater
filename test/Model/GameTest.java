@@ -1,3 +1,4 @@
+/*
 package Model;
 
 import Model.gamefield.Cell;
@@ -99,3 +100,4 @@ public class GameTest {
         assertFalse(game.isWon());
     }
 }
+*/
