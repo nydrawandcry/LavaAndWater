@@ -1,12 +1,18 @@
 package Model.services;
 
+import Model.events.LiquidSystemActionListener;
 import Model.gamefield.Cell;
 import Model.units.solid.Wall;
 
-public class CollisionDetector {
+public class CollisionDetector implements LiquidSystemActionListener {
 
-    public void resolve(Cell cell) {
+    private void resolve(Cell cell) {
         cell.setLiquidSystem(null);
         cell.putUnit(new Wall());
+    }
+
+    @Override
+    public void conflictAppeared(Cell cell) {
+        resolve(cell);
     }
 }

@@ -1,14 +1,19 @@
 package Model.units.liquids;
 
+import Model.events.LiquidSystemActionListener;
+import Model.events.PlayerActionListener;
 import Model.gamefield.Cell;
 import Model.units.solid.Solid;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 public abstract class LiquidSystem {
 
     protected final Set<Cell> _cells = new HashSet<>();
+
+    private ArrayList<LiquidSystemActionListener> _listeners = new ArrayList<>();
 
     public boolean contains(Cell cell) {
         return _cells.contains(cell);
@@ -20,12 +25,12 @@ public abstract class LiquidSystem {
         for(Cell c : _cells) {
             for(Cell neighbour : c.getNeighbours().values()) {
                 if(canOccupy(neighbour) && !_cells.contains(neighbour)) {
-                    if(c.getLiquidSystem() != this) {
-                        //событие о том, что конфликтик
+                    if(neighbour.getLiquidSystem() != this) {
+                        fireConflictAppeared(neighbour);
                     }
                     else {
                         next.add(neighbour);
-                        c.setLiquidSystem(this);
+                        neighbour.setLiquidSystem(this);
                     }
                 }
             }
@@ -50,5 +55,23 @@ public abstract class LiquidSystem {
 
     public Set<Cell> getCells() {
         return Set.copyOf(_cells);
+    }
+
+    public void addLiquidSystemActionListener(LiquidSystemActionListener l) {
+        if(l != null && !_listeners.contains(l)){
+            _listeners.add(l);
+        }
+    }
+
+    public void removeLiquidSystemActionListener(LiquidSystemActionListener l) {
+        if(l != null){
+            _listeners.remove(l);
+        }
+    }
+
+    public void fireConflictAppeared(Cell cell) {
+        for(LiquidSystemActionListener l : _listeners) {
+            l.conflictAppeared(cell);
+        }
     }
 }
