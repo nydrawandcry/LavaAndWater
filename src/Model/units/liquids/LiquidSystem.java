@@ -20,7 +20,13 @@ public abstract class LiquidSystem {
         for(Cell c : _cells) {
             for(Cell neighbour : c.getNeighbours().values()) {
                 if(canOccupy(neighbour) && !_cells.contains(neighbour)) {
-                    next.add(neighbour);
+                    if(c.getLiquidSystem() != this) {
+                        //событие о том, что конфликтик
+                    }
+                    else {
+                        next.add(neighbour);
+                        c.setLiquidSystem(this);
+                    }
                 }
             }
         }

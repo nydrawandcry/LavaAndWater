@@ -1,6 +1,7 @@
 package Model.gamefield;
 
 import Model.units.Unit;
+import Model.units.liquids.LiquidSystem;
 
 import java.util.*;
 
@@ -9,6 +10,7 @@ public class Cell {
     private Map<Direction, Cell> _neighbours = new HashMap<>();
     private ArrayList<Unit> _units = new ArrayList<>();
     private Gamefield _field;
+    private LiquidSystem _liquidSystem;
 
     public Cell(Gamefield field){
 
@@ -60,6 +62,14 @@ public class Cell {
 
     public Gamefield getOwner(){
         return _field;
+    }
+
+    public LiquidSystem getLiquidSystem() {
+        return _liquidSystem;
+    }
+
+    public void setLiquidSystem(LiquidSystem liquid) {
+        _liquidSystem = liquid;
     }
 
     public boolean isEmpty(){
