@@ -25,7 +25,7 @@ public abstract class LiquidSystem {
         for(Cell c : _cells) {
             for(Cell neighbour : c.getNeighbours().values()) {
                 if(canOccupy(neighbour) && !_cells.contains(neighbour)) {
-                    if(neighbour.getLiquidSystem() != this) {
+                    if( neighbour.getLiquidSystem() != null && neighbour.getLiquidSystem() != this) {
                         fireConflictAppeared(neighbour);
                     }
                     else {
@@ -50,8 +50,8 @@ public abstract class LiquidSystem {
     public void addSource(Cell cell) {
         if (canOccupy(cell)) {
             _cells.add(cell);
+            cell.setLiquidSystem(this);
         }
-        cell.setLiquidSystem(this);
     }
 
     public Set<Cell> getCells() {
