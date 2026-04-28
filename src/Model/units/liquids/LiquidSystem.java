@@ -51,6 +51,7 @@ public abstract class LiquidSystem {
         if (canOccupy(cell)) {
             _cells.add(cell);
         }
+        cell.setLiquidSystem(this);
     }
 
     public Set<Cell> getCells() {
