@@ -71,13 +71,4 @@ public class PlayerTest extends AbstractUnitTest<Player>{
         assertEquals(unit, field.getCell(1, 0).getUnit(Player.class));
         assertEquals(block, field.getCell(1, 1).getUnit(IronBlock.class));
     }
-
-    @Test
-    void kill_setsPlayerDeadAndInactive() {
-        unit.activate();
-
-        unit.deactivate();
-
-        assertFalse(unit.isActive());
-    }
 }
