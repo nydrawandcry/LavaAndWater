@@ -75,7 +75,7 @@ public class CollisionDetectorTest {
     }
 
     @Test
-    void integration_whenWaterSpreadsIntoLavaCell_detectorCreatesWall() {
+    void integration_whenLiquidsBothLavaAndWaterSpreadIntoLavaCell_detectorCreatesWall() {
         Water water = new Water();
         Lava lava = new Lava();
 
@@ -88,11 +88,12 @@ public class CollisionDetectorTest {
         water.addLiquidSystemActionListener(detector);
 
         water.spread();
+        lava.spread();
 
         assertNull(lavaCell.getLiquidSystem());
         assertNotNull(lavaCell.getUnit(Wall.class));
         assertFalse(water.contains(lavaCell));
-        assertFalse(lava.contains(lavaCell));
+        assertFalse(lava.contains(waterSource));
     }
 
     @Test
