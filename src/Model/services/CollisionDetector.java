@@ -10,6 +10,9 @@ public class CollisionDetector implements LiquidSystemActionListener {
         if(cell.getLiquidSystem() != null){
             cell.getLiquidSystem().remove(cell);
         }
+        else {
+            return;
+        }
         cell.setLiquidSystem(null);
         cell.putUnit(new Wall());
     }

@@ -47,16 +47,6 @@ public class CollisionDetectorTest {
     }
 
     @Test
-    void conflictAppeared_cellWithoutLiquid_createsWallAnyway() {
-        Cell cell = field.getCell(1, 1);
-
-        detector.conflictAppeared(cell);
-
-        assertNull(cell.getLiquidSystem());
-        assertNotNull(cell.getUnit(Wall.class));
-    }
-
-    @Test
     void conflictAppeared_doesNotRemovePlayerFromCell() {
         Cell cell = field.getCell(1, 1);
         Player player = new Player();
@@ -66,17 +56,17 @@ public class CollisionDetectorTest {
         detector.conflictAppeared(cell);
 
         assertSame(player, cell.getUnit(Player.class));
-        assertNotNull(cell.getUnit(Wall.class));
+        assertNull(cell.getUnit(Wall.class));
     }
 
     @Test
-    void conflictAppeared_calledTwice_doesNotCreateSecondWall() {
+    void conflictAppeared_calledTwice_doesNotCreateWallsAtAll() {
         Cell cell = field.getCell(1, 1);
 
         detector.conflictAppeared(cell);
         detector.conflictAppeared(cell);
 
-        assertEquals(1, cell.getUnits(Wall.class).size());
+        assertEquals(0, cell.getUnits(Wall.class).size());
     }
 
     @Test
