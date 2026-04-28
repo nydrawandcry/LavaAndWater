@@ -7,6 +7,9 @@ import Model.units.solid.Wall;
 public class CollisionDetector implements LiquidSystemActionListener {
 
     private void resolve(Cell cell) {
+        if(cell.getLiquidSystem() != null){
+            cell.getLiquidSystem().remove(cell);
+        }
         cell.setLiquidSystem(null);
         cell.putUnit(new Wall());
     }
