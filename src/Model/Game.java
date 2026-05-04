@@ -1,6 +1,7 @@
 package Model;
 
 import Model.events.PlayerActionListener;
+import Model.events.game.GameActionListener;
 import Model.gamefield.Direction;
 import Model.gamefield.Gamefield;
 import Model.services.CollisionDetector;
@@ -8,6 +9,8 @@ import Model.units.Exit;
 import Model.units.moving.Player;
 import Model.units.liquids.Lava;
 import Model.units.liquids.Water;
+
+import java.util.ArrayList;
 
 public class Game implements PlayerActionListener {
 
@@ -19,6 +22,8 @@ public class Game implements PlayerActionListener {
     private final Lava _lava;
     private final Water _water;
     private final CollisionDetector _collisionDetector;
+
+    private ArrayList<GameActionListener> _listeners = new ArrayList<>();
 
     public Game(Gamefield field, Player player, Lava lava, Water water) {
         if (field == null || player == null || lava == null || water == null) {
@@ -59,6 +64,7 @@ public class Game implements PlayerActionListener {
         if (isPlayerOnExit()) {
             _isOver = true;
             _isWon = true; //тут в будущем будет сообщение о победе для GUI-классов
+            fireGameIsOver();
         }
     }
 
@@ -92,5 +98,23 @@ public class Game implements PlayerActionListener {
 
     public boolean isWon() {
         return _isWon;
+    }
+
+    public void addGameActionListener(GameActionListener l) {
+        if(l != null && !_listeners.contains(l)){
+            _listeners.add(l);
+        }
+    }
+
+    public void removeGameActionListener(GameActionListener l) {
+        if(l != null){
+            _listeners.remove(l);
+        }
+    }
+
+    public void fireGameIsOver() {
+        for(GameActionListener l : _listeners) {
+            l.gameIsOver();
+        }
     }
 }

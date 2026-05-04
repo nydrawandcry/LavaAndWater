@@ -1,10 +1,11 @@
 package View.gamefieldView;
 
 import Model.Game;
+import Model.events.game.GameActionListener;
 
 import javax.swing.*;
 
-public class GameFrame extends JFrame {
+public class GameFrame extends JFrame implements GameActionListener {
 
     private Game _game;
     private GamefieldView _fieldView;
@@ -32,5 +33,15 @@ public class GameFrame extends JFrame {
 
         revalidate();
         repaint();
+    }
+
+    @Override
+    public void gameIsOver() {
+        JOptionPane.showMessageDialog(
+                this,
+                "Вы дошли до выхода!",
+                "Победа!!!",
+                JOptionPane.INFORMATION_MESSAGE
+        );
     }
 }
