@@ -1,4 +1,6 @@
 package View.gamefieldView;
 
-public class GamefieldView {
+import javax.swing.*;
+
+public class GamefieldView extends JPanel {
 }

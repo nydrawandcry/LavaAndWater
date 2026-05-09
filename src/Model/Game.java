@@ -113,6 +113,12 @@ public class Game implements PlayerActionListener {
     }
 
     public void fireGameIsOver() {
+        if(_isOver){
+            return;
+        }
+
+        _isOver = true; //добавила изменение поля и проверку чтоб игра все таки заканчивалась
+
         for(GameActionListener l : _listeners) {
             l.gameIsOver();
         }
