@@ -38,4 +38,27 @@ public class GamefieldView extends JPanel {
         revalidate();
         repaint();
     }
+
+    protected Color getActiveColor(){
+        return new Color(73, 50, 70);
+    }
+
+    protected Color getInactiveColor() {
+        return new Color(23, 4, 25);
+    }
+
+    protected void changeColor(Color c){
+        for(CellWidget w : _cells.values()) {
+            w.changeColor(c);
+        }
+    }
+
+    protected void changeColorByActivity(){
+        if(_field != null) {
+            changeColor(getActiveColor());
+        } else {
+            changeColor(getInactiveColor());
+        }
+    }
+
 }

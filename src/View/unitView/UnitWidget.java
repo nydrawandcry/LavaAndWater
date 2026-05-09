@@ -1,4 +1,4 @@
 package View.unitView;
 
-public class UnitWidget {
+public abstract class UnitWidget {
 }
