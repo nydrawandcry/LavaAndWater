@@ -37,7 +37,7 @@ public class GameFrame extends JFrame implements GameActionListener {
         _game = _factory.createGame();
         _game.addGameActionListener(this);
 
-        _fieldView = new GamefieldView();//тут потом думаю будет параметр с передачей игрового поля в конструктор
+        _fieldView = new GamefieldView(_game.getField());
         setLayout(new BorderLayout());
         add(_fieldView, BorderLayout.CENTER);
 
