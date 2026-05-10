@@ -1,5 +1,8 @@
 package Model.gamefield;
 
+import Model.events.cell.CellActionEvent;
+import Model.events.cell.CellActionListener;
+import Model.events.player.PlayerActionListener;
 import Model.units.Unit;
 import Model.units.liquids.LiquidSystem;
 
@@ -11,6 +14,8 @@ public class Cell {
     private ArrayList<Unit> _units = new ArrayList<>();
     private Gamefield _field;
     private LiquidSystem _liquidSystem;
+
+    private ArrayList<CellActionListener> _listeners = new ArrayList<>();
 
     public Cell(Gamefield field){
 
@@ -43,6 +48,7 @@ public class Cell {
         u.setOwner(this);
         u.activate();
 
+        fireUnitPlaced(u);
         return true;
     }
 
@@ -57,6 +63,7 @@ public class Cell {
         u.removeOwner();
         _units.remove(u);
 
+        fireUnitExtracted(u);
         return true;
     }
 
@@ -119,5 +126,35 @@ public class Cell {
     public Cell getNeighbour(Direction dir) {
         return _neighbours.get(dir);
     }
-    
+
+
+    //----------- events -----------//
+
+    public void addCellActionListener(CellActionListener l) {
+        if(l != null && !_listeners.contains(l)){
+            _listeners.add(l);
+        }
+    }
+
+    public void removeCellActionListener(CellActionListener l) {
+        if(l != null){
+            _listeners.remove(l);
+        }
+    }
+
+    public void fireUnitPlaced(Unit u) {
+        CellActionEvent e = new CellActionEvent(this, u);
+
+        for(CellActionListener l : _listeners) {
+            l.unitPlaced(e);
+        }
+    }
+
+    public void fireUnitExtracted(Unit u) {
+        CellActionEvent e = new CellActionEvent(this, u);
+
+        for(CellActionListener l : _listeners) {
+            l.unitExtracted(e);
+        }
+    }
 }

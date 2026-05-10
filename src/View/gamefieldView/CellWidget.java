@@ -1,5 +1,7 @@
 package View.gamefieldView;
 
+import Model.events.cell.CellActionEvent;
+import Model.events.cell.CellActionListener;
 import Model.gamefield.Cell;
 import Model.units.Exit;
 import Model.units.Unit;
@@ -12,7 +14,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 
-public class CellWidget extends JPanel {
+public class CellWidget extends JPanel implements CellActionListener {
 
     public static int CELL_SIZE = 50;
 
@@ -31,7 +33,7 @@ public class CellWidget extends JPanel {
 
     public CellWidget(Cell cell){
         _cell = cell;
-        //подписка на события
+        _cell.addCellActionListener(this);
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(CELL_SIZE, CELL_SIZE));
@@ -167,5 +169,15 @@ public class CellWidget extends JPanel {
     void changeColor(Color c) {
         setBackground(c);
         repaint();
+    }
+
+    @Override
+    public void unitPlaced(CellActionEvent e) {
+        addUnitWidget(e.getUnit());
+    }
+
+    @Override
+    public void unitExtracted(CellActionEvent e) {
+        removeUnitWidget(e.getUnit());
     }
 }
