@@ -1,8 +1,7 @@
 package Model;
 
-import Model.events.PlayerActionListener;
+import Model.events.player.PlayerActionListener;
 import Model.events.game.GameActionListener;
-import Model.gamefield.Direction;
 import Model.gamefield.Gamefield;
 import Model.services.CollisionDetector;
 import Model.units.Exit;

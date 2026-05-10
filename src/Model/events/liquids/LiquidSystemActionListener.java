@@ -1,4 +1,4 @@
-package Model.events;
+package Model.events.liquids;
 
 import Model.gamefield.Cell;
 

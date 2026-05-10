@@ -1,4 +1,4 @@
-package Model.events;
+package Model.events.player;
 
 import java.util.EventListener;
 

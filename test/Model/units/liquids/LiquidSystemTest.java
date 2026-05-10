@@ -1,6 +1,6 @@
 package Model.units.liquids;
 
-import Model.events.LiquidSystemActionListener;
+import Model.events.liquids.LiquidSystemActionListener;
 import Model.gamefield.Cell;
 import Model.gamefield.Gamefield;
 import Model.units.solid.Wall;

@@ -1,6 +1,6 @@
 package Model.units.moving;
 
-import Model.events.PlayerActionListener;
+import Model.events.player.PlayerActionListener;
 import Model.gamefield.Cell;
 import Model.gamefield.Direction;
 import Model.units.Unit;
