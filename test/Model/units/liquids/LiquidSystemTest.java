@@ -1,6 +1,6 @@
 package Model.units.liquids;
 
-import Model.events.liquids.LiquidSystemActionListener;
+import Model.events.liquids.LiquidSystemCollisionListener;
 import Model.gamefield.Cell;
 import Model.gamefield.Gamefield;
 import Model.units.solid.Wall;
@@ -229,7 +229,7 @@ public abstract class LiquidSystemTest<T extends LiquidSystem> {
         return new Water();
     }
 
-    private static class RecordingLiquidListener implements LiquidSystemActionListener {
+    private static class RecordingLiquidListener implements LiquidSystemCollisionListener {
         private final ArrayList<Cell> conflicts = new ArrayList<>();
 
         @Override

@@ -1,10 +1,10 @@
 package Model.services;
 
-import Model.events.liquids.LiquidSystemActionListener;
+import Model.events.liquids.LiquidSystemCollisionListener;
 import Model.gamefield.Cell;
 import Model.units.solid.Wall;
 
-public class CollisionDetector implements LiquidSystemActionListener {
+public class CollisionDetector implements LiquidSystemCollisionListener {
 
     private void resolve(Cell cell) {
         if(cell.getLiquidSystem() != null){

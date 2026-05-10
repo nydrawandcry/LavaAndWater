@@ -1,6 +1,6 @@
 package Model.units.liquids;
 
-import Model.events.liquids.LiquidSystemActionListener;
+import Model.events.liquids.LiquidSystemCollisionListener;
 import Model.gamefield.Cell;
 import Model.units.solid.Solid;
 
@@ -12,7 +12,7 @@ public abstract class LiquidSystem {
 
     protected final Set<Cell> _cells = new HashSet<>();
 
-    private ArrayList<LiquidSystemActionListener> _listeners = new ArrayList<>();
+    private ArrayList<LiquidSystemCollisionListener> _listeners = new ArrayList<>();
 
     public boolean contains(Cell cell) {
         return _cells.contains(cell);
@@ -57,20 +57,20 @@ public abstract class LiquidSystem {
         return Set.copyOf(_cells);
     }
 
-    public void addLiquidSystemActionListener(LiquidSystemActionListener l) {
+    public void addLiquidSystemActionListener(LiquidSystemCollisionListener l) {
         if(l != null && !_listeners.contains(l)){
             _listeners.add(l);
         }
     }
 
-    public void removeLiquidSystemActionListener(LiquidSystemActionListener l) {
+    public void removeLiquidSystemActionListener(LiquidSystemCollisionListener l) {
         if(l != null){
             _listeners.remove(l);
         }
     }
 
     public void fireConflictAppeared(Cell cell) {
-        for(LiquidSystemActionListener l : _listeners) {
+        for(LiquidSystemCollisionListener l : _listeners) {
             l.conflictAppeared(cell);
         }
     }
