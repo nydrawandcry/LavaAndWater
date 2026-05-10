@@ -1,6 +1,6 @@
 package Model.units.liquids;
 
-import Model.events.liquids.LiquidSystemActionListener;
+import Model.events.liquids.LiquidSystemSpreadListener;
 import Model.events.liquids.LiquidSystemCollisionListener;
 import Model.gamefield.Cell;
 import Model.units.solid.Solid;
@@ -14,7 +14,7 @@ public abstract class LiquidSystem {
     protected final Set<Cell> _cells = new HashSet<>();
 
     private ArrayList<LiquidSystemCollisionListener> _listeners = new ArrayList<>();
-    private ArrayList<LiquidSystemActionListener> _spreadListeners = new ArrayList<>();
+    private ArrayList<LiquidSystemSpreadListener> _spreadListeners = new ArrayList<>();
 
     public boolean contains(Cell cell) {
         return _cells.contains(cell);
@@ -47,6 +47,7 @@ public abstract class LiquidSystem {
 
     public void remove(Cell cell) {
         _cells.remove(cell);
+        cell.setLiquidSystem(null);
     }
 
     public void addSource(Cell cell) {
@@ -78,20 +79,20 @@ public abstract class LiquidSystem {
         }
     }
 
-    public void addLiquidSystemActionListener(LiquidSystemActionListener l) {
+    public void addLiquidSystemSpreadListener(LiquidSystemSpreadListener l) {
         if(l != null && !_spreadListeners.contains(l)){
             _spreadListeners.add(l);
         }
     }
 
-    public void removeLiquidSystemActionListener(LiquidSystemActionListener l) {
+    public void removeLiquidSystemSpreadListener(LiquidSystemSpreadListener l) {
         if(l != null){
             _spreadListeners.remove(l);
         }
     }
 
     public void fireLiquidSpread() {
-        for(LiquidSystemActionListener l : _spreadListeners) {
+        for(LiquidSystemSpreadListener l : _spreadListeners) {
             l.liquidSpread();
         }
     }

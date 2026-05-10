@@ -2,7 +2,8 @@ package Model.gamefield;
 
 import Model.events.cell.CellActionEvent;
 import Model.events.cell.CellActionListener;
-import Model.events.player.PlayerActionListener;
+import Model.events.liquids.LiquidAppearanceInCellEvent;
+import Model.events.liquids.LiquidAppearanceInCellListener;
 import Model.units.Unit;
 import Model.units.liquids.LiquidSystem;
 
@@ -16,6 +17,7 @@ public class Cell {
     private LiquidSystem _liquidSystem;
 
     private ArrayList<CellActionListener> _listeners = new ArrayList<>();
+    private ArrayList<LiquidAppearanceInCellListener> _liquidListeners = new ArrayList<>();
 
     public Cell(Gamefield field){
 
@@ -76,7 +78,14 @@ public class Cell {
     }
 
     public void setLiquidSystem(LiquidSystem liquid) {
+        LiquidSystem old = _liquidSystem;
         _liquidSystem = liquid;
+
+        if(old == null && liquid != null) {
+            fireLiquidAdded(liquid);
+        } else if(old != null && liquid == null) {
+            fireLiquidRemoved(old);
+        }
     }
 
     public boolean isEmpty(){
@@ -139,6 +148,32 @@ public class Cell {
     public void removeCellActionListener(CellActionListener l) {
         if(l != null){
             _listeners.remove(l);
+        }
+    }
+
+    public void addLiquidAppearanceInCellListener(LiquidAppearanceInCellListener l) {
+        if(l != null && !_liquidListeners.contains(l)) {
+            _liquidListeners.add(l);
+        }
+    }
+
+    public void removeLiquidAppearanceInCellListener(LiquidAppearanceInCellListener l) {
+        if(l != null) {
+            _liquidListeners.remove(l);
+        }
+    }
+
+    private void fireLiquidAdded(LiquidSystem liquid) {
+        LiquidAppearanceInCellEvent e = new LiquidAppearanceInCellEvent(this, this, liquid);
+        for(LiquidAppearanceInCellListener l : _liquidListeners) {
+            l.liquidAdded(e);
+        }
+    }
+
+    private void fireLiquidRemoved(LiquidSystem liquid) {
+        LiquidAppearanceInCellEvent e = new LiquidAppearanceInCellEvent(this, this, liquid);
+        for(LiquidAppearanceInCellListener l : _liquidListeners) {
+            l.liquidRemoved(e);
         }
     }
 

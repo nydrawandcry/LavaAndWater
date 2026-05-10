@@ -1,12 +1,12 @@
 package View.liquidSystemView;
 
-import Model.events.liquids.LiquidSystemActionListener;
+import Model.events.liquids.LiquidSystemSpreadListener;
 import Model.units.liquids.LiquidSystem;
 
 import javax.swing.*;
 import java.awt.*;
 
-public abstract class LiquidSystemWidget extends JComponent implements LiquidSystemActionListener {
+public abstract class LiquidSystemWidget extends JComponent implements LiquidSystemSpreadListener {
 
     private static int SIZE = 50;
 
@@ -17,7 +17,7 @@ public abstract class LiquidSystemWidget extends JComponent implements LiquidSys
         _liquidSystem = liquidSystem;
         _color = color;
 
-        _liquidSystem.addLiquidSystemActionListener(this);
+        _liquidSystem.addLiquidSystemSpreadListener(this);
         setOpaque(false);
         setPreferredSize(new Dimension(SIZE, SIZE));
     }

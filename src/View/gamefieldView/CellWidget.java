@@ -2,19 +2,26 @@ package View.gamefieldView;
 
 import Model.events.cell.CellActionEvent;
 import Model.events.cell.CellActionListener;
+import Model.events.liquids.LiquidAppearanceInCellEvent;
+import Model.events.liquids.LiquidAppearanceInCellListener;
 import Model.gamefield.Cell;
 import Model.units.Exit;
 import Model.units.Unit;
+import Model.units.liquids.Lava;
+import Model.units.liquids.LiquidSystem;
+import Model.units.liquids.Water;
 import Model.units.moving.IronBlock;
 import Model.units.moving.Player;
 import Model.units.solid.Wall;
+import View.liquidSystemView.LavaWidget;
+import View.liquidSystemView.WaterWidget;
 import View.unitView.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 
-public class CellWidget extends JPanel implements CellActionListener {
+public class CellWidget extends JPanel implements CellActionListener, LiquidAppearanceInCellListener {
 
     public static int CELL_SIZE = 50;
 
@@ -29,51 +36,82 @@ public class CellWidget extends JPanel implements CellActionListener {
 
     private HashMap<Unit, UnitWidget> _unitWidgets = new HashMap<>();
 
-    private JPanel _liquidLayer; //todo затравка на жидкости (попозже сделаю их)
+    private JPanel _liquidLayer;
 
     public CellWidget(Cell cell){
         _cell = cell;
         _cell.addCellActionListener(this);
+        _cell.addLiquidAppearanceInCellListener(this);
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(CELL_SIZE, CELL_SIZE));
         setOpaque(true);
+        setBackground(new Color(191,191,191));
 
         //инициализация юнитами
         initializeUnitLayers();
+        //также тут нужна инициализация жидкостями отдельно потому что это не юниты
+        updateLiquidDisplay();
+        addUnitWidgets(); //пускай будет тут
+
     }
 
     private void initializeUnitLayers() {
         //первоначальная инициализация pane (порождение и установка размера)
         _layeredPane = new JLayeredPane();
         _layeredPane.setPreferredSize(new Dimension(CELL_SIZE, CELL_SIZE));
+        _layeredPane.setLayout(null);
 
-        _playerLayer = new JPanel();
-        _playerLayer.setLayout(null); //по идее игрок у нас просто в клетке стоит?(я пока не разобралась с лэйаутами, попозже разберусь и настрою нормально)
-        _playerLayer.setOpaque(false); //че это я тоже не ебу
-        _playerLayer.setBounds(2,2, CELL_SIZE, CELL_SIZE);
-
-        _wallLayer = new JPanel();
-        _wallLayer.setLayout(null);
-        _wallLayer.setOpaque(false);
-        _wallLayer.setBounds(2,2, CELL_SIZE, CELL_SIZE);
-
-        _ironBlockLayer = new JPanel();
-        _ironBlockLayer.setLayout(null);
-        _ironBlockLayer.setOpaque(false);
-        _ironBlockLayer.setBounds(2,2, CELL_SIZE, CELL_SIZE);
+        _liquidLayer = new JPanel();
+        _liquidLayer.setLayout(null);
+        _liquidLayer.setOpaque(false);
+        _liquidLayer.setBounds(0,0, CELL_SIZE, CELL_SIZE);
 
         _exitLayer = new JPanel();
         _exitLayer.setLayout(null);
         _exitLayer.setOpaque(false);
-        _exitLayer.setBounds(2,2, CELL_SIZE, CELL_SIZE);
+        _exitLayer.setBounds(0,0, CELL_SIZE, CELL_SIZE);
 
-        _layeredPane.add(_playerLayer, JLayeredPane.DEFAULT_LAYER);
-        _layeredPane.add(_wallLayer, JLayeredPane.DEFAULT_LAYER);
-        _layeredPane.add(_ironBlockLayer, JLayeredPane.DEFAULT_LAYER);
-        _layeredPane.add(_exitLayer, JLayeredPane.DEFAULT_LAYER); //todo я пересмотрю такую архитектуру, дублирование кода.надо переделать
+        _wallLayer = new JPanel();
+        _wallLayer.setLayout(null);
+        _wallLayer.setOpaque(false);
+        _wallLayer.setBounds(0,0, CELL_SIZE, CELL_SIZE);
+
+        _ironBlockLayer = new JPanel();
+        _ironBlockLayer.setLayout(null);
+        _ironBlockLayer.setOpaque(false);
+        _ironBlockLayer.setBounds(0,0, CELL_SIZE, CELL_SIZE);
+
+        _playerLayer = new JPanel();
+        _playerLayer.setLayout(null);
+        _playerLayer.setOpaque(false);
+        _playerLayer.setBounds(0,0, CELL_SIZE, CELL_SIZE);
+
+        _layeredPane.add(_liquidLayer, JLayeredPane.DEFAULT_LAYER);
+        _layeredPane.add(_exitLayer, JLayeredPane.DEFAULT_LAYER + 50);
+        _layeredPane.add(_wallLayer, JLayeredPane.DEFAULT_LAYER + 100);
+        _layeredPane.add(_ironBlockLayer, JLayeredPane.DEFAULT_LAYER + 150);
+        _layeredPane.add(_playerLayer, JLayeredPane.DEFAULT_LAYER + 200);
 
         add(_layeredPane, BorderLayout.CENTER);
+    }
+
+    private void updateLiquidDisplay() {
+        _liquidLayer.removeAll();
+
+        LiquidSystem liquid = _cell.getLiquidSystem();
+        if (liquid instanceof Lava) {
+            LavaWidget lavaWidget = new LavaWidget(liquid, new Color(255, 100, 0));
+            lavaWidget.setBounds(0, 0, CELL_SIZE, CELL_SIZE);
+            _liquidLayer.add(lavaWidget);
+        } else if (liquid instanceof Water) {
+            WaterWidget waterWidget = new WaterWidget(liquid, new Color(50, 100, 255));
+            waterWidget.setBounds(0, 0, CELL_SIZE, CELL_SIZE);
+            _liquidLayer.add(waterWidget);
+        }
+
+        _liquidLayer.revalidate();
+        _liquidLayer.repaint();
     }
 
     public void addUnitWidgets() {
@@ -83,22 +121,18 @@ public class CellWidget extends JPanel implements CellActionListener {
         _exitLayer.removeAll();
         _unitWidgets.clear();
 
-        //todo пример установки стен в клетки (я не хочу делать цикл под каждый тип юнита, это же пиздец не масштабируемо)
-        for(Unit u : _cell.getUnits(Wall.class)) { //todo и че такие циклы ставить на каждый юнит если их много по полю? надо унифицировать
-            Wall w = (Wall) u;
-            WallWidget widget = new WallWidget(w, new Color(76,76,76));
-            widget.setBounds(1,1, CELL_SIZE,CELL_SIZE);
-            _wallLayer.add(widget);
-            _unitWidgets.put(w, widget);
+        for (Unit u : _cell.getUnits(Wall.class)) {
+            addUnitWidget(u);
         }
-
-        //тут должны быть еще циклы на добавление остальных юнитов но мне впадлу
-        //также надо учесть, что не все юниты могут быть на одной клетке разом.
-        //например, на одной клетке из юнитов могут располагаться только player+exit. остальные не могут.
-        //если Unit у нас имплементирует интерфейс solid, то он автоматом не может вместе с другими юнитами на клетке находиться.
-        //я хочу унифицировать добавление юнитов + проводить валидацию объектов. однако ответственна ли UI за эту валидацию? все уже решено в модели?
-        //разберусь
-
+        for (Unit u : _cell.getUnits(IronBlock.class)) {
+            addUnitWidget(u);
+        }
+        for (Unit u : _cell.getUnits(Exit.class)) {
+            addUnitWidget(u);
+        }
+        for (Unit u : _cell.getUnits(Player.class)) {
+            addUnitWidget(u);
+        }
         revalidate();
         repaint();
     }
@@ -108,45 +142,31 @@ public class CellWidget extends JPanel implements CellActionListener {
             return;
         }
 
-        UnitWidget w = null;
+        UnitWidget widget = null;
+        JPanel targetLayer = null;
 
-        if(u instanceof Player player) {
-            PlayerWidget playerWidget = new PlayerWidget(player, new Color(242,209,180));
-            //тут надо подписку на события для контроля плеера клавой (чтоб пользователь управлял короче)
-            playerWidget.setBounds(1,1, CELL_SIZE, CELL_SIZE);
-            w = playerWidget;
-
-            _playerLayer.add(w);
+        if (u instanceof Player player) {
+            PlayerWidget pw = new PlayerWidget(player, new Color(242, 209, 180));
+            widget = pw;
+            targetLayer = _playerLayer;
+        } else if (u instanceof Wall wall) {
+            WallWidget ww = new WallWidget(wall, new Color(76, 76, 76));
+            widget = ww;
+            targetLayer = _wallLayer;
+        } else if (u instanceof IronBlock ironBlock) {
+            IronBlockWidget ibw = new IronBlockWidget(ironBlock, new Color(150, 150, 150));
+            widget = ibw;
+            targetLayer = _ironBlockLayer;
+        } else if (u instanceof Exit exit) {
+            ExitWidget ew = new ExitWidget(exit, new Color(185, 128, 229));
+            widget = ew;
+            targetLayer = _exitLayer;
         }
 
-        if(u instanceof Wall wall) {
-            WallWidget wallWidget = new WallWidget(wall, new Color(76,76,76));
-            wallWidget.setBounds(1,1, CELL_SIZE, CELL_SIZE);
-
-            w = wallWidget;
-            _wallLayer.add(w);
-        }
-
-        if(u instanceof IronBlock ironBlock) {
-            IronBlockWidget ironBlockWidget = new IronBlockWidget(ironBlock, new Color((Color.GRAY).getRGB()));
-            ironBlockWidget.setBounds(1,1, CELL_SIZE, CELL_SIZE);
-
-            w = ironBlockWidget;
-            _ironBlockLayer.add(w);
-        }
-
-        if(u instanceof Exit exit) { //это пиздец
-            ExitWidget exitWidget = new ExitWidget(exit, new Color(185,128, 229));
-            exitWidget.setBounds(1,1,CELL_SIZE, CELL_SIZE);
-
-            w = exitWidget;
-            _exitLayer.add(w);
-        }
-
-        if(w != null) {
-            _unitWidgets.put(u, w);
-            revalidate();
-            repaint();
+        if (widget != null && targetLayer != null) {
+            widget.setBounds(2, 2, CELL_SIZE - 4, CELL_SIZE - 4);
+            targetLayer.add(widget);
+            _unitWidgets.put(u, widget);
         }
     }
 
@@ -180,4 +200,15 @@ public class CellWidget extends JPanel implements CellActionListener {
     public void unitExtracted(CellActionEvent e) {
         removeUnitWidget(e.getUnit());
     }
+
+    @Override
+    public void liquidAdded(LiquidAppearanceInCellEvent e) {
+        updateLiquidDisplay();
+    }
+
+    @Override
+    public void liquidRemoved(LiquidAppearanceInCellEvent e) {
+        updateLiquidDisplay();
+    }
+
 }

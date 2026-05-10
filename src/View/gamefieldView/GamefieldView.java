@@ -39,7 +39,6 @@ public class GamefieldView extends JPanel {
             _cells.put(c, w);
 
             add(w);
-            w.addUnitWidgets();
         }
 
         revalidate();
