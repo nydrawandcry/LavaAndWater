@@ -1,10 +1,11 @@
 package View.unitView;
 
+import Model.events.units.IronBlockActionListener;
 import Model.units.moving.IronBlock;
 
 import java.awt.*;
 
-public class IronBlockWidget extends UnitWidget {
+public class IronBlockWidget extends UnitWidget implements IronBlockActionListener {
 
     private static int SIZE = 50;
 
@@ -41,5 +42,10 @@ public class IronBlockWidget extends UnitWidget {
     protected void changeColor(Color c) {
         _color = c;
         refresh();
+    }
+
+    @Override
+    public void ironBlockMoved() {
+        //анимация как он двигается
     }
 }
