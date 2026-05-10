@@ -1,9 +1,16 @@
 package View.gamefieldView;
 
 import Model.gamefield.Cell;
+import Model.units.Exit;
+import Model.units.Unit;
+import Model.units.moving.IronBlock;
+import Model.units.moving.Player;
+import Model.units.solid.Wall;
+import View.unitView.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 
 public class CellWidget extends JPanel {
 
@@ -17,6 +24,8 @@ public class CellWidget extends JPanel {
     private JPanel _wallLayer;
     private JPanel _exitLayer;
     private JPanel _ironBlockLayer;
+
+    private HashMap<Unit, UnitWidget> _unitWidgets = new HashMap<>();
 
     private JPanel _liquidLayer; //todo затравка на жидкости (попозже сделаю их)
 
@@ -63,6 +72,69 @@ public class CellWidget extends JPanel {
         _layeredPane.add(_exitLayer, JLayeredPane.DEFAULT_LAYER); //todo я пересмотрю такую архитектуру, дублирование кода.надо переделать
 
         add(_layeredPane, BorderLayout.CENTER);
+    }
+
+    public void addUnitWidget(Unit u) {
+        if(_unitWidgets.containsKey(u)){
+            return;
+        }
+
+        UnitWidget w = null;
+
+        if(u instanceof Player player) {
+            PlayerWidget playerWidget = new PlayerWidget(player);
+            //тут надо подписку на события для контроля плеера клавой (чтоб пользователь управлял короче)
+            playerWidget.setBounds(1,1, CELL_SIZE, CELL_SIZE);
+            w = playerWidget;
+
+            _playerLayer.add(w);
+        }
+
+        if(u instanceof Wall wall) {
+            WallWidget wallWidget = new WallWidget(wall);
+            wallWidget.setBounds(1,1, CELL_SIZE, CELL_SIZE);
+
+            w = wallWidget;
+            _wallLayer.add(w);
+        }
+
+        if(u instanceof IronBlock ironBlock) {
+            IronBlockWidget ironBlockWidget = new IronBlockWidget(ironBlock);
+            ironBlockWidget.setBounds(1,1, CELL_SIZE, CELL_SIZE);
+
+            w = ironBlockWidget;
+            _ironBlockLayer.add(w);
+        }
+
+        if(u instanceof Exit exit) {
+            ExitWidget exitWidget = new ExitWidget(exit);
+            exitWidget.setBounds(1,1,CELL_SIZE, CELL_SIZE);
+
+            w = exitWidget;
+            _exitLayer.add(w);
+        }
+
+        if(w != null) {
+            _unitWidgets.put(u, w);
+            revalidate();
+            repaint();
+        }
+    }
+
+    public void removeUnitWidget(Unit u) {
+        UnitWidget widget = _unitWidgets.remove(u);
+
+        if(widget == null) {
+            return;
+        }
+
+        _playerLayer.remove(widget);
+        _wallLayer.remove(widget);
+        _ironBlockLayer.remove(widget);
+        _exitLayer.remove(widget);
+
+        revalidate();
+        repaint();
     }
 
     void changeColor(Color c) {
