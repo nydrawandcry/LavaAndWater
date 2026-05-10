@@ -109,7 +109,7 @@ public class CellWidget extends JPanel {
         UnitWidget w = null;
 
         if(u instanceof Player player) {
-            PlayerWidget playerWidget = new PlayerWidget(player);
+            PlayerWidget playerWidget = new PlayerWidget(player, new Color(242,209,180));
             //тут надо подписку на события для контроля плеера клавой (чтоб пользователь управлял короче)
             playerWidget.setBounds(1,1, CELL_SIZE, CELL_SIZE);
             w = playerWidget;
