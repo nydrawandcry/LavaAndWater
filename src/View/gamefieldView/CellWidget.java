@@ -74,6 +74,33 @@ public class CellWidget extends JPanel {
         add(_layeredPane, BorderLayout.CENTER);
     }
 
+    public void addUnitWidgets() {
+        _playerLayer.removeAll();
+        _wallLayer.removeAll();
+        _ironBlockLayer.removeAll();
+        _exitLayer.removeAll();
+        _unitWidgets.clear();
+
+        //todo пример установки стен в клетки (я не хочу делать цикл под каждый тип юнита, это же пиздец не масштабируемо)
+        for(Unit u : _cell.getUnits(Wall.class)) { //todo и че такие циклы ставить на каждый юнит если их много по полю? надо унифицировать
+            Wall w = (Wall) u;
+            WallWidget widget = new WallWidget(w);
+            widget.setBounds(1,1, CELL_SIZE,CELL_SIZE);
+            _wallLayer.add(widget);
+            _unitWidgets.put(w, widget);
+        }
+
+        //тут должны быть еще циклы на добавление остальных юнитов но мне впадлу
+        //также надо учесть, что не все юниты могут быть на одной клетке разом.
+        //например, на одной клетке из юнитов могут располагаться только player+exit. остальные не могут.
+        //если Unit у нас имплементирует интерфейс solid, то он автоматом не может вместе с другими юнитами на клетке находиться.
+        //я хочу унифицировать добавление юнитов + проводить валидацию объектов. однако ответственна ли UI за эту валидацию? все уже решено в модели?
+        //разберусь
+
+        revalidate();
+        repaint();
+    }
+
     public void addUnitWidget(Unit u) {
         if(_unitWidgets.containsKey(u)){
             return;
@@ -106,7 +133,7 @@ public class CellWidget extends JPanel {
             _ironBlockLayer.add(w);
         }
 
-        if(u instanceof Exit exit) {
+        if(u instanceof Exit exit) { //это пиздец
             ExitWidget exitWidget = new ExitWidget(exit);
             exitWidget.setBounds(1,1,CELL_SIZE, CELL_SIZE);
 
