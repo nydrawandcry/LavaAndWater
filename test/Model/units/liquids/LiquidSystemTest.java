@@ -143,7 +143,7 @@ public abstract class LiquidSystemTest<T extends LiquidSystem> {
     @Test
     void spread_doesNotNotifyConflictForEmptyCells() {
         RecordingLiquidListener listener = new RecordingLiquidListener();
-        liquid.addLiquidSystemActionListener(listener);
+        liquid.addLiquidSystemCollisionListener(listener);
 
         liquid.addSource(field.getCell(1, 1));
 
@@ -162,7 +162,7 @@ public abstract class LiquidSystemTest<T extends LiquidSystem> {
         other.addSource(conflictCell);
 
         RecordingLiquidListener listener = new RecordingLiquidListener();
-        liquid.addLiquidSystemActionListener(listener);
+        liquid.addLiquidSystemCollisionListener(listener);
 
         liquid.spread();
 
@@ -181,7 +181,7 @@ public abstract class LiquidSystemTest<T extends LiquidSystem> {
         liquid.addSource(source);
         other.addSource(conflictCell);
 
-        liquid.addLiquidSystemActionListener(cell -> {
+        liquid.addLiquidSystemCollisionListener(cell -> {
             cell.setLiquidSystem(null);
             cell.putUnit(new Wall());
         });

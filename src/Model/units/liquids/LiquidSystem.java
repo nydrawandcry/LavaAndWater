@@ -1,5 +1,6 @@
 package Model.units.liquids;
 
+import Model.events.liquids.LiquidSystemActionListener;
 import Model.events.liquids.LiquidSystemCollisionListener;
 import Model.gamefield.Cell;
 import Model.units.solid.Solid;
@@ -13,6 +14,7 @@ public abstract class LiquidSystem {
     protected final Set<Cell> _cells = new HashSet<>();
 
     private ArrayList<LiquidSystemCollisionListener> _listeners = new ArrayList<>();
+    private ArrayList<LiquidSystemActionListener> _spreadListeners = new ArrayList<>();
 
     public boolean contains(Cell cell) {
         return _cells.contains(cell);
@@ -30,6 +32,7 @@ public abstract class LiquidSystem {
                     else {
                         next.add(neighbour);
                         neighbour.setLiquidSystem(this);
+                        fireLiquidSpread();
                     }
                 }
             }
@@ -57,13 +60,13 @@ public abstract class LiquidSystem {
         return Set.copyOf(_cells);
     }
 
-    public void addLiquidSystemActionListener(LiquidSystemCollisionListener l) {
+    public void addLiquidSystemCollisionListener(LiquidSystemCollisionListener l) {
         if(l != null && !_listeners.contains(l)){
             _listeners.add(l);
         }
     }
 
-    public void removeLiquidSystemActionListener(LiquidSystemCollisionListener l) {
+    public void removeLiquidSystemCollisionListener(LiquidSystemCollisionListener l) {
         if(l != null){
             _listeners.remove(l);
         }
@@ -72,6 +75,24 @@ public abstract class LiquidSystem {
     public void fireConflictAppeared(Cell cell) {
         for(LiquidSystemCollisionListener l : _listeners) {
             l.conflictAppeared(cell);
+        }
+    }
+
+    public void addLiquidSystemActionListener(LiquidSystemActionListener l) {
+        if(l != null && !_spreadListeners.contains(l)){
+            _spreadListeners.add(l);
+        }
+    }
+
+    public void removeLiquidSystemActionListener(LiquidSystemActionListener l) {
+        if(l != null){
+            _spreadListeners.remove(l);
+        }
+    }
+
+    public void fireLiquidSpread() {
+        for(LiquidSystemActionListener l : _spreadListeners) {
+            l.liquidSpread();
         }
     }
 }

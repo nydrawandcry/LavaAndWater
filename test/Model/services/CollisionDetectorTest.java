@@ -85,7 +85,7 @@ public class CollisionDetectorTest {
         water.addSource(waterSource);
         lava.addSource(lavaCell);
 
-        water.addLiquidSystemActionListener(detector);
+        water.addLiquidSystemCollisionListener(detector);
 
         water.spread();
         lava.spread();
@@ -107,7 +107,7 @@ public class CollisionDetectorTest {
         water.addSource(waterSource);
         lava.addSource(lavaCell);
 
-        water.addLiquidSystemActionListener(detector);
+        water.addLiquidSystemCollisionListener(detector);
 
         water.spread();
 
@@ -127,7 +127,7 @@ public class CollisionDetectorTest {
         water.addSource(waterSource);
         lava.addSource(lavaCell);
 
-        water.addLiquidSystemActionListener(detector);
+        water.addLiquidSystemCollisionListener(detector);
 
         water.spread();
 
@@ -162,8 +162,8 @@ public class CollisionDetectorTest {
         water.addSource(waterSource);
         lava.addSource(lavaCell);
 
-        water.addLiquidSystemActionListener(detector);
-        water.removeLiquidSystemActionListener(detector);
+        water.addLiquidSystemCollisionListener(detector);
+        water.removeLiquidSystemCollisionListener(detector);
 
         water.spread();
 

@@ -35,8 +35,8 @@ public class Game implements PlayerActionListener {
         _lava = lava;
         _water = water;
         _collisionDetector = new CollisionDetector();
-        _lava.addLiquidSystemActionListener(_collisionDetector);
-        _water.addLiquidSystemActionListener(_collisionDetector);
+        _lava.addLiquidSystemCollisionListener(_collisionDetector);
+        _water.addLiquidSystemCollisionListener(_collisionDetector);
         _isOver = false;
         _isWon = false;
     }

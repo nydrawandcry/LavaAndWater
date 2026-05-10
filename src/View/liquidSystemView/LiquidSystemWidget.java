@@ -1,11 +1,12 @@
 package View.liquidSystemView;
 
+import Model.events.liquids.LiquidSystemActionListener;
 import Model.units.liquids.LiquidSystem;
 
 import javax.swing.*;
 import java.awt.*;
 
-public abstract class LiquidSystemWidget extends JComponent {
+public abstract class LiquidSystemWidget extends JComponent implements LiquidSystemActionListener {
 
     private static int SIZE = 50;
 
@@ -16,9 +17,16 @@ public abstract class LiquidSystemWidget extends JComponent {
         _liquidSystem = liquidSystem;
         _color = color;
 
+        _liquidSystem.addLiquidSystemActionListener(this);
         setOpaque(false);
         setPreferredSize(new Dimension(SIZE, SIZE));
     }
 
     public abstract Color getColor();
+
+    @Override
+    public void liquidSpread() {
+        //я честно пока не знаю нужно ли это вообще ТУТ. потому что у лавы и воды разные отображения (пускай и одинаково распространяются)
+        //нужно ли им отдельное переопределение? хезе...
+    }
 }
