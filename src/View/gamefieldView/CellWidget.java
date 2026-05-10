@@ -126,7 +126,7 @@ public class CellWidget extends JPanel {
         }
 
         if(u instanceof IronBlock ironBlock) {
-            IronBlockWidget ironBlockWidget = new IronBlockWidget(ironBlock);
+            IronBlockWidget ironBlockWidget = new IronBlockWidget(ironBlock, new Color((Color.GRAY).getRGB()));
             ironBlockWidget.setBounds(1,1, CELL_SIZE, CELL_SIZE);
 
             w = ironBlockWidget;

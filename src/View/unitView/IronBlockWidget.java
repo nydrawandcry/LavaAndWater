@@ -6,28 +6,40 @@ import java.awt.*;
 
 public class IronBlockWidget extends UnitWidget {
 
-    public IronBlockWidget(IronBlock block) {
+    private static int SIZE = 50;
+
+    private Color _color;
+
+    public IronBlockWidget(IronBlock block, Color color) {
         super(block);
-        //четотам еще попозже добавлю
+        //тут подписка на события
+
+        _color = color;
+
+        setOpaque(false);
+        setPreferredSize(new Dimension(SIZE, SIZE));
     }
+
+    //todo потом наверное стоит добавить метод paintComponent для красивой отрисовки блока с округленными углами
 
     @Override
     protected Color getActiveColor() {
-        return null;
+        return Color.GRAY;
     }
 
     @Override
     protected Color getInactiveColor() {
-        return null;
+        return Color.RED;
     }
 
     @Override
     protected void refresh() {
-
+        repaint();
     }
 
     @Override
     protected void changeColor(Color c) {
-
+        _color = c;
+        refresh();
     }
 }
