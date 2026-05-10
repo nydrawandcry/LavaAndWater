@@ -84,7 +84,7 @@ public class CellWidget extends JPanel {
         //todo пример установки стен в клетки (я не хочу делать цикл под каждый тип юнита, это же пиздец не масштабируемо)
         for(Unit u : _cell.getUnits(Wall.class)) { //todo и че такие циклы ставить на каждый юнит если их много по полю? надо унифицировать
             Wall w = (Wall) u;
-            WallWidget widget = new WallWidget(w);
+            WallWidget widget = new WallWidget(w, new Color(76,76,76));
             widget.setBounds(1,1, CELL_SIZE,CELL_SIZE);
             _wallLayer.add(widget);
             _unitWidgets.put(w, widget);
@@ -118,7 +118,7 @@ public class CellWidget extends JPanel {
         }
 
         if(u instanceof Wall wall) {
-            WallWidget wallWidget = new WallWidget(wall);
+            WallWidget wallWidget = new WallWidget(wall, new Color(76,76,76));
             wallWidget.setBounds(1,1, CELL_SIZE, CELL_SIZE);
 
             w = wallWidget;
