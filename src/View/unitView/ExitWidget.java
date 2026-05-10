@@ -6,28 +6,38 @@ import java.awt.*;
 
 public class ExitWidget extends UnitWidget {
 
-    public ExitWidget(Exit exit) {
+    private static int SIZE = 50;
+
+    private Color _color;
+
+    public ExitWidget(Exit exit, Color color) {
         super(exit);
-        //четотам еще попозже добавлю
+
+        _color = color;
+        //паписка на событяя
+
+        setOpaque(false);
+        setPreferredSize(new Dimension(SIZE, SIZE));
     }
     
     @Override
     protected Color getActiveColor() {
-        return null;
+        return new Color(185,128, 229);
     }
 
     @Override
     protected Color getInactiveColor() {
-        return null;
+        return new Color(185,30, 229);
     }
 
     @Override
     protected void refresh() {
-
+        repaint();
     }
 
     @Override
     protected void changeColor(Color c) {
-
+        _color = c;
+        refresh();
     }
 }

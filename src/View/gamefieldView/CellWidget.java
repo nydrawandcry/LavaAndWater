@@ -134,7 +134,7 @@ public class CellWidget extends JPanel {
         }
 
         if(u instanceof Exit exit) { //это пиздец
-            ExitWidget exitWidget = new ExitWidget(exit);
+            ExitWidget exitWidget = new ExitWidget(exit, new Color(185,128, 229));
             exitWidget.setBounds(1,1,CELL_SIZE, CELL_SIZE);
 
             w = exitWidget;
