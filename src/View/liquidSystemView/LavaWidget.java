@@ -13,6 +13,6 @@ public class LavaWidget extends LiquidSystemWidget{
 
     @Override
     public Color getColor() {
-        return null;
+        return new Color(255, 100, 0);
     }
 }

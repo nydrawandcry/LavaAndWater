@@ -22,6 +22,16 @@ public abstract class LiquidSystemWidget extends JComponent implements LiquidSys
         setPreferredSize(new Dimension(SIZE, SIZE));
     }
 
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        g2d.setColor(_color);
+        g2d.fillRect(0, 0, getWidth(), getHeight());
+    }
+
     public abstract Color getColor();
 
     @Override

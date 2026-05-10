@@ -13,6 +13,6 @@ public class WaterWidget extends LiquidSystemWidget{
 
     @Override
     public Color getColor() {
-        return null;
+        return new Color(50, 100, 255);
     }
 }
