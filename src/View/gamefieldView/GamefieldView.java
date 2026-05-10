@@ -34,6 +34,13 @@ public class GamefieldView extends JPanel {
         setPreferredSize(fieldDimension);
 
         //тут должна быть инициализация клетками (ну скорее объявление виджетов для каждой клетки и соответсвенно юнитов в них)
+        for(Cell c : _field) {
+            CellWidget w = new CellWidget(c);
+            _cells.put(c, w);
+
+            add(w);
+            w.addUnitWidgets();
+        }
 
         revalidate();
         repaint();
