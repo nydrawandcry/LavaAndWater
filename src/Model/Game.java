@@ -57,13 +57,13 @@ public class Game implements PlayerActionListener {
             _player.deactivate();
             _isOver = true;
             _isWon = false;
-            return; //тут в будущем будет сообщение о гибели игрока для GUI-классов (для изменения модельки игрока и вывода панели "поражение")
+            return;
         }
 
         if (isPlayerOnExit()) {
             _isOver = true;
-            _isWon = true; //тут в будущем будет сообщение о победе для GUI-классов
-            fireGameIsOver();
+            _isWon = true;
+            fireGameIsOver(); //сообщение о победе для GUI-классов
         }
     }
 
@@ -116,7 +116,7 @@ public class Game implements PlayerActionListener {
             return;
         }
 
-        _isOver = true; //добавила изменение поля и проверку чтоб игра все таки заканчивалась
+        _isOver = true;
 
         for(GameActionListener l : _listeners) {
             l.gameIsOver();

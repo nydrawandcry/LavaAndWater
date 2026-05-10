@@ -1,10 +1,11 @@
 package View.unitView;
 
+import Model.events.player.PlayerActionListener;
 import Model.units.moving.Player;
 
 import java.awt.*;
 
-public class PlayerWidget extends UnitWidget{
+public class PlayerWidget extends UnitWidget implements PlayerActionListener {
 
     private static int SIZE = 50;
 
@@ -39,5 +40,10 @@ public class PlayerWidget extends UnitWidget{
     @Override
     protected void changeColor(Color c) {
         refresh();
+    }
+
+    @Override
+    public void playerMoved() {
+        //тут будет анимация движения игрока
     }
 }
