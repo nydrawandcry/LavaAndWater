@@ -1,17 +1,18 @@
 package View.unitView;
 
+import Model.events.units.UnitActivationListener;
 import Model.units.Unit;
 
 import javax.swing.*;
 import java.awt.*;
 
-public abstract class UnitWidget extends JComponent {
+public abstract class UnitWidget extends JComponent implements UnitActivationListener {
 
     protected Unit _unit;
 
     protected UnitWidget(Unit unit) {
         _unit = unit;
-        //подписка unit на событие
+        _unit.addUnitActivationListener(this);
 
         setOpaque(true);
     }
@@ -32,5 +33,10 @@ public abstract class UnitWidget extends JComponent {
         } else {
             changeColor(getInactiveColor());
         }
+    }
+
+    @Override
+    public void activateChanged() {
+        changeColorByActivity();
     }
 }

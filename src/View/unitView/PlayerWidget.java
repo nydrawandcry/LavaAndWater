@@ -15,6 +15,7 @@ public class PlayerWidget extends UnitWidget implements PlayerActionListener {
         super(player);
 
         _color = color;
+        player.addPlayerActionListener(this);
 
         setOpaque(false);
         setPreferredSize(new Dimension(SIZE, SIZE));

@@ -1,12 +1,17 @@
 package Model.units;
 
+import Model.events.units.UnitActivationListener;
 import Model.gamefield.Cell;
+
+import java.util.ArrayList;
 
 public abstract class Unit {
 
     private Cell _owner;
     private boolean _isActive;
     private boolean _isDestroyed;
+
+    private ArrayList<UnitActivationListener> _listeners = new ArrayList<>();
 
     public boolean isActive(){
         return _isActive;
@@ -34,10 +39,12 @@ public abstract class Unit {
 
     public void activate(){
         _isActive = true;
+        fireActivateChanged();
     }
 
     public void deactivate(){
         _isActive = false;
+        fireActivateChanged();
     }
 
     public void destroy() {
@@ -49,4 +56,22 @@ public abstract class Unit {
     }
 
     public abstract boolean canBelongTo(Cell cell);
+
+    public void addUnitActivationListener(UnitActivationListener l) {
+        if (l != null && !_listeners.contains(l)) {
+            _listeners.add(l);
+        }
+    }
+
+    public void removeUnitActivationListener(UnitActivationListener l) {
+        if (l != null && _listeners.contains(l)) {
+            _listeners.remove(l);
+        }
+    }
+
+    protected void fireActivateChanged() {
+        for (UnitActivationListener listener : _listeners) {
+            listener.activateChanged();
+        }
+    }
 }
