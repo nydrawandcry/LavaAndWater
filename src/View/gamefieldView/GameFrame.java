@@ -37,7 +37,7 @@ public class GameFrame extends JFrame implements GameActionListener {
         _game = _factory.createGame();
         _game.addGameActionListener(this);
 
-        _fieldView = new GamefieldView(_game.getField());
+        _fieldView = new GamefieldView(_game.getField(), _game);
         setLayout(new BorderLayout());
         add(_fieldView, BorderLayout.CENTER);
 
