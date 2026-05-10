@@ -21,7 +21,23 @@ public class PlayerWidget extends UnitWidget implements PlayerActionListener {
         setPreferredSize(new Dimension(SIZE, SIZE));
     }
 
-    //paintComponent()
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        int margin = 2;
+        int size = getWidth() - margin * 2;
+
+        // обводка у игрока потемнее, шоб выделялся
+        g2d.setColor(getInactiveColor());
+        g2d.fillOval(margin, margin, size, size);
+
+        //главный круг
+        g2d.setColor(_color);
+        g2d.fillOval(margin + 1, margin + 1, size - 2, size - 2);
+    }
 
     @Override
     protected Color getActiveColor() {
