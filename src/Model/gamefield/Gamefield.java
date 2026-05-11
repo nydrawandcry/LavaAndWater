@@ -48,38 +48,38 @@ public class Gamefield implements Iterable<Cell> {
 
     private void initializeCells() {
         //создание клеток
-        for(int i = 0; i < _height; ++i){
-            for(int j = 0; j < _width; ++j){
+        for(int y = 0; y < _height; ++y){
+            for(int x = 0; x < _width; ++x){
                 _cells.add(new Cell(this));
             }
         }
 
-        for(int i = 0; i < getHeight(); ++i) {
-            for(int j = 0; j < getWidth(); ++j) {
-                Cell cell = getCell(i, j);
+        for(int y = 0; y < getHeight(); ++y) {
+            for(int x = 0; x < getWidth(); ++x) {
+                Cell cell = getCell(x, y);
 
-                if (getHeight() > 1 && i < getHeight() - 1) {
-                    cell.setNeighbour(Direction.SOUTH, getCell(i + 1, j));
+                if (x < getWidth() - 1) {
+                    cell.setNeighbour(Direction.EAST, getCell(x + 1, y));
                 }
-                if (i > 0) {
-                    cell.setNeighbour(Direction.NORTH, getCell(i - 1, j));
+                if (x > 0) {
+                    cell.setNeighbour(Direction.WEST, getCell(x - 1, y));
                 }
-                if (getWidth() > 1 && j < getWidth() - 1) {
-                    cell.setNeighbour(Direction.EAST, getCell(i, j + 1));
+                if (y < getHeight() - 1) {
+                    cell.setNeighbour(Direction.SOUTH, getCell(x, y + 1));
                 }
-                if (j > 0) {
-                    cell.setNeighbour(Direction.WEST, getCell(i, j - 1));
+                if (y > 0) {
+                    cell.setNeighbour(Direction.NORTH, getCell(x, y - 1));
                 }
             }
         }
     }
 
     public Cell getCell(int posX, int posY){
-        if(posX < 0 || posY < 0 || posX >= getHeight() || posY >= getWidth()) {
+        if(posX < 0 || posY < 0 || posX >= getWidth() || posY >= getHeight()) {
             throw new IndexOutOfBoundsException("Клетки с такой позицией не существует");
         }
 
-        int index = posX * getWidth() + posY;
+        int index = posY * getWidth() + posX;
 
         return _cells.get(index);
     }

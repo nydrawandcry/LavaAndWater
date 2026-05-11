@@ -20,8 +20,8 @@ public class GameFactory {
         placeWalls(field);
         placeIronBlocks(field);
 
-        Player player = placePlayer(field, 3, 3);
-        placeExit(field, 8, 15);
+        Player player = placePlayer(field, 2, 8);
+        placeExit(field, 14, 3);
 
         Lava lava = new Lava();
         Water water = new Water();
@@ -33,57 +33,57 @@ public class GameFactory {
     }
 
     private void placeWalls(Gamefield field) {
-        for (int col = 0; col < WIDTH; col++) {
-            field.getCell(0, col).putUnit(new Wall());
-            field.getCell(HEIGHT - 1, col).putUnit(new Wall());
+        for (int x = 0; x < WIDTH; x++) {
+            field.getCell(x, 0).putUnit(new Wall());
+            field.getCell(x, HEIGHT - 1).putUnit(new Wall());
         }
 
-        for (int row = 1; row < HEIGHT - 1; row++) {
-            field.getCell(row, 0).putUnit(new Wall());
-            field.getCell(row, WIDTH - 1).putUnit(new Wall());
+        for (int y = 1; y < HEIGHT - 1; y++) {
+            field.getCell(0, y).putUnit(new Wall());
+            field.getCell(WIDTH - 1, y).putUnit(new Wall());
         }
 
-        field.getCell(5, 2).putUnit(new Wall());
-        field.getCell(5, 3).putUnit(new Wall());
-        field.getCell(5, 4).putUnit(new Wall());
-
-        field.getCell(9, 2).putUnit(new Wall());
-        field.getCell(9, 3).putUnit(new Wall());
-        field.getCell(9, 4).putUnit(new Wall());
-
-        field.getCell(6, 4).putUnit(new Wall());
-        field.getCell(8, 4).putUnit(new Wall()); //это я добавила область для водички
+        field.getCell(4, 9).putUnit(new Wall());
+        field.getCell(4, 8).putUnit(new Wall());
+        field.getCell(4, 7).putUnit(new Wall());
 
         field.getCell(8, 9).putUnit(new Wall());
-        field.getCell(9, 9).putUnit(new Wall());
-        field.getCell(10, 9).putUnit(new Wall());
-        field.getCell(11, 9).putUnit(new Wall());
-        field.getCell(12, 9).putUnit(new Wall());
-        field.getCell(13, 9).putUnit(new Wall());
-        field.getCell(14, 9).putUnit(new Wall());
-        field.getCell(15, 9).putUnit(new Wall());
-        field.getCell(14, 8).putUnit(new Wall());
+        field.getCell(8, 8).putUnit(new Wall());
+        field.getCell(8, 7).putUnit(new Wall());
+
+        field.getCell(5, 7).putUnit(new Wall());
+        field.getCell(7, 7).putUnit(new Wall()); //это я добавила область для водички
+
+        field.getCell(7, 2).putUnit(new Wall());
+        field.getCell(8, 2).putUnit(new Wall());
+        field.getCell(9, 2).putUnit(new Wall());
+        field.getCell(10, 2).putUnit(new Wall());
+        field.getCell(11, 2).putUnit(new Wall());
+        field.getCell(12, 2).putUnit(new Wall());
+        field.getCell(13, 2).putUnit(new Wall());
+        field.getCell(14, 2).putUnit(new Wall());
+        field.getCell(13, 3).putUnit(new Wall());//а это стенка рядом с лавой
     }
 
     private void placeIronBlocks(Gamefield field) {
-        field.getCell(7, 5).putUnit(new IronBlock());
+        field.getCell(6, 6).putUnit(new IronBlock());
     }
 
-    private Player placePlayer(Gamefield field, int row, int col) {
+    private Player placePlayer(Gamefield field, int x, int y) {
         Player player = new Player();
-        field.getCell(row, col).putUnit(player);
+        field.getCell(x, y).putUnit(player);
         return player;
     }
 
-    private void placeExit(Gamefield field, int row, int col) {
-        field.getCell(row, col).putUnit(new Exit());
+    private void placeExit(Gamefield field, int x, int y) {
+        field.getCell(x, y).putUnit(new Exit());
     }
 
     private void placeLavaSources(Gamefield field, Lava lava) {
-        lava.addSource(field.getCell(12, 10));
+        lava.addSource(field.getCell(11, 1));
     }
 
     private void placeWaterSources(Gamefield field, Water water) {
-        water.addSource(field.getCell(7, 3));
+        water.addSource(field.getCell(6, 8));
     }
 }
