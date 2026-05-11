@@ -2,6 +2,7 @@ package Model.units.liquids;
 
 import Model.events.liquids.LiquidSystemCollisionListener;
 import Model.gamefield.Cell;
+import Model.units.Exit;
 import Model.units.solid.Solid;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public abstract class LiquidSystem {
     }
 
     public boolean canOccupy(Cell cell) {
-        return cell != null && cell.getUnit(Solid.class) == null;
+        return cell != null && cell.getUnit(Solid.class) == null && cell.getUnit(Exit.class) == null;
     }
 
     public void remove(Cell cell) {

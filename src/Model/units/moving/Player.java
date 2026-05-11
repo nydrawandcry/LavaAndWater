@@ -18,6 +18,10 @@ public class Player extends Unit {
     }
 
     public boolean moveTo(Direction dir) {
+        if(owner().getUnit(Solid.class) != null) {
+            return false; //обработка случая "игрок в стене" (а то он из нее щас может вылехти)
+        }
+
         Cell destination = owner().getNeighbour(dir);
 
         if(destination == null) {
