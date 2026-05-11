@@ -5,16 +5,11 @@ import Model.events.cell.CellActionListener;
 import Model.events.liquids.LiquidAppearanceInCellEvent;
 import Model.events.liquids.LiquidAppearanceInCellListener;
 import Model.gamefield.Cell;
-import Model.units.Exit;
 import Model.units.Unit;
 import Model.units.liquids.Lava;
 import Model.units.liquids.LiquidSystem;
 import Model.units.liquids.Water;
-import Model.units.moving.IronBlock;
-import Model.units.moving.Player;
-import Model.units.solid.Wall;
 import View.liquidSystemView.LavaWidget;
-import View.liquidSystemView.LiquidSystemWidget;
 import View.liquidSystemView.WaterWidget;
 import View.unitView.*;
 
@@ -48,14 +43,14 @@ public class CellWidget extends JPanel implements CellActionListener, LiquidAppe
         setBackground(new Color(191,191,191));
 
         //инициализация юнитами
-        initializeUnitLayers();
+        initializeLayers();
         //также тут нужна инициализация жидкостями отдельно потому что это не юниты
         updateLiquidDisplay();
         addUnitWidgets(); //пускай будет тут
 
     }
 
-    private void initializeUnitLayers() {
+    private void initializeLayers() {
         //первоначальная инициализация pane (порождение и установка размера)
         _layeredPane = new JLayeredPane();
         _layeredPane.setPreferredSize(new Dimension(CELL_SIZE, CELL_SIZE));
@@ -95,20 +90,13 @@ public class CellWidget extends JPanel implements CellActionListener, LiquidAppe
     }
 
     public void addUnitWidgets() {
+        _unitLayer.removeAll();
         _unitWidgets.clear();
 
-        for (Unit u : _cell.getUnits(Wall.class)) {
+        for (Unit u : _cell.getUnits()) {
             addUnitWidget(u);
         }
-        for (Unit u : _cell.getUnits(IronBlock.class)) {
-            addUnitWidget(u);
-        }
-        for (Unit u : _cell.getUnits(Exit.class)) {
-            addUnitWidget(u);
-        }
-        for (Unit u : _cell.getUnits(Player.class)) {
-            addUnitWidget(u);
-        }
+
         revalidate();
         repaint();
     }

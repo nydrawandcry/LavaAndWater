@@ -104,6 +104,10 @@ public class Cell {
         return res;
     }
 
+    public Collection<Unit> getUnits() {
+        return Collections.unmodifiableList(_units);
+    }
+
     public Unit getUnit(Class<?> c){
         if(_units.isEmpty()){
             return null;
