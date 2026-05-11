@@ -30,10 +30,7 @@ public class CellWidget extends JPanel implements CellActionListener, LiquidAppe
 
     private JLayeredPane _layeredPane;
 
-    private JPanel _playerLayer;
-    private JPanel _wallLayer;
-    private JPanel _exitLayer;
-    private JPanel _ironBlockLayer;
+    private JPanel _unitLayer;
 
     private HashMap<Unit, UnitWidget> _unitWidgets = new HashMap<>();
 
@@ -70,34 +67,16 @@ public class CellWidget extends JPanel implements CellActionListener, LiquidAppe
         _lavaWidget.setBounds(0,0,CELL_SIZE,CELL_SIZE);
 
         _waterWidget = new WaterWidget();
-        _waterWidget.setBounds(0,0,CELL_SIZE,CELL_SIZE);
+        _waterWidget.setBounds(0,0,CELL_SIZE,CELL_SIZE); //я б еще это оптимизировала, это че каждую жидкость слоем добавлять
 
-        /*_exitLayer = new JPanel();
-        _exitLayer.setLayout(null);
-        _exitLayer.setOpaque(false);
-        _exitLayer.setBounds(0,0, CELL_SIZE, CELL_SIZE);
-
-        _wallLayer = new JPanel();
-        _wallLayer.setLayout(null);
-        _wallLayer.setOpaque(false);
-        _wallLayer.setBounds(0,0, CELL_SIZE, CELL_SIZE);
-
-        _ironBlockLayer = new JPanel();
-        _ironBlockLayer.setLayout(null);
-        _ironBlockLayer.setOpaque(false);
-        _ironBlockLayer.setBounds(0,0, CELL_SIZE, CELL_SIZE);
-
-        _playerLayer = new JPanel();
-        _playerLayer.setLayout(null);
-        _playerLayer.setOpaque(false);
-        _playerLayer.setBounds(0,0, CELL_SIZE, CELL_SIZE);*/
+        _unitLayer = new JPanel();
+        _unitLayer.setLayout(null);
+        _unitLayer.setOpaque(false);
+        _unitLayer.setBounds(0, 0, CELL_SIZE, CELL_SIZE);
 
         _layeredPane.add(_lavaWidget, JLayeredPane.DEFAULT_LAYER);
         _layeredPane.add(_waterWidget, JLayeredPane.DEFAULT_LAYER);
-        /*_layeredPane.add(_exitLayer, JLayeredPane.DEFAULT_LAYER + 50);
-        _layeredPane.add(_wallLayer, JLayeredPane.DEFAULT_LAYER + 100);
-        _layeredPane.add(_ironBlockLayer, JLayeredPane.DEFAULT_LAYER + 150);
-        _layeredPane.add(_playerLayer, JLayeredPane.DRAG_LAYER);*/
+        _layeredPane.add(_unitLayer, JLayeredPane.DRAG_LAYER);
 
         add(_layeredPane, BorderLayout.CENTER);
     }
@@ -116,10 +95,6 @@ public class CellWidget extends JPanel implements CellActionListener, LiquidAppe
     }
 
     public void addUnitWidgets() {
-        /*_playerLayer.removeAll();
-        _wallLayer.removeAll();
-        _ironBlockLayer.removeAll();
-        _exitLayer.removeAll();*/
         _unitWidgets.clear();
 
         for (Unit u : _cell.getUnits(Wall.class)) {
@@ -143,32 +118,18 @@ public class CellWidget extends JPanel implements CellActionListener, LiquidAppe
             return;
         }
 
-        UnitWidget widget = null;
-        JPanel targetLayer = null;
+        UnitWidget widget = UnitWidgetFactory.create(u);
 
- /*       if (u instanceof Player player) {
-            PlayerWidget pw = new PlayerWidget(player, new Color(242, 209, 180));
-            widget = pw;
-            targetLayer = _playerLayer;
-        } else if (u instanceof Wall wall) {
-            WallWidget ww = new WallWidget(wall, new Color(76, 76, 76));
-            widget = ww;
-            targetLayer = _wallLayer;
-        } else if (u instanceof IronBlock ironBlock) {
-            IronBlockWidget ibw = new IronBlockWidget(ironBlock, new Color(150, 150, 150));
-            widget = ibw;
-            targetLayer = _ironBlockLayer;
-        } else if (u instanceof Exit exit) {
-            ExitWidget ew = new ExitWidget(exit, new Color(185, 128, 229));
-            widget = ew;
-            targetLayer = _exitLayer;
-        }*/
-
-        if (widget != null && targetLayer != null) {
-            widget.setBounds(2, 2, CELL_SIZE - 4, CELL_SIZE - 4);
-            targetLayer.add(widget);
-            _unitWidgets.put(u, widget);
+        if(widget == null) {
+            return;
         }
+
+        widget.setBounds(2,2,CELL_SIZE - 4, CELL_SIZE - 4);
+
+        _unitLayer.add(widget);
+        _unitWidgets.put(u,widget);
+
+        repaint();
     }
 
     public void removeUnitWidget(Unit u) {
@@ -178,10 +139,7 @@ public class CellWidget extends JPanel implements CellActionListener, LiquidAppe
             return;
         }
 
-/*        _playerLayer.remove(widget);
-        _wallLayer.remove(widget);
-        _ironBlockLayer.remove(widget);
-        _exitLayer.remove(widget);*/
+        _unitLayer.remove(widget);
 
         revalidate();
         repaint();
