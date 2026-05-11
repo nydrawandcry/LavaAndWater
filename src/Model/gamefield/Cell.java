@@ -83,7 +83,7 @@ public class Cell {
 
         if(old == null && liquid != null) {
             fireLiquidAdded(liquid);
-        } else if(old != null && liquid == null) {
+        } else if(old != null && liquid == null) { //бля эт надо вообще?
             fireLiquidRemoved(old);
         }
     }

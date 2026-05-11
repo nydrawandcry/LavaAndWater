@@ -6,13 +6,8 @@ import java.awt.*;
 
 public class WaterWidget extends LiquidSystemWidget{
 
-
-    public WaterWidget(LiquidSystem liquidSystem, Color color) {
-        super(liquidSystem, color);
+    public WaterWidget() {
+        super(new Color(50,100,255));
     }
 
-    @Override
-    public Color getColor() {
-        return new Color(50, 100, 255);
-    }
 }

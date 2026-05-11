@@ -14,6 +14,7 @@ import Model.units.moving.IronBlock;
 import Model.units.moving.Player;
 import Model.units.solid.Wall;
 import View.liquidSystemView.LavaWidget;
+import View.liquidSystemView.LiquidSystemWidget;
 import View.liquidSystemView.WaterWidget;
 import View.unitView.*;
 
@@ -36,7 +37,8 @@ public class CellWidget extends JPanel implements CellActionListener, LiquidAppe
 
     private HashMap<Unit, UnitWidget> _unitWidgets = new HashMap<>();
 
-    private JPanel _liquidLayer;
+    private LavaWidget _lavaWidget;
+    private WaterWidget _waterWidget;
 
     public CellWidget(Cell cell){
         _cell = cell;
@@ -62,10 +64,11 @@ public class CellWidget extends JPanel implements CellActionListener, LiquidAppe
         _layeredPane.setPreferredSize(new Dimension(CELL_SIZE, CELL_SIZE));
         _layeredPane.setLayout(null);
 
-        _liquidLayer = new JPanel();
-        _liquidLayer.setLayout(null);
-        _liquidLayer.setOpaque(false);
-        _liquidLayer.setBounds(0,0, CELL_SIZE, CELL_SIZE);
+        _lavaWidget = new LavaWidget();
+        _lavaWidget.setBounds(0,0,CELL_SIZE,CELL_SIZE);
+
+        _waterWidget = new WaterWidget();
+        _waterWidget.setBounds(0,0,CELL_SIZE,CELL_SIZE);
 
         _exitLayer = new JPanel();
         _exitLayer.setLayout(null);
@@ -87,7 +90,8 @@ public class CellWidget extends JPanel implements CellActionListener, LiquidAppe
         _playerLayer.setOpaque(false);
         _playerLayer.setBounds(0,0, CELL_SIZE, CELL_SIZE);
 
-        _layeredPane.add(_liquidLayer, JLayeredPane.DEFAULT_LAYER);
+        _layeredPane.add(_lavaWidget, JLayeredPane.DEFAULT_LAYER);
+        _layeredPane.add(_waterWidget, JLayeredPane.DEFAULT_LAYER);
         _layeredPane.add(_exitLayer, JLayeredPane.DEFAULT_LAYER + 50);
         _layeredPane.add(_wallLayer, JLayeredPane.DEFAULT_LAYER + 100);
         _layeredPane.add(_ironBlockLayer, JLayeredPane.DEFAULT_LAYER + 150);
@@ -97,21 +101,16 @@ public class CellWidget extends JPanel implements CellActionListener, LiquidAppe
     }
 
     private void updateLiquidDisplay() {
-        _liquidLayer.removeAll();
+        _lavaWidget.setVisibleLiquid(false);
+        _waterWidget.setVisibleLiquid(false);
 
         LiquidSystem liquid = _cell.getLiquidSystem();
-        if (liquid instanceof Lava) {
-            LavaWidget lavaWidget = new LavaWidget(liquid, new Color(255, 100, 0));
-            lavaWidget.setBounds(0, 0, CELL_SIZE, CELL_SIZE);
-            _liquidLayer.add(lavaWidget);
-        } else if (liquid instanceof Water) {
-            WaterWidget waterWidget = new WaterWidget(liquid, new Color(50, 100, 255));
-            waterWidget.setBounds(0, 0, CELL_SIZE, CELL_SIZE);
-            _liquidLayer.add(waterWidget);
-        }
 
-        _liquidLayer.revalidate();
-        _liquidLayer.repaint();
+        if (liquid instanceof Lava) {
+            _lavaWidget.setVisibleLiquid(true);
+        } else if (liquid instanceof Water) {
+            _waterWidget.setVisibleLiquid(true);
+        }
     }
 
     public void addUnitWidgets() {

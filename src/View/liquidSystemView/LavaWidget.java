@@ -6,13 +6,8 @@ import java.awt.*;
 
 public class LavaWidget extends LiquidSystemWidget{
 
-
-    public LavaWidget(LiquidSystem liquidSystem, Color color) {
-        super(liquidSystem, color);
+    public LavaWidget() {
+        super(new Color(255,100,0));
     }
 
-    @Override
-    public Color getColor() {
-        return new Color(255, 100, 0);
-    }
 }
