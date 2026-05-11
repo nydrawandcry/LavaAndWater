@@ -61,8 +61,6 @@ public class Game implements PlayerActionListener {
         }
 
         if (isPlayerOnExit()) {
-            _isOver = true;
-            _isWon = true;
             fireGameIsOver(); //сообщение о победе для GUI-классов
         }
     }
@@ -117,6 +115,7 @@ public class Game implements PlayerActionListener {
         }
 
         _isOver = true;
+        _isWon = true;
 
         for(GameActionListener l : _listeners) {
             l.gameIsOver();
