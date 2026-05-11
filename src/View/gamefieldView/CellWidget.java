@@ -62,7 +62,9 @@ public class CellWidget extends JPanel implements CellActionListener, LiquidAppe
         //первоначальная инициализация pane (порождение и установка размера)
         _layeredPane = new JLayeredPane();
         _layeredPane.setPreferredSize(new Dimension(CELL_SIZE, CELL_SIZE));
+        _layeredPane.setSize(CELL_SIZE, CELL_SIZE);
         _layeredPane.setLayout(null);
+        _layeredPane.setBounds(0,0, CELL_SIZE, CELL_SIZE);
 
         _lavaWidget = new LavaWidget();
         _lavaWidget.setBounds(0,0,CELL_SIZE,CELL_SIZE);
@@ -95,7 +97,7 @@ public class CellWidget extends JPanel implements CellActionListener, LiquidAppe
         _layeredPane.add(_exitLayer, JLayeredPane.DEFAULT_LAYER + 50);
         _layeredPane.add(_wallLayer, JLayeredPane.DEFAULT_LAYER + 100);
         _layeredPane.add(_ironBlockLayer, JLayeredPane.DEFAULT_LAYER + 150);
-        _layeredPane.add(_playerLayer, JLayeredPane.DEFAULT_LAYER + 200);
+        _layeredPane.add(_playerLayer, JLayeredPane.DRAG_LAYER);
 
         add(_layeredPane, BorderLayout.CENTER);
     }
