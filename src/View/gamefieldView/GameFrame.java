@@ -7,11 +7,13 @@ import Model.services.GameFactory;
 import javax.swing.*;
 import java.awt.*;
 
-public class GameFrame extends JFrame implements GameActionListener {
+public class GameFrame extends JFrame {
 
     private Game _game;
     private GameFactory _factory;
     private GamefieldView _fieldView;
+
+    private final GameActionListener _gameListener = new GameActionHandler();
 
     public GameFrame() {
         super("Lava & Water");
@@ -35,7 +37,7 @@ public class GameFrame extends JFrame implements GameActionListener {
 
         //тут создание игры и подписка GameFrame на события Game (и еще манипуляции с gamefieldView)
         _game = _factory.createGame();
-        _game.addGameActionListener(this);
+        _game.addGameActionListener(_gameListener);
 
         _fieldView = new GamefieldView(_game.getField(), _game);
         setLayout(new BorderLayout());
@@ -45,13 +47,15 @@ public class GameFrame extends JFrame implements GameActionListener {
         repaint();
     }
 
-    @Override
-    public void gameIsOver() {
-        JOptionPane.showMessageDialog(
-                this,
-                "Вы дошли до выхода!",
-                "Победа!!!",
-                JOptionPane.INFORMATION_MESSAGE
-        );
+    private class GameActionHandler extends JFrame implements GameActionListener {
+        @Override
+        public void gameIsOver() {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Вы дошли до выхода!",
+                    "Победа!!!",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+        }
     }
 }

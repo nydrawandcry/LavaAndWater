@@ -5,15 +5,17 @@ import Model.units.moving.IronBlock;
 
 import java.awt.*;
 
-public class IronBlockWidget extends UnitWidget implements IronBlockActionListener {
+public class IronBlockWidget extends UnitWidget{
 
     private static int SIZE = 50;
 
     private Color _color;
 
+    private final IronBlockActionListener _ironBlockListener = new IronBlockActionHandler();
+
     public IronBlockWidget(IronBlock block, Color color) {
         super(block);
-        block.addIronBlockActionListener(this);
+        block.addIronBlockActionListener(_ironBlockListener);
 
         _color = color;
 
@@ -80,8 +82,10 @@ public class IronBlockWidget extends UnitWidget implements IronBlockActionListen
         refresh();
     }
 
-    @Override
-    public void ironBlockMoved() {
-        //анимация как он двигается
+    private class IronBlockActionHandler implements IronBlockActionListener {
+        @Override
+        public void ironBlockMoved() {
+            //анимация как он двигается
+        }
     }
 }

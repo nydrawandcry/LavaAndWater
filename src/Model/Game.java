@@ -37,8 +37,8 @@ public class Game {
         _lava = lava;
         _water = water;
         _collisionDetector = new CollisionDetector();
-        _lava.addLiquidSystemCollisionListener(_collisionDetector);
-        _water.addLiquidSystemCollisionListener(_collisionDetector);
+        _lava.addLiquidSystemCollisionListener(_collisionDetector.getLiquidListener());
+        _water.addLiquidSystemCollisionListener(_collisionDetector.getLiquidListener());
         _isOver = false;
         _isWon = false;
     }

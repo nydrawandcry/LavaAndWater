@@ -15,7 +15,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 
-public class CellWidget extends JPanel implements CellActionListener, LiquidAppearanceInCellListener {
+public class CellWidget extends JPanel{
 
     public static int CELL_SIZE = 50;
 
@@ -27,10 +27,13 @@ public class CellWidget extends JPanel implements CellActionListener, LiquidAppe
 
     private LiquidSystemWidget _liquidWidget;
 
+    private final CellActionListener _cellListener = new CellActionHandler();
+    private final LiquidAppearanceInCellListener _liquidListener = new LiquidLiquidAppearanceInCellHandler();
+
     public CellWidget(Cell cell){
         _cell = cell;
-        _cell.addCellActionListener(this);
-        _cell.addLiquidAppearanceInCellListener(this);
+        _cell.addCellActionListener(_cellListener);
+        _cell.addLiquidAppearanceInCellListener(_liquidListener);
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(CELL_SIZE, CELL_SIZE));
@@ -127,24 +130,27 @@ public class CellWidget extends JPanel implements CellActionListener, LiquidAppe
         repaint();
     }
 
-    @Override
-    public void unitPlaced(CellActionEvent e) {
-        addUnitWidget(e.getUnit());
+    private class CellActionHandler implements CellActionListener {
+        @Override
+        public void unitPlaced(CellActionEvent e) {
+            addUnitWidget(e.getUnit());
+        }
+
+        @Override
+        public void unitExtracted(CellActionEvent e) {
+            removeUnitWidget(e.getUnit());
+        }
     }
 
-    @Override
-    public void unitExtracted(CellActionEvent e) {
-        removeUnitWidget(e.getUnit());
-    }
+    private class LiquidLiquidAppearanceInCellHandler implements LiquidAppearanceInCellListener {
+        @Override
+        public void liquidAdded(LiquidAppearanceInCellEvent e) {
+            updateLiquidDisplay();
+        }
 
-    @Override
-    public void liquidAdded(LiquidAppearanceInCellEvent e) {
-        updateLiquidDisplay();
+        @Override
+        public void liquidRemoved(LiquidAppearanceInCellEvent e) {
+            updateLiquidDisplay();
+        }
     }
-
-    @Override
-    public void liquidRemoved(LiquidAppearanceInCellEvent e) {
-        updateLiquidDisplay();
-    }
-
 }

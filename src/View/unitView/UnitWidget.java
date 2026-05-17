@@ -6,13 +6,14 @@ import Model.units.Unit;
 import javax.swing.*;
 import java.awt.*;
 
-public abstract class UnitWidget extends JComponent implements UnitActivationListener {
+public abstract class UnitWidget extends JComponent {
 
     protected Unit _unit;
+    protected UnitActivationListener _unitListener = new UnitActivationHandler();
 
     protected UnitWidget(Unit unit) {
         _unit = unit;
-        _unit.addUnitActivationListener(this);
+        _unit.addUnitActivationListener(_unitListener);
 
         setOpaque(true);
     }
@@ -39,8 +40,10 @@ public abstract class UnitWidget extends JComponent implements UnitActivationLis
         }
     }
 
-    @Override
-    public void activateChanged() {
-        changeColorByActivity();
+    private class UnitActivationHandler implements UnitActivationListener {
+        @Override
+        public void activateChanged() {
+            changeColorByActivity();
+        }
     }
 }
