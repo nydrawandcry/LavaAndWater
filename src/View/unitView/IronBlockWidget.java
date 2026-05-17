@@ -53,6 +53,12 @@ public class IronBlockWidget extends UnitWidget implements IronBlockActionListen
         g2d.setColor(new Color(200, 200, 200));
         g2d.drawLine(2, 2, getWidth() - 3, 2);
     }
+
+    @Override
+    public int getRenderPriority() {
+        return 100;
+    }
+
     @Override
     protected Color getActiveColor() {
         return Color.GRAY;

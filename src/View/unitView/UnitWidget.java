@@ -21,6 +21,10 @@ public abstract class UnitWidget extends JComponent implements UnitActivationLis
         return _unit;
     }
 
+    public int getRenderPriority() {
+        return 0;
+    }
+
     protected abstract Color getActiveColor();
     protected abstract Color getInactiveColor();
 

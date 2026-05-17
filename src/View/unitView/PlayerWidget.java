@@ -40,6 +40,11 @@ public class PlayerWidget extends UnitWidget implements PlayerActionListener {
     }
 
     @Override
+    public int getRenderPriority() {
+        return 100;
+    }
+
+    @Override
     protected Color getActiveColor() {
         return new Color(242,209,180);
     }
