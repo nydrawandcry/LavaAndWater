@@ -10,6 +10,7 @@ import Model.units.liquids.Lava;
 import Model.units.liquids.LiquidSystem;
 import Model.units.liquids.Water;
 import View.liquidSystemView.LavaWidget;
+import View.liquidSystemView.LiquidSystemWidget;
 import View.liquidSystemView.WaterWidget;
 import View.unitView.*;
 
@@ -28,8 +29,7 @@ public class CellWidget extends JPanel implements CellActionListener, LiquidAppe
 
     private HashMap<Unit, UnitWidget> _unitWidgets = new HashMap<>();
 
-    private LavaWidget _lavaWidget;
-    private WaterWidget _waterWidget;
+    private LiquidSystemWidget _liquidWidget;
 
     public CellWidget(Cell cell){
         _cell = cell;
@@ -56,30 +56,36 @@ public class CellWidget extends JPanel implements CellActionListener, LiquidAppe
         _layeredPane.setSize(CELL_SIZE, CELL_SIZE);
         _layeredPane.setLayout(null);
         _layeredPane.setBounds(0,0, CELL_SIZE, CELL_SIZE);
-
-        _lavaWidget = new LavaWidget();
-        _lavaWidget.setBounds(0,0,CELL_SIZE,CELL_SIZE);
-
-        _waterWidget = new WaterWidget();
-        _waterWidget.setBounds(0,0,CELL_SIZE,CELL_SIZE); //я б еще это оптимизировала, это че каждую жидкость слоем добавлять
-
-        _layeredPane.add(_lavaWidget, JLayeredPane.DEFAULT_LAYER);
-        _layeredPane.add(_waterWidget, JLayeredPane.DEFAULT_LAYER);
-
         add(_layeredPane, BorderLayout.CENTER);
     }
 
     private void updateLiquidDisplay() {
-        _lavaWidget.setVisibleLiquid(false);
-        _waterWidget.setVisibleLiquid(false);
-
         LiquidSystem liquid = _cell.getLiquidSystem();
 
-        if (liquid instanceof Lava) {
-            _lavaWidget.setVisibleLiquid(true);
-        } else if (liquid instanceof Water) {
-            _waterWidget.setVisibleLiquid(true);
+        if(_liquidWidget != null) {
+            _layeredPane.remove(_liquidWidget);
+            _liquidWidget = null;
         }
+
+        if(liquid == null) {
+            repaint();
+            return;
+        }
+
+        if(liquid instanceof Lava) {
+            _liquidWidget = new LavaWidget();
+        }
+        else if(liquid instanceof Water) {
+            _liquidWidget = new WaterWidget();
+        }
+
+        if(_liquidWidget != null) {
+            _liquidWidget.setBounds(0, 0, CELL_SIZE, CELL_SIZE);
+            _liquidWidget.setVisibleLiquid(true);
+
+            _layeredPane.add(_liquidWidget, Integer.valueOf(0));
+        }
+        repaint();
     }
 
     public void addUnitWidgets() {
