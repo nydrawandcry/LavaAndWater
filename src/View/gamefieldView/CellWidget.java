@@ -6,12 +6,9 @@ import Model.events.liquids.LiquidAppearanceInCellEvent;
 import Model.events.liquids.LiquidAppearanceInCellListener;
 import Model.gamefield.Cell;
 import Model.units.Unit;
-import Model.units.liquids.Lava;
 import Model.units.liquids.LiquidSystem;
-import Model.units.liquids.Water;
-import View.liquidSystemView.LavaWidget;
 import View.liquidSystemView.LiquidSystemWidget;
-import View.liquidSystemView.WaterWidget;
+import View.liquidSystemView.LiquidSystemWidgetFactory;
 import View.unitView.*;
 
 import javax.swing.*;
@@ -25,7 +22,6 @@ public class CellWidget extends JPanel implements CellActionListener, LiquidAppe
     private final Cell _cell;
 
     private JLayeredPane _layeredPane;
-
 
     private HashMap<Unit, UnitWidget> _unitWidgets = new HashMap<>();
 
@@ -63,7 +59,7 @@ public class CellWidget extends JPanel implements CellActionListener, LiquidAppe
         LiquidSystem liquid = _cell.getLiquidSystem();
 
         if(_liquidWidget != null) {
-            _layeredPane.remove(_liquidWidget);
+            _layeredPane.remove(_liquidWidget); //блин удалять подчистую при каждом обновлении? какой-то зашквар
             _liquidWidget = null;
         }
 
@@ -72,12 +68,7 @@ public class CellWidget extends JPanel implements CellActionListener, LiquidAppe
             return;
         }
 
-        if(liquid instanceof Lava) {
-            _liquidWidget = new LavaWidget();
-        }
-        else if(liquid instanceof Water) {
-            _liquidWidget = new WaterWidget();
-        }
+        _liquidWidget = LiquidSystemWidgetFactory.create(liquid);
 
         if(_liquidWidget != null) {
             _liquidWidget.setBounds(0, 0, CELL_SIZE, CELL_SIZE);
