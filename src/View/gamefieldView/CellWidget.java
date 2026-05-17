@@ -58,24 +58,22 @@ public class CellWidget extends JPanel implements CellActionListener, LiquidAppe
     private void updateLiquidDisplay() {
         LiquidSystem liquid = _cell.getLiquidSystem();
 
-        if(_liquidWidget != null) {
-            _layeredPane.remove(_liquidWidget); //блин удалять подчистую при каждом обновлении? какой-то зашквар
-            _liquidWidget = null;
-        }
-
-        if(liquid == null) {
+        if(liquid == null) { //если жидкости больше нет в клетке
+            if (_liquidWidget != null) {
+                _liquidWidget.setVisibleLiquid(false);
+            }
             repaint();
             return;
         }
 
-        _liquidWidget = LiquidSystemWidgetFactory.create(liquid);
-
-        if(_liquidWidget != null) {
+        if(_liquidWidget == null) { //если жидкость есть в клетке но она еще не отрисована
+            _liquidWidget = LiquidSystemWidgetFactory.create(liquid);
             _liquidWidget.setBounds(0, 0, CELL_SIZE, CELL_SIZE);
-            _liquidWidget.setVisibleLiquid(true);
 
             _layeredPane.add(_liquidWidget, Integer.valueOf(0));
         }
+
+        _liquidWidget.setVisibleLiquid(true);
         repaint();
     }
 
