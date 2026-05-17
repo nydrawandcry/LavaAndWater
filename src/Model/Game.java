@@ -11,7 +11,7 @@ import Model.units.liquids.Water;
 
 import java.util.ArrayList;
 
-public class Game implements PlayerActionListener {
+public class Game {
 
     private boolean _isOver;
     private boolean _isWon;
@@ -22,7 +22,9 @@ public class Game implements PlayerActionListener {
     private final Water _water;
     private final CollisionDetector _collisionDetector;
 
-    private ArrayList<GameActionListener> _listeners = new ArrayList<>();
+    private final PlayerActionListener _playerListener = new PlayerMovementHandler();
+
+    private ArrayList<GameActionListener> _gameListeners = new ArrayList<>();
 
     public Game(Gamefield field, Player player, Lava lava, Water water) {
         if (field == null || player == null || lava == null || water == null) {
@@ -31,7 +33,7 @@ public class Game implements PlayerActionListener {
 
         _field = field;
         _player = player;
-        _player.addPlayerActionListener(this);
+        _player.addPlayerActionListener(_playerListener);
         _lava = lava;
         _water = water;
         _collisionDetector = new CollisionDetector();
@@ -41,10 +43,12 @@ public class Game implements PlayerActionListener {
         _isWon = false;
     }
 
-    @Override
-    public void playerMoved() {
-        spreadLiquids();
-        updateGameState();
+    private class PlayerMovementHandler implements PlayerActionListener{
+        @Override
+        public void playerMoved () {
+            spreadLiquids();
+            updateGameState();
+        }
     }
 
     private void spreadLiquids() {
@@ -99,18 +103,18 @@ public class Game implements PlayerActionListener {
     }
 
     public void addGameActionListener(GameActionListener l) {
-        if(l != null && !_listeners.contains(l)){
-            _listeners.add(l);
+        if(l != null && !_gameListeners.contains(l)){
+            _gameListeners.add(l);
         }
     }
 
     public void removeGameActionListener(GameActionListener l) {
         if(l != null){
-            _listeners.remove(l);
+            _gameListeners.remove(l);
         }
     }
 
-    public void fireGameIsOver() {
+    private void fireGameIsOver() {
         if(_isOver){
             return;
         }
@@ -118,7 +122,7 @@ public class Game implements PlayerActionListener {
         _isOver = true;
         _isWon = true;
 
-        for(GameActionListener l : _listeners) {
+        for(GameActionListener l : _gameListeners) {
             l.gameIsOver();
         }
     }
