@@ -35,8 +35,8 @@ public class GameFactoryTest {
         Game game = factory.createGame();
         Gamefield field = game.getField();
 
-        assertEquals(5, field.getHeight());
-        assertEquals(5, field.getWidth());
+        assertEquals(11, field.getHeight());
+        assertEquals(16, field.getWidth());
     }
 
     @Test
@@ -44,10 +44,13 @@ public class GameFactoryTest {
         GameFactory factory = new GameFactory();
 
         Game game = factory.createGame();
-        Cell playerCell = game.getField().getCell(1, 1);
+
+        Cell playerCell = game.getField().getCell(2, 8);
 
         assertNotNull(playerCell.getUnit(Player.class));
-        assertEquals(playerCell, game.getPlayer().owner());
+
+        assertEquals(playerCell,
+                game.getPlayer().owner());
     }
 
     @Test
@@ -55,7 +58,8 @@ public class GameFactoryTest {
         GameFactory factory = new GameFactory();
 
         Game game = factory.createGame();
-        Cell exitCell = game.getField().getCell(3, 3);
+
+        Cell exitCell = game.getField().getCell(14, 3);
 
         assertNotNull(exitCell.getUnit(Exit.class));
     }
@@ -68,10 +72,15 @@ public class GameFactoryTest {
         Gamefield field = game.getField();
 
         assertNotNull(field.getCell(0, 0).getUnit(Wall.class));
-        assertNotNull(field.getCell(0, 1).getUnit(Wall.class));
-        assertNotNull(field.getCell(0, 2).getUnit(Wall.class));
-        assertNotNull(field.getCell(4, 4).getUnit(Wall.class));
-        assertNotNull(field.getCell(2, 2).getUnit(Wall.class));
+        assertNotNull(field.getCell(15, 0).getUnit(Wall.class));
+
+        assertNotNull(field.getCell(0, 10).getUnit(Wall.class));
+        assertNotNull(field.getCell(15, 10).getUnit(Wall.class));
+
+        assertNotNull(field.getCell(4, 9).getUnit(Wall.class));
+        assertNotNull(field.getCell(8, 8).getUnit(Wall.class));
+
+        assertNotNull(field.getCell(13, 3).getUnit(Wall.class));
     }
 
     @Test
@@ -79,7 +88,8 @@ public class GameFactoryTest {
         GameFactory factory = new GameFactory();
 
         Game game = factory.createGame();
-        Cell blockCell = game.getField().getCell(1, 3);
+
+        Cell blockCell = game.getField().getCell(6, 6);
 
         assertNotNull(blockCell.getUnit(IronBlock.class));
     }
@@ -90,8 +100,11 @@ public class GameFactoryTest {
 
         Game game = factory.createGame();
 
-        assertTrue(game.getLava().contains(game.getField().getCell(1, 2)));
-        assertTrue(game.getLava().contains(game.getField().getCell(3, 1)));
+        assertTrue(
+                game.getLava().contains(
+                        game.getField().getCell(11, 1)
+                )
+        );
     }
 
     @Test
@@ -100,7 +113,11 @@ public class GameFactoryTest {
 
         Game game = factory.createGame();
 
-        assertTrue(game.getWater().contains(game.getField().getCell(2, 3)));
+        assertTrue(
+                game.getWater().contains(
+                        game.getField().getCell(6, 8)
+                )
+        );
     }
 
     @Test
@@ -122,11 +139,12 @@ public class GameFactoryTest {
         Game game = factory.createGame();
         Gamefield field = game.getField();
 
-        Cell lavaSource = field.getCell(1, 2);
+        Cell lavaSource = field.getCell(11, 1);
         Cell wallCell = field.getCell(0, 0);
-        Cell playerCell = field.getCell(1, 1);
+        Cell playerCell = field.getCell(2, 8);
 
         assertTrue(game.getLava().contains(lavaSource));
+
         assertNull(lavaSource.getUnit(Wall.class));
         assertNull(lavaSource.getUnit(Player.class));
 

@@ -25,7 +25,7 @@ public class PlayerTest extends AbstractUnitTest<Player>{
 
         assertTrue(result);
         assertNull(start.getUnit(Player.class));
-        assertEquals(unit, field.getCell(1, 2).getUnit(Player.class));
+        assertEquals(unit, field.getCell(2, 1).getUnit(Player.class));
     }
 
     @Test
@@ -33,7 +33,7 @@ public class PlayerTest extends AbstractUnitTest<Player>{
         Cell start = field.getCell(1, 1);
         start.putUnit(unit);
 
-        field.getCell(1, 2).putUnit(new Wall());
+        field.getCell(2, 1).putUnit(new Wall());
 
         boolean result = unit.moveTo(Direction.EAST);
 
@@ -43,32 +43,43 @@ public class PlayerTest extends AbstractUnitTest<Player>{
 
     @Test
     void moveTo_pushesIronBlock_ifPossible() {
-        Cell start = field.getCell(1, 0);
+        Cell start = field.getCell(0, 0);
         start.putUnit(unit);
 
         IronBlock block = new IronBlock();
-        field.getCell(1, 1).putUnit(block);
+        field.getCell(1, 0).putUnit(block);
 
         boolean result = unit.moveTo(Direction.EAST);
 
         assertTrue(result);
-        assertEquals(unit, field.getCell(1, 1).getUnit(Player.class));
-        assertEquals(block, field.getCell(1, 2).getUnit(IronBlock.class));
+
+        assertNull(field.getCell(0, 0).getUnit(Player.class));
+
+        assertEquals(unit,
+                field.getCell(1, 0).getUnit(Player.class));
+
+        assertEquals(block,
+                field.getCell(2, 0).getUnit(IronBlock.class));
     }
 
     @Test
     void moveTo_fails_ifIronBlockCannotBePushed() {
-        Cell start = field.getCell(1, 0);
+        Cell start = field.getCell(0, 0);
         start.putUnit(unit);
 
         IronBlock block = new IronBlock();
-        field.getCell(1, 1).putUnit(block);
-        field.getCell(1, 2).putUnit(new Wall());
+        field.getCell(1, 0).putUnit(block);
+
+        field.getCell(2, 0).putUnit(new Wall());
 
         boolean result = unit.moveTo(Direction.EAST);
 
         assertFalse(result);
-        assertEquals(unit, field.getCell(1, 0).getUnit(Player.class));
-        assertEquals(block, field.getCell(1, 1).getUnit(IronBlock.class));
+
+        assertEquals(unit,
+                field.getCell(0, 0).getUnit(Player.class));
+
+        assertEquals(block,
+                field.getCell(1, 0).getUnit(IronBlock.class));
     }
 }

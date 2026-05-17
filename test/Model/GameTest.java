@@ -79,25 +79,34 @@ public class GameTest {
     @Test
     void playerMoveToFreeCell_movesPlayer() {
         Cell start = player.owner();
-        Cell destination = field.getCell(2, 3);
+        Cell destination = start.getNeighbour(Direction.EAST);
 
         boolean result = player.moveTo(Direction.EAST);
 
         assertTrue(result);
+
         assertNull(start.getUnit(Player.class));
-        assertSame(player, destination.getUnit(Player.class));
-        assertSame(destination, player.owner());
+
+        assertSame(player,
+                destination.getUnit(Player.class));
+
+        assertSame(destination,
+                player.owner());
     }
 
     @Test
     void playerMoveToWall_failsAndGameStateDoesNotChange() {
         Cell start = player.owner();
-        field.getCell(2, 3).putUnit(new Wall());
+
+        start.getNeighbour(Direction.EAST)
+                .putUnit(new Wall());
 
         boolean result = player.moveTo(Direction.EAST);
 
         assertFalse(result);
+
         assertSame(player, start.getUnit(Player.class));
+
         assertSame(start, player.owner());
 
         assertFalse(game.isOver());
@@ -137,28 +146,41 @@ public class GameTest {
     @Test
     void failedPlayerMove_doesNotTriggerLiquidSpread() {
         Cell lavaSource = field.getCell(0, 0);
-        Cell expectedLavaCell = field.getCell(0, 1);
 
         lava.addSource(lavaSource);
-        field.getCell(2, 3).putUnit(new Wall());
+
+        int before = lava.getCells().size();
+
+        player.owner()
+                .getNeighbour(Direction.EAST)
+                .putUnit(new Wall());
 
         player.moveTo(Direction.EAST);
 
-        assertFalse(lava.contains(expectedLavaCell));
+        int after = lava.getCells().size();
+
+        assertEquals(before, after);
     }
 
     @Test
     void playerLosesIfLavaReachesPlayerAfterMove() {
-        lava.addSource(field.getCell(2, 4));
+        Cell destination =
+                player.owner().getNeighbour(Direction.EAST);
+
+        lava.addSource(destination.getNeighbour(Direction.SOUTH));
 
         boolean moved = player.moveTo(Direction.EAST);
 
         assertTrue(moved);
-        assertSame(field.getCell(2, 3), player.owner());
+
+        assertSame(destination,
+                player.owner());
 
         assertTrue(lava.contains(player.owner()));
+
         assertTrue(game.isOver());
         assertFalse(game.isWon());
+
         assertFalse(player.isActive());
     }
 
@@ -176,33 +198,42 @@ public class GameTest {
 
     @Test
     void playerWinsIfMovesOntoExit() {
-        Cell exitCell = field.getCell(2, 3);
+        Cell exitCell =
+                player.owner().getNeighbour(Direction.EAST);
+
         exitCell.putUnit(new Exit());
 
         boolean moved = player.moveTo(Direction.EAST);
 
         assertTrue(moved);
-        assertSame(exitCell, player.owner());
+
+        assertSame(exitCell,
+                player.owner());
 
         assertTrue(game.isOver());
         assertTrue(game.isWon());
     }
 
     @Test
-    void lavaDeathHasPriorityOverExitWin() {
-        Cell exitCell = field.getCell(2, 3);
+    void ExitWinHasPriorityOverLavaDeath() {
+        Cell exitCell =
+                player.owner().getNeighbour(Direction.EAST);
+
         exitCell.putUnit(new Exit());
 
-        lava.addSource(field.getCell(2, 4));
+        lava.addSource(exitCell.getNeighbour(Direction.SOUTH));
 
         player.moveTo(Direction.EAST);
 
-        assertSame(exitCell, player.owner());
+        assertSame(exitCell,
+                player.owner());
+
         assertTrue(lava.contains(exitCell));
 
         assertTrue(game.isOver());
-        assertFalse(game.isWon());
-        assertFalse(player.isActive());
+        assertTrue(game.isWon());
+
+        assertTrue(player.isActive());
     }
 
     @Test

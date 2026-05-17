@@ -55,6 +55,7 @@ public class Game implements PlayerActionListener {
     private void updateGameState() {
         if (isPlayerOnExit()) {
             fireGameIsOver(); //сообщение о победе для GUI-классов
+            return;
         }
 
         if (isPlayerInLava()) {

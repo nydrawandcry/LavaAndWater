@@ -128,7 +128,7 @@ public class CellTest {
         Gamefield field = new Gamefield(3,3);
 
         Cell center = field.getCell(1,1);
-        Cell north = field.getCell(0,1);
+        Cell north = field.getCell(1,0);
 
         assertEquals(north, center.getNeighbour(Direction.NORTH));
     }
