@@ -25,7 +25,6 @@ public class CellWidget extends JPanel implements CellActionListener, LiquidAppe
 
     private JLayeredPane _layeredPane;
 
-    private JPanel _unitLayer;
 
     private HashMap<Unit, UnitWidget> _unitWidgets = new HashMap<>();
 
@@ -64,14 +63,8 @@ public class CellWidget extends JPanel implements CellActionListener, LiquidAppe
         _waterWidget = new WaterWidget();
         _waterWidget.setBounds(0,0,CELL_SIZE,CELL_SIZE); //я б еще это оптимизировала, это че каждую жидкость слоем добавлять
 
-        _unitLayer = new JPanel();
-        _unitLayer.setLayout(null);
-        _unitLayer.setOpaque(false);
-        _unitLayer.setBounds(0, 0, CELL_SIZE, CELL_SIZE);
-
         _layeredPane.add(_lavaWidget, JLayeredPane.DEFAULT_LAYER);
         _layeredPane.add(_waterWidget, JLayeredPane.DEFAULT_LAYER);
-        _layeredPane.add(_unitLayer, JLayeredPane.PALETTE_LAYER);
 
         add(_layeredPane, BorderLayout.CENTER);
     }
@@ -90,7 +83,6 @@ public class CellWidget extends JPanel implements CellActionListener, LiquidAppe
     }
 
     public void addUnitWidgets() {
-        _unitLayer.removeAll();
         _unitWidgets.clear();
 
         for (Unit u : _cell.getUnits()) {
@@ -114,7 +106,10 @@ public class CellWidget extends JPanel implements CellActionListener, LiquidAppe
 
         widget.setBounds(2,2,CELL_SIZE - 4, CELL_SIZE - 4);
 
-        _unitLayer.add(widget);
+        _layeredPane.add(
+                widget,
+                Integer.valueOf(widget.getRenderPriority())
+        );
         _unitWidgets.put(u,widget);
 
         repaint();
@@ -126,8 +121,7 @@ public class CellWidget extends JPanel implements CellActionListener, LiquidAppe
         if(widget == null) {
             return;
         }
-
-        _unitLayer.remove(widget);
+        _layeredPane.remove(widget);
 
         revalidate();
         repaint();

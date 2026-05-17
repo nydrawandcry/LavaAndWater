@@ -41,7 +41,7 @@ public class PlayerWidget extends UnitWidget implements PlayerActionListener {
 
     @Override
     public int getRenderPriority() {
-        return 100;
+        return 200;
     }
 
     @Override

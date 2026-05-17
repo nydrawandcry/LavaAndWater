@@ -56,7 +56,7 @@ public class IronBlockWidget extends UnitWidget implements IronBlockActionListen
 
     @Override
     public int getRenderPriority() {
-        return 100;
+        return 200;
     }
 
     @Override

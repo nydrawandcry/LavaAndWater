@@ -44,6 +44,11 @@ public class ExitWidget extends UnitWidget {
             g2d.drawOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
         }
     }
+
+    @Override
+    public int getRenderPriority() {
+        return 100;
+    }
     
     @Override
     protected Color getActiveColor() {
