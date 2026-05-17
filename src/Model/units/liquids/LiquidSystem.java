@@ -40,7 +40,7 @@ public abstract class LiquidSystem {
     }
 
     public boolean canOccupy(Cell cell) {
-        return cell != null && cell.getUnit(Solid.class) == null && cell.getUnit(Exit.class) == null;
+        return cell != null && cell.getUnit(Solid.class) == null;
     }
 
     public void remove(Cell cell) {

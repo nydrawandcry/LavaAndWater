@@ -71,7 +71,7 @@ public class CellWidget extends JPanel implements CellActionListener, LiquidAppe
 
         _layeredPane.add(_lavaWidget, JLayeredPane.DEFAULT_LAYER);
         _layeredPane.add(_waterWidget, JLayeredPane.DEFAULT_LAYER);
-        _layeredPane.add(_unitLayer, JLayeredPane.DRAG_LAYER);
+        _layeredPane.add(_unitLayer, JLayeredPane.PALETTE_LAYER);
 
         add(_layeredPane, BorderLayout.CENTER);
     }
