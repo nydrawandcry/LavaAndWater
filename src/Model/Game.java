@@ -73,7 +73,8 @@ public class Game {
     }
 
     private boolean isPlayerOnExit() {
-        return _player.owner().getUnit(Exit.class) != null;
+        Exit exit = (Exit)_player.owner().getUnit(Exit.class);
+        return  exit != null && exit.getLeftScores() == 0;
     }
 
     public Gamefield getField() {
