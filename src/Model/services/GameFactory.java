@@ -3,6 +3,7 @@ package Model.services;
 import Model.Game;
 import Model.gamefield.Gamefield;
 import Model.units.Exit;
+import Model.units.interactive.ExitToken;
 import Model.units.interactive.Player;
 import Model.units.interactive.IronBlock;
 import Model.units.solid.Wall;
@@ -24,7 +25,12 @@ public class GameFactory {
         placeIronBlocks(field);
 
         Player player = placePlayer(field, 2, 8);
-        placeExit(field, 14, 3);
+        Exit exit = placeExit(field, 14, 3);
+
+        List<ExitToken> tokens = placeTokens(field);
+        for(ExitToken token : tokens) {
+            token.addExitTokenListener(exit.getTokenListener()); //подписываю выход на события каждого жетончика
+        }
 
         Lava lava = new Lava();
         Water water = new Water();
@@ -78,8 +84,10 @@ public class GameFactory {
         return player;
     }
 
-    private void placeExit(Gamefield field, int x, int y) {
-        field.getCell(x, y).putUnit(new Exit());
+    private Exit placeExit(Gamefield field, int x, int y) {
+        Exit exit = new Exit();
+        field.getCell(x, y).putUnit(exit);
+        return exit;
     }
 
     private void placeLavaSources(Gamefield field, Lava lava) {
@@ -88,5 +96,19 @@ public class GameFactory {
 
     private void placeWaterSources(Gamefield field, Water water) {
         water.addSource(field.getCell(6, 8));
+    }
+
+    private List<ExitToken> placeTokens(Gamefield field) {
+        List<ExitToken> tokens = new ArrayList<>();
+
+        ExitToken t1 = new ExitToken();
+        field.getCell(2, 6).putUnit(t1);
+        tokens.add(t1);
+
+        ExitToken t2 = new ExitToken();
+        field.getCell(12, 8).putUnit(t2);
+        tokens.add(t2);
+
+        return tokens;
     }
 }
