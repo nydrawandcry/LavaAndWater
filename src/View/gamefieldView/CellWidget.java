@@ -27,8 +27,8 @@ public class CellWidget extends JPanel{
 
     private LiquidSystemWidget _liquidWidget;
 
-    private final CellActionListener _cellListener = new CellActionHandler();
-    private final LiquidAppearanceInCellListener _liquidListener = new LiquidLiquidAppearanceInCellHandler();
+    private CellActionListener _cellListener = new CellActionHandler();
+    private LiquidAppearanceInCellListener _liquidListener = new LiquidLiquidAppearanceInCellHandler();
 
     public CellWidget(Cell cell){
         _cell = cell;

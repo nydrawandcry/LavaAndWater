@@ -93,7 +93,7 @@ public class Game {
     }
 
     public boolean isOver() {
-        return _isLost;
+        return _isLost || _isWon;
     }
 
     public boolean isWon() {
@@ -138,7 +138,7 @@ public class Game {
         if(_isLost) {
             return;
         }
-
+        _player.deactivate();
         _isWon = true;
     }
 

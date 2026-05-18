@@ -5,17 +5,19 @@ import Model.units.moving.Player;
 
 import java.awt.*;
 
-public class PlayerWidget extends UnitWidget implements PlayerActionListener {
+public class PlayerWidget extends UnitWidget{
 
     private static int SIZE = 50;
 
     private Color _color;
 
+    private final PlayerActionListener _playerListener = new PlayerMovementHandler();
+
     public PlayerWidget(Player player, Color color){
         super(player);
 
         _color = color;
-        player.addPlayerActionListener(this);
+        player.addPlayerActionListener(_playerListener);
 
         setOpaque(false);
         setPreferredSize(new Dimension(SIZE, SIZE));
@@ -64,8 +66,10 @@ public class PlayerWidget extends UnitWidget implements PlayerActionListener {
         refresh();
     }
 
-    @Override
-    public void playerMoved() {
-        //тут будет анимация движения игрока
+    private class PlayerMovementHandler implements PlayerActionListener{
+        @Override
+        public void playerMoved () {
+            //тут будет анимация движения игрока
+        }
     }
 }
