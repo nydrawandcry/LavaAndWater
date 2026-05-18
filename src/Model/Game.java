@@ -10,10 +10,11 @@ import Model.units.liquids.Lava;
 import Model.units.liquids.Water;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Game {
 
-    private boolean _isOver;
+    private boolean _isLost;
     private boolean _isWon;
 
     private final Gamefield _field;
@@ -39,7 +40,7 @@ public class Game {
         _collisionDetector = new CollisionDetector();
         _lava.addLiquidSystemCollisionListener(_collisionDetector.getLiquidListener());
         _water.addLiquidSystemCollisionListener(_collisionDetector.getLiquidListener());
-        _isOver = false;
+        _isLost = false;
         _isWon = false;
     }
 
@@ -58,15 +59,12 @@ public class Game {
 
     private void updateGameState() {
         if (isPlayerOnExit()) {
-            fireGameIsOver(); //сообщение о победе для GUI-классов
+            fireGameIsWon(); //сообщение о победе для GUI-классов
             return;
         }
 
         if (isPlayerInLava()) {
-            _player.deactivate();
-            _isOver = true;
-            _isWon = false;
-            return;
+            fireGameIsLost();
         }
     }
 
@@ -95,7 +93,7 @@ public class Game {
     }
 
     public boolean isOver() {
-        return _isOver;
+        return _isLost;
     }
 
     public boolean isWon() {
@@ -114,16 +112,39 @@ public class Game {
         }
     }
 
-    private void fireGameIsOver() {
-        if(_isOver){
+    private void fireGameIsWon() {
+        winTheGame();
+
+        List<GameActionListener> listenersCopy =
+                new ArrayList<>(_gameListeners);
+
+        for(GameActionListener listener : listenersCopy) {
+            listener.gameIsWon();
+        }
+    }
+
+    private void fireGameIsLost() {
+        loseTheGame();
+
+        List<GameActionListener> listenersCopy =
+                new ArrayList<>(_gameListeners);
+
+        for(GameActionListener listener : listenersCopy) {
+            listener.gameIsLost();
+        }
+    }
+
+    private void winTheGame() {
+        if(_isLost) {
             return;
         }
 
-        _isOver = true;
         _isWon = true;
+    }
 
-        for(GameActionListener l : _gameListeners) {
-            l.gameIsOver();
-        }
+    private void loseTheGame() {
+        _player.deactivate();
+        _isLost = true;
+        _isWon = false;
     }
 }

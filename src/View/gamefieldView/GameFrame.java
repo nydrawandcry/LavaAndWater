@@ -47,15 +47,55 @@ public class GameFrame extends JFrame {
         repaint();
     }
 
-    private class GameActionHandler extends JFrame implements GameActionListener {
+    private class GameActionHandler implements GameActionListener {
         @Override
-        public void gameIsOver() {
+        public void gameIsWon() {
             JOptionPane.showMessageDialog(
-                    this,
+                    GameFrame.this,
                     "Вы дошли до выхода!",
                     "Победа!!!",
                     JOptionPane.INFORMATION_MESSAGE
             );
+            dispose();
         }
+
+        @Override
+        public void gameIsLost() {
+            String[] options = {
+                    "Попробовать снова",
+                    "Выйти"
+            };
+
+            int res = JOptionPane.showOptionDialog(
+                    GameFrame.this,
+                    "Вы угодили в лаву!\nХотите попробовать снова?",
+                    "Поражение :(",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE,
+                    null,
+                    options,
+                    options[0]
+            );
+
+            if(res == 0) {
+                restartGame();
+            }
+            else {
+                System.exit(0);
+            }
+        }
+    }
+
+    private void restartGame() {
+        _game.removeGameActionListener(_gameListener);
+        remove(_fieldView);
+        _game = null;
+
+        startNewGame();
+
+        pack();
+
+        revalidate();
+        repaint();
     }
 }
