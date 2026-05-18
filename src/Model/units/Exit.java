@@ -1,15 +1,23 @@
 package Model.units;
 
+import Model.events.collectable.ExitTokenActionListener;
 import Model.gamefield.Cell;
+import Model.units.interactive.ExitToken;
 import Model.units.solid.Solid;
 
 public class Exit extends Unit {
 
     private int _leftScores = 3;
 
+    private ExitTokenActionListener _tokenListener = new ExitKeyActionHandler();
+
     @Override
     public boolean canBelongTo(Cell cell) {
         return cell != null && cell.getUnit(Exit.class) == null && cell.getUnit(Solid.class) == null;
+    }
+
+    public ExitTokenActionListener getTokenListener() {
+        return _tokenListener;
     }
 
     public int getLeftScores() {
@@ -18,5 +26,12 @@ public class Exit extends Unit {
 
     public void decreaseLeftScores() {
         _leftScores--;
+    }
+
+    private class ExitKeyActionHandler implements ExitTokenActionListener {
+        @Override
+        public void tokenCollected(ExitToken token) {
+            decreaseLeftScores();
+        }
     }
 }
