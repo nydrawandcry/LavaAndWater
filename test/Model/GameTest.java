@@ -251,7 +251,7 @@ public class GameTest {
 
     @Test
     void gameSubscribesToPlayerOnlyOnceEvenIfSameListenerAddedAgain() {
-        player.addPlayerActionListener(game);
+        player.addPlayerActionListener(game.getPlayerListener());
 
         lava.addSource(field.getCell(0, 0));
 

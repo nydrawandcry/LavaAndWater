@@ -52,6 +52,10 @@ public class Game {
         }
     }
 
+    public PlayerActionListener getPlayerListener() {
+        return _playerListener;
+    }
+
     private void spreadLiquids() {
         _lava.spread();
         _water.spread();

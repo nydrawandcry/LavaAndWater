@@ -29,7 +29,7 @@ public class CollisionDetectorTest {
 
         water.addSource(cell);
 
-        detector.conflictAppeared(cell);
+        detector.getLiquidListener().conflictAppeared(cell);
 
         assertNull(cell.getLiquidSystem());
     }
@@ -41,7 +41,7 @@ public class CollisionDetectorTest {
 
         water.addSource(cell);
 
-        detector.conflictAppeared(cell);
+        detector.getLiquidListener().conflictAppeared(cell);
 
         assertNotNull(cell.getUnit(Wall.class));
     }
@@ -53,7 +53,7 @@ public class CollisionDetectorTest {
 
         cell.putUnit(player);
 
-        detector.conflictAppeared(cell);
+        detector.getLiquidListener().conflictAppeared(cell);
 
         assertSame(player, cell.getUnit(Player.class));
         assertNull(cell.getUnit(Wall.class));
@@ -63,15 +63,15 @@ public class CollisionDetectorTest {
     void conflictAppeared_calledTwice_doesNotCreateWallsAtAll() {
         Cell cell = field.getCell(1, 1);
 
-        detector.conflictAppeared(cell);
-        detector.conflictAppeared(cell);
+        detector.getLiquidListener().conflictAppeared(cell);
+        detector.getLiquidListener().conflictAppeared(cell);
 
         assertEquals(0, cell.getUnits(Wall.class).size());
     }
 
     @Test
     void conflictAppeared_nullCell_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> detector.conflictAppeared(null));
+        assertThrows(NullPointerException.class, () -> detector.getLiquidListener().conflictAppeared(null));
     }
 
     @Test
@@ -85,7 +85,7 @@ public class CollisionDetectorTest {
         water.addSource(waterSource);
         lava.addSource(lavaCell);
 
-        water.addLiquidSystemCollisionListener(detector);
+        water.addLiquidSystemCollisionListener(detector.getLiquidListener());
 
         water.spread();
         lava.spread();
@@ -107,7 +107,7 @@ public class CollisionDetectorTest {
         water.addSource(waterSource);
         lava.addSource(lavaCell);
 
-        water.addLiquidSystemCollisionListener(detector);
+        water.addLiquidSystemCollisionListener(detector.getLiquidListener());
 
         water.spread();
 
@@ -127,7 +127,7 @@ public class CollisionDetectorTest {
         water.addSource(waterSource);
         lava.addSource(lavaCell);
 
-        water.addLiquidSystemCollisionListener(detector);
+        water.addLiquidSystemCollisionListener(detector.getLiquidListener());
 
         water.spread();
 
@@ -162,8 +162,8 @@ public class CollisionDetectorTest {
         water.addSource(waterSource);
         lava.addSource(lavaCell);
 
-        water.addLiquidSystemCollisionListener(detector);
-        water.removeLiquidSystemCollisionListener(detector);
+        water.addLiquidSystemCollisionListener(detector.getLiquidListener());
+        water.removeLiquidSystemCollisionListener(detector.getLiquidListener());
 
         water.spread();
 
