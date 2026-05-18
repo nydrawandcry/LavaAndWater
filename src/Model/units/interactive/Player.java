@@ -40,6 +40,12 @@ public class Player extends Unit {
             return false;
         }
 
+        Collectable collectable = (Collectable) destination.getUnit(Collectable.class);
+
+        if(collectable instanceof ExitToken) { // ???
+            ((ExitToken) collectable).collect();
+        }
+
         owner().extractUnit(this);
         destination.putUnit(this);
         firePlayerMoved();
