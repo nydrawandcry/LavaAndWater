@@ -1,7 +1,7 @@
 package View.unitView;
 
 import Model.events.player.PlayerActionListener;
-import Model.units.moving.Player;
+import Model.units.interactive.Player;
 
 import java.awt.*;
 

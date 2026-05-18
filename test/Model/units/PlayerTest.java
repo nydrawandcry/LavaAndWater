@@ -2,9 +2,9 @@ package Model.units;
 
 import Model.gamefield.Cell;
 import Model.gamefield.Direction;
-import Model.units.moving.IronBlock;
+import Model.units.interactive.IronBlock;
 import Model.units.solid.Wall;
-import Model.units.moving.Player;
+import Model.units.interactive.Player;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.*;

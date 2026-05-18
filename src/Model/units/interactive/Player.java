@@ -1,4 +1,4 @@
-package Model.units.moving;
+package Model.units.interactive;
 
 import Model.events.player.PlayerActionListener;
 import Model.gamefield.Cell;

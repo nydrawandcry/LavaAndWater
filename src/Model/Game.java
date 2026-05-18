@@ -5,7 +5,7 @@ import Model.events.game.GameActionListener;
 import Model.gamefield.Gamefield;
 import Model.services.CollisionDetector;
 import Model.units.Exit;
-import Model.units.moving.Player;
+import Model.units.interactive.Player;
 import Model.units.liquids.Lava;
 import Model.units.liquids.Water;
 

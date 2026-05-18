@@ -2,8 +2,8 @@ package View.unitView;
 
 import Model.units.Exit;
 import Model.units.Unit;
-import Model.units.moving.IronBlock;
-import Model.units.moving.Player;
+import Model.units.interactive.IronBlock;
+import Model.units.interactive.Player;
 import Model.units.solid.Wall;
 
 import java.awt.*;

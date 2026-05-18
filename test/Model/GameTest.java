@@ -6,7 +6,7 @@ import Model.gamefield.Gamefield;
 import Model.units.Exit;
 import Model.units.liquids.Lava;
 import Model.units.liquids.Water;
-import Model.units.moving.Player;
+import Model.units.interactive.Player;
 import Model.units.solid.Wall;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

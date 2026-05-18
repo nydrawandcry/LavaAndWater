@@ -1,7 +1,7 @@
 package Model.gamefield;
 
 import Model.units.Exit;
-import Model.units.moving.Player;
+import Model.units.interactive.Player;
 import Model.units.solid.Wall;
 import org.junit.jupiter.api.Test;
 

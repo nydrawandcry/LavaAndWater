@@ -4,7 +4,7 @@ import Model.Game;
 import Model.gamefield.Cell;
 import Model.gamefield.Direction;
 import Model.gamefield.Gamefield;
-import Model.units.moving.Player;
+import Model.units.interactive.Player;
 
 import javax.swing.*;
 import java.awt.*;

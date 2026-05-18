@@ -1,7 +1,7 @@
 package View.unitView;
 
 import Model.events.units.IronBlockActionListener;
-import Model.units.moving.IronBlock;
+import Model.units.interactive.IronBlock;
 
 import java.awt.*;
 

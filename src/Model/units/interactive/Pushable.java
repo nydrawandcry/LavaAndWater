@@ -1,6 +1,4 @@
-package Model.units.moving;
-
-import Model.gamefield.Cell;
+package Model.units.interactive;
 
 public interface Pushable {
     //пока мной было принято решение сделать этот интерфейс маркерным

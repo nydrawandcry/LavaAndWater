@@ -1,9 +1,9 @@
 package Model.gamefield;
 
 import Model.units.Exit;
-import Model.units.moving.Player;
+import Model.units.interactive.Player;
 import Model.units.Unit;
-import Model.units.moving.IronBlock;
+import Model.units.interactive.IronBlock;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

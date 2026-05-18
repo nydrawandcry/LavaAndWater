@@ -2,7 +2,7 @@ package Model.units.solid;
 
 import Model.gamefield.Cell;
 import Model.units.AbstractUnitTest;
-import Model.units.moving.IronBlock;
+import Model.units.interactive.IronBlock;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.*;

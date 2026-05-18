@@ -1,12 +1,10 @@
-package Model.units.moving;
+package Model.units.interactive;
 
-import Model.events.player.PlayerActionListener;
 import Model.events.units.IronBlockActionListener;
 import Model.gamefield.Cell;
 import Model.gamefield.Direction;
 import Model.units.Unit;
 import Model.units.solid.Solid;
-import View.unitView.IronBlockWidget;
 
 import java.util.ArrayList;
 
