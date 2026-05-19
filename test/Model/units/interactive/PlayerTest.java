@@ -1,15 +1,14 @@
-package Model.units;
+package Model.units.interactive;
 
 import Model.gamefield.Cell;
 import Model.gamefield.Direction;
-import Model.units.interactive.IronBlock;
+import Model.units.AbstractUnitTest;
 import Model.units.solid.Wall;
-import Model.units.interactive.Player;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.*;
 
-public class PlayerTest extends AbstractUnitTest<Player>{
+public class PlayerTest extends AbstractUnitTest<Player> {
 
     @Override
     protected Player createUnit() {

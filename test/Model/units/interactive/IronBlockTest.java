@@ -1,8 +1,8 @@
-package Model.units.solid;
+package Model.units.interactive;
 
 import Model.gamefield.Cell;
 import Model.units.AbstractUnitTest;
-import Model.units.interactive.IronBlock;
+import Model.units.solid.Wall;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.*;
