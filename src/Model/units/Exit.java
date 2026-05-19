@@ -2,7 +2,7 @@ package Model.units;
 
 import Model.events.collectable.ExitScoreActionListener;
 import Model.gamefield.Cell;
-import Model.units.interactive.ExitToken;
+import Model.units.interactive.ExitScore;
 import Model.units.solid.Solid;
 
 public class Exit extends Unit {
@@ -34,7 +34,7 @@ public class Exit extends Unit {
 
     private class ExitKeyActionHandler implements ExitScoreActionListener {
         @Override
-        public void tokenCollected(ExitToken token) {
+        public void tokenCollected(ExitScore token) {
             decreaseLeftScores();
         }
     }

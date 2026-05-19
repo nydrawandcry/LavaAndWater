@@ -1,9 +1,9 @@
 package Model.events.collectable;
 
-import Model.units.interactive.ExitToken;
+import Model.units.interactive.ExitScore;
 
 import java.util.EventListener;
 
 public interface ExitScoreActionListener extends EventListener {
-    void tokenCollected(ExitToken token);
+    void tokenCollected(ExitScore token);
 }

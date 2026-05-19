@@ -3,7 +3,7 @@ package Model.services;
 import Model.Game;
 import Model.gamefield.Gamefield;
 import Model.units.Exit;
-import Model.units.interactive.ExitToken;
+import Model.units.interactive.ExitScore;
 import Model.units.interactive.Player;
 import Model.units.interactive.IronBlock;
 import Model.units.solid.Wall;
@@ -27,8 +27,8 @@ public class GameFactory {
         Player player = placePlayer(field, 2, 8);
         Exit exit = placeExit(field, 14, 3);
 
-        List<ExitToken> tokens = placeTokens(field);
-        for(ExitToken token : tokens) {
+        List<ExitScore> tokens = placeTokens(field);
+        for(ExitScore token : tokens) {
             token.addExitTokenListener(exit.getTokenListener()); //подписываю выход на события каждого жетончика
         }
 
@@ -98,14 +98,14 @@ public class GameFactory {
         water.addSource(field.getCell(6, 8));
     }
 
-    private List<ExitToken> placeTokens(Gamefield field) {
-        List<ExitToken> tokens = new ArrayList<>();
+    private List<ExitScore> placeTokens(Gamefield field) {
+        List<ExitScore> tokens = new ArrayList<>();
 
-        ExitToken t1 = new ExitToken();
+        ExitScore t1 = new ExitScore();
         field.getCell(2, 6).putUnit(t1);
         tokens.add(t1);
 
-        ExitToken t2 = new ExitToken();
+        ExitScore t2 = new ExitScore();
         field.getCell(12, 8).putUnit(t2);
         tokens.add(t2);
 

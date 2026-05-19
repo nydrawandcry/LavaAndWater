@@ -42,8 +42,8 @@ public class Player extends Unit {
 
         Collectable collectable = (Collectable) destination.getUnit(Collectable.class);
 
-        if(collectable instanceof ExitToken) { // ???
-            ((ExitToken) collectable).collect();
+        if(collectable instanceof ExitScore) { // ???
+            ((ExitScore) collectable).collect();
         }
 
         owner().extractUnit(this);

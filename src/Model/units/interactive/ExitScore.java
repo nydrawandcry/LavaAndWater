@@ -7,13 +7,13 @@ import Model.units.solid.Solid;
 
 import java.util.ArrayList;
 
-public class ExitToken extends Unit implements Collectable {
+public class ExitScore extends Unit implements Collectable {
 
     private ArrayList<ExitScoreActionListener> _listeners = new ArrayList<>();
 
     @Override
     public boolean canBelongTo(Cell cell) {
-        return cell != null && cell.getUnit(Solid.class) == null && cell.getUnit(ExitToken.class) == null;
+        return cell != null && cell.getUnit(Solid.class) == null && cell.getUnit(ExitScore.class) == null;
     }
 
     void collect() {
