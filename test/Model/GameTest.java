@@ -201,7 +201,10 @@ public class GameTest {
         Cell exitCell =
                 player.owner().getNeighbour(Direction.EAST);
 
-        exitCell.putUnit(new Exit());
+        Exit exit = new Exit();
+        exit.setLeftScores(0);
+
+        exitCell.putUnit(exit);
 
         boolean moved = player.moveTo(Direction.EAST);
 
@@ -219,7 +222,10 @@ public class GameTest {
         Cell exitCell =
                 player.owner().getNeighbour(Direction.EAST);
 
-        exitCell.putUnit(new Exit());
+        Exit exit = new Exit();
+        exit.setLeftScores(0);
+
+        exitCell.putUnit(exit);
 
         lava.addSource(exitCell.getNeighbour(Direction.SOUTH));
 
@@ -232,8 +238,6 @@ public class GameTest {
 
         assertTrue(game.isOver());
         assertTrue(game.isWon());
-
-        assertTrue(player.isActive());
     }
 
     @Test

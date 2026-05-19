@@ -7,7 +7,7 @@ import Model.units.solid.Solid;
 
 public class Exit extends Unit {
 
-    private int _leftScores = 3;
+    private int _leftScores;
 
     private ExitTokenActionListener _tokenListener = new ExitKeyActionHandler();
 
@@ -22,6 +22,10 @@ public class Exit extends Unit {
 
     public int getLeftScores() {
         return _leftScores;
+    }
+
+    public void setLeftScores(int amount) {
+        _leftScores = amount;
     }
 
     public void decreaseLeftScores() {
