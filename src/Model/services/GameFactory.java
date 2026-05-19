@@ -26,6 +26,7 @@ public class GameFactory {
 
         Player player = placePlayer(field, 2, 8);
         Exit exit = placeExit(field, 14, 3);
+        exit.setLeftScores(2);
 
         List<ExitScore> tokens = placeTokens(field);
         for(ExitScore token : tokens) {

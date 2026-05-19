@@ -2,6 +2,7 @@ package View.unitView;
 
 import Model.units.Exit;
 import Model.units.Unit;
+import Model.units.interactive.ExitScore;
 import Model.units.interactive.IronBlock;
 import Model.units.interactive.Player;
 import Model.units.solid.Wall;
@@ -39,6 +40,13 @@ public class UnitWidgetFactory {
             return new ExitWidget(
                     exit,
                     new Color(185,128,229)
+            );
+        }
+
+        if(unit instanceof ExitScore score) {
+            return new ExitScoreWidget(
+                    score,
+                    new Color(191,0,255)
             );
         }
 
