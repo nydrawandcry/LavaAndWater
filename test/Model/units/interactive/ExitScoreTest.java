@@ -63,7 +63,7 @@ public class ExitScoreTest extends AbstractUnitTest<ExitScore> {
     void collect_firesEvent() {
         AtomicBoolean fired = new AtomicBoolean(false);
 
-        unit.addExitTokenListener(token -> fired.set(true));
+        unit.addExitScoreListener(token -> fired.set(true));
 
         cell.putUnit(unit);
 
@@ -79,8 +79,8 @@ public class ExitScoreTest extends AbstractUnitTest<ExitScore> {
         ExitScoreActionListener listener =
                 token -> fired.set(true);
 
-        unit.addExitTokenListener(listener);
-        unit.removeExitTokenListener(listener);
+        unit.addExitScoreListener(listener);
+        unit.removeExitScoreListener(listener);
 
         cell.putUnit(unit);
 
@@ -96,8 +96,8 @@ public class ExitScoreTest extends AbstractUnitTest<ExitScore> {
         ExitScoreActionListener listener =
                 token -> calls.incrementAndGet();
 
-        unit.addExitTokenListener(listener);
-        unit.addExitTokenListener(listener);
+        unit.addExitScoreListener(listener);
+        unit.addExitScoreListener(listener);
 
         cell.putUnit(unit);
 
@@ -112,7 +112,7 @@ public class ExitScoreTest extends AbstractUnitTest<ExitScore> {
 
         exit.setLeftScores(1);
 
-        unit.addExitTokenListener(exit.getTokenListener());
+        unit.addExitScoreListener(exit.getTokenListener());
 
         cell.putUnit(unit);
 
@@ -131,9 +131,9 @@ public class ExitScoreTest extends AbstractUnitTest<ExitScore> {
         ExitScore token2 = new ExitScore();
         ExitScore token3 = new ExitScore();
 
-        token1.addExitTokenListener(exit.getTokenListener());
-        token2.addExitTokenListener(exit.getTokenListener());
-        token3.addExitTokenListener(exit.getTokenListener());
+        token1.addExitScoreListener(exit.getTokenListener());
+        token2.addExitScoreListener(exit.getTokenListener());
+        token3.addExitScoreListener(exit.getTokenListener());
 
         token1.collect();
 
@@ -152,7 +152,7 @@ public class ExitScoreTest extends AbstractUnitTest<ExitScore> {
     void collect_twice_firesEventOnlyOnce() {
         AtomicInteger calls = new AtomicInteger();
 
-        unit.addExitTokenListener(
+        unit.addExitScoreListener(
                 token -> calls.incrementAndGet()
         );
 
@@ -170,7 +170,7 @@ public class ExitScoreTest extends AbstractUnitTest<ExitScore> {
 
         exit.setLeftScores(1);
 
-        unit.addExitTokenListener(exit.getTokenListener());
+        unit.addExitScoreListener(exit.getTokenListener());
 
         cell.putUnit(unit);
 

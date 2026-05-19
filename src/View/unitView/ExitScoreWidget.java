@@ -15,7 +15,7 @@ public class ExitScoreWidget extends UnitWidget {
 
     public ExitScoreWidget(ExitScore score, Color color) {
         super(score);
-        score.addExitTokenListener(_scoreListener);
+        score.addExitScoreListener(_scoreListener);
 
         _color = color;
 

@@ -30,7 +30,7 @@ public class GameFactory {
 
         List<ExitScore> tokens = placeTokens(field);
         for(ExitScore token : tokens) {
-            token.addExitTokenListener(exit.getTokenListener()); //подписываю выход на события каждого жетончика
+            token.addExitScoreListener(exit.getTokenListener()); //подписываю выход на события каждого жетончика
         }
 
         Lava lava = new Lava();

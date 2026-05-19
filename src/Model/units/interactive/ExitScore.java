@@ -25,20 +25,20 @@ public class ExitScore extends Unit implements Collectable {
         _isCollected = true;
 
         destroy();
-        fireTokenCollected();
+        fireScoreCollected();
     }
 
-    public void addExitTokenListener(ExitScoreActionListener l) {
+    public void addExitScoreListener(ExitScoreActionListener l) {
         if (l != null && !_listeners.contains(l)) {
             _listeners.add(l);
         }
     }
 
-    public void removeExitTokenListener(ExitScoreActionListener l) {
+    public void removeExitScoreListener(ExitScoreActionListener l) {
         _listeners.remove(l);
     }
 
-    private void fireTokenCollected() {
+    private void fireScoreCollected() {
         for (ExitScoreActionListener l : new ArrayList<>(_listeners)) {
             l.tokenCollected(this);
         }
