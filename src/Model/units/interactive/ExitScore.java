@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 public class ExitScore extends Unit implements Collectable {
 
+    private boolean _isCollected;
+
     private ArrayList<ExitScoreActionListener> _listeners = new ArrayList<>();
 
     @Override
@@ -17,6 +19,11 @@ public class ExitScore extends Unit implements Collectable {
     }
 
     void collect() {
+        if(_isCollected) {
+            return;
+        }
+        _isCollected = true;
+
         destroy();
         fireTokenCollected();
     }
