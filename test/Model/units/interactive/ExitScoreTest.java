@@ -155,4 +155,20 @@ public class ExitScoreTest extends AbstractUnitTest<ExitScore> {
 
         assertEquals(1, calls.get());
     }
+
+    @Test
+    void collect_twice_doesNotDecreaseExitTwice() {
+        Exit exit = new Exit();
+
+        exit.setLeftScores(1);
+
+        unit.addExitTokenListener(exit.getTokenListener());
+
+        cell.putUnit(unit);
+
+        unit.collect();
+        unit.collect();
+
+        assertEquals(0, exit.getLeftScores());
+    }
 }
