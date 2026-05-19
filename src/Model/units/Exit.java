@@ -9,7 +9,7 @@ public class Exit extends Unit {
 
     private int _leftScores;
 
-    private ExitScoreActionListener _tokenListener = new ExitKeyActionHandler();
+    private ExitScoreActionListener _tokenListener = new ExitScoreActionHandler();
 
     @Override
     public boolean canBelongTo(Cell cell) {
@@ -32,7 +32,7 @@ public class Exit extends Unit {
         _leftScores--;
     }
 
-    private class ExitKeyActionHandler implements ExitScoreActionListener {
+    private class ExitScoreActionHandler implements ExitScoreActionListener {
         @Override
         public void tokenCollected(ExitScore token) {
             decreaseLeftScores();
