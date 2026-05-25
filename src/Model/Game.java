@@ -8,6 +8,7 @@ import Model.units.Exit;
 import Model.units.interactive.Player;
 import Model.units.liquids.Lava;
 import Model.units.liquids.Water;
+import Model.units.solid.Wall;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,13 +68,17 @@ public class Game {
             return;
         }
 
-        if (isPlayerInLava()) {
+        if (isPlayerInLava() || isPlayerInWall()) {
             fireGameIsLost();
         }
     }
 
     private boolean isPlayerInLava() {
         return _lava.contains(_player.owner());
+    }
+
+    private boolean isPlayerInWall() {
+        return _player.owner().getUnit(Wall.class) != null;
     }
 
     private boolean isPlayerOnExit() {

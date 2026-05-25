@@ -68,7 +68,7 @@ public class GameFrame extends JFrame {
 
             int res = JOptionPane.showOptionDialog(
                     GameFrame.this,
-                    "Вы угодили в лаву!\nХотите попробовать снова?",
+                    "Вы проиграли!\nХотите попробовать снова?",
                     "Поражение :(",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.INFORMATION_MESSAGE,
