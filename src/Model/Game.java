@@ -83,7 +83,7 @@ public class Game {
 
     private boolean isPlayerOnExit() {
         Exit exit = (Exit)_player.owner().getUnit(Exit.class);
-        return  exit != null && exit.getLeftScores().isEmpty();
+        return  exit != null && exit.isActive();
     }
 
     public Gamefield getField() {
