@@ -9,18 +9,16 @@ public class IronBlockWidget extends UnitWidget{
 
     private static int SIZE = 50;
 
-    private Color _color;
-
     private final IronBlockActionListener _ironBlockListener = new IronBlockActionHandler();
 
-    public IronBlockWidget(IronBlock block, Color color) {
+    public IronBlockWidget(IronBlock block) {
         super(block);
         block.addIronBlockActionListener(_ironBlockListener);
 
-        _color = color;
-
         setOpaque(false);
         setPreferredSize(new Dimension(SIZE, SIZE));
+
+        changeColorByActivity();
     }
 
     @Override
@@ -29,8 +27,10 @@ public class IronBlockWidget extends UnitWidget{
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+        Color color = _unit.isActive() ? getActiveColor() : getInactiveColor();
+
         //главное тело
-        g2d.setColor(_color);
+        g2d.setColor(color);
         g2d.fillRect(0, 0, getWidth(), getHeight());
 
         //рамка потемнее
@@ -69,17 +69,6 @@ public class IronBlockWidget extends UnitWidget{
     @Override
     protected Color getInactiveColor() {
         return Color.RED;
-    }
-
-    @Override
-    protected void refresh() {
-        repaint();
-    }
-
-    @Override
-    protected void changeColor(Color c) {
-        _color = c;
-        refresh();
     }
 
     private class IronBlockActionHandler implements IronBlockActionListener {

@@ -9,18 +9,16 @@ public class ExitScoreWidget extends UnitWidget {
 
     private static int SIZE = 20;
 
-    private Color _color;
-
     private ExitScoreActionListener _scoreListener = new ExitScoreActionHandler();
 
-    public ExitScoreWidget(ExitScore score, Color color) {
+    public ExitScoreWidget(ExitScore score) {
         super(score);
         score.addExitScoreListener(_scoreListener);
 
-        _color = color;
-
         setOpaque(false);
         setPreferredSize(new Dimension(SIZE, SIZE));
+
+        changeColorByActivity();
     }
 
     @Override
@@ -36,8 +34,10 @@ public class ExitScoreWidget extends UnitWidget {
         g2d.setColor(getInactiveColor());
         g2d.fillOval(margin, margin, size, size);
 
+        Color color = _unit.isActive() ? getActiveColor() : getInactiveColor();
+
         //главный круг
-        g2d.setColor(_color);
+        g2d.setColor(color);
         g2d.fillOval(margin + 1, margin + 1, size - 2, size - 2);
     }
 
@@ -54,17 +54,6 @@ public class ExitScoreWidget extends UnitWidget {
     @Override
     protected Color getInactiveColor() {
         return new Color(86, 16, 109);
-    }
-
-    @Override
-    protected void refresh() {
-        repaint();
-    }
-
-    @Override
-    protected void changeColor(Color c) {
-        _color = c;
-        refresh();
     }
 
     private class ExitScoreActionHandler implements ExitScoreActionListener{

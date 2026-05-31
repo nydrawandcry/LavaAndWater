@@ -16,38 +16,23 @@ public class UnitWidgetFactory {
     public static UnitWidget create(Unit unit) {
 
         if(unit instanceof Player player) {
-            return new PlayerWidget(
-                    player,
-                    new Color(242,209,180)
-            );
+            return new PlayerWidget(player);
         }
 
         if(unit instanceof Wall wall) {
-            return new WallWidget(
-                    wall,
-                    new Color(76,76,76)
-            );
+            return new WallWidget(wall);
         }
 
         if(unit instanceof IronBlock ironBlock) {
-            return new IronBlockWidget(
-                    ironBlock,
-                    new Color(150,150,150)
-            );
+            return new IronBlockWidget(ironBlock);
         }
 
         if(unit instanceof Exit exit) {
-            return new ExitWidget(
-                    exit,
-                    new Color(185,128,229)
-            );
+            return new ExitWidget(exit);
         }
 
         if(unit instanceof ExitScore score) {
-            return new ExitScoreWidget(
-                    score,
-                    new Color(191,0,255)
-            );
+            return new ExitScoreWidget(score);
         }
 
         return null;

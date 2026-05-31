@@ -9,18 +9,16 @@ public class PlayerWidget extends UnitWidget{
 
     private static int SIZE = 50;
 
-    private Color _color;
-
     private final PlayerActionListener _playerListener = new PlayerMovementHandler();
 
-    public PlayerWidget(Player player, Color color){
+    public PlayerWidget(Player player){
         super(player);
-
-        _color = color;
         player.addPlayerActionListener(_playerListener);
 
         setOpaque(false);
         setPreferredSize(new Dimension(SIZE, SIZE));
+
+        changeColorByActivity();
     }
 
     @Override
@@ -36,8 +34,10 @@ public class PlayerWidget extends UnitWidget{
         g2d.setColor(getInactiveColor());
         g2d.fillOval(margin, margin, size, size);
 
+        Color color = _unit.isActive() ? getActiveColor() : getInactiveColor();
+
         //главный круг
-        g2d.setColor(_color);
+        g2d.setColor(color);
         g2d.fillOval(margin + 1, margin + 1, size - 2, size - 2);
     }
 
@@ -54,16 +54,6 @@ public class PlayerWidget extends UnitWidget{
     @Override
     protected Color getInactiveColor() {
         return new Color(170,149,129);
-    }
-
-    @Override
-    protected void refresh() {
-        repaint();
-    }
-
-    @Override
-    protected void changeColor(Color c) {
-        refresh();
     }
 
     private class PlayerMovementHandler implements PlayerActionListener{

@@ -29,15 +29,8 @@ public abstract class UnitWidget extends JComponent {
     protected abstract Color getActiveColor();
     protected abstract Color getInactiveColor();
 
-    protected abstract void refresh();
-    protected abstract void changeColor(Color c);
-
     protected void changeColorByActivity() {
-        if(_unit.isActive()){
-            changeColor(getActiveColor());
-        } else {
-            changeColor(getInactiveColor());
-        }
+        repaint();
     }
 
     private class UnitActivationHandler implements UnitActivationListener {

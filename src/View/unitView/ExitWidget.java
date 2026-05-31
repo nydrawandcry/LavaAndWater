@@ -8,16 +8,13 @@ public class ExitWidget extends UnitWidget {
 
     private static int SIZE = 50;
 
-    private Color _color;
-
-    public ExitWidget(Exit exit, Color color) {
+    public ExitWidget(Exit exit) {
         super(exit);
-
-        _color = color;
-        //паписка на событяя
 
         setOpaque(false);
         setPreferredSize(new Dimension(SIZE, SIZE));
+
+        changeColorByActivity();
     }
 
     @Override
@@ -26,8 +23,10 @@ public class ExitWidget extends UnitWidget {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+        Color color = _unit.isActive() ? getActiveColor() : getInactiveColor();
+
         // фон выхода
-        g2d.setColor(_color);
+        g2d.setColor(color);
         g2d.fillRect(0, 0, getWidth(), getHeight());
 
         //рамка(...)
@@ -58,16 +57,5 @@ public class ExitWidget extends UnitWidget {
     @Override
     protected Color getInactiveColor() {
         return new Color(185,30, 229);
-    }
-
-    @Override
-    protected void refresh() {
-        repaint();
-    }
-
-    @Override
-    protected void changeColor(Color c) {
-        _color = c;
-        refresh();
     }
 }
