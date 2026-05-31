@@ -20,9 +20,9 @@ public class Game {
 
     private final Gamefield _field;
     private final Player _player;
-    private final Lava _lava;
-    private final Water _water;
-    private final CollisionDetector _collisionDetector;
+    private Lava _lava;
+    private Water _water;
+    private CollisionDetector _collisionDetector;
 
     private final PlayerActionListener _playerListener = new PlayerMovementHandler();
 
@@ -148,13 +148,22 @@ public class Game {
         if(_isLost) {
             return;
         }
-        _player.deactivate();
         _isWon = true;
+
+        deactivate();
     }
 
     private void loseTheGame() {
-        _player.deactivate();
         _isLost = true;
         _isWon = false;
+
+        deactivate();
+    }
+
+    private void deactivate() {
+        _field.deactivate();
+        _collisionDetector = null;
+        _water = null;
+        _lava = null;
     }
 }

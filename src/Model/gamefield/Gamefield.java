@@ -2,7 +2,6 @@ package Model.gamefield;
 
 import Model.units.Unit;
 
-import java.awt.geom.Dimension2D;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -36,11 +35,20 @@ public class Gamefield implements Iterable<Cell> {
         return _isDestroyed;
     }
 
-    public void destroy() {
+    public void deactivate() {
         for(Cell cell : _cells){
             ArrayList<Unit> units = cell.getUnits(Unit.class);
             for(Unit u : units){
                 u.deactivate();
+            }
+        }
+    }
+
+    public void destroy() {
+        for(Cell cell : _cells){
+            ArrayList<Unit> units = cell.getUnits(Unit.class);
+            for(Unit u : units){
+                u.destroy();
             }
         }
         _isDestroyed = true;
