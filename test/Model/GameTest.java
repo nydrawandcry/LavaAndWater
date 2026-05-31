@@ -202,7 +202,6 @@ public class GameTest {
                 player.owner().getNeighbour(Direction.EAST);
 
         Exit exit = new Exit();
-        exit.setLeftScores(0);
 
         exitCell.putUnit(exit);
 
@@ -223,7 +222,6 @@ public class GameTest {
                 player.owner().getNeighbour(Direction.EAST);
 
         Exit exit = new Exit();
-        exit.setLeftScores(0);
 
         exitCell.putUnit(exit);
 

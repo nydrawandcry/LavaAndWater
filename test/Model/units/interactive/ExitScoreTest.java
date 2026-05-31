@@ -108,45 +108,44 @@ public class ExitScoreTest extends AbstractUnitTest<ExitScore> {
     }
 
     @Test
-    void exitUnlocksAfterCollectingSingleToken() {
+    void exitUnlocksAfterCollectingSingleScore() {
         Exit exit = new Exit();
-
-        exit.setLeftScores(1);
-
-        unit.addExitScoreListener(exit.getExitScoreListener());
+        exit.addExitScore(unit);
 
         cell.putUnit(unit);
 
         unit.collect();
 
-        assertEquals(0, exit.getLeftScores());
+        assertEquals(0, exit.getLeftScores().size());
     }
 
     @Test
-    void exitUnlocksOnlyAfterAllTokensCollected() {
+    void exitUnlocksOnlyAfterAllScoresCollected() {
         Exit exit = new Exit();
 
-        exit.setLeftScores(3);
+        ExitScore score1 = new ExitScore();
+        ExitScore score2 = new ExitScore();
+        ExitScore score3 = new ExitScore();
 
-        ExitScore token1 = new ExitScore();
-        ExitScore token2 = new ExitScore();
-        ExitScore token3 = new ExitScore();
+        exit.addExitScore(score1);
+        exit.addExitScore(score2);
+        exit.addExitScore(score3);
 
-        token1.addExitScoreListener(exit.getExitScoreListener());
-        token2.addExitScoreListener(exit.getExitScoreListener());
-        token3.addExitScoreListener(exit.getExitScoreListener());
+        score1.addExitScoreListener(exit.getExitScoreListener());
+        score2.addExitScoreListener(exit.getExitScoreListener());
+        score3.addExitScoreListener(exit.getExitScoreListener());
 
-        token1.collect();
+        score1.collect();
 
-        assertEquals(2, exit.getLeftScores());
+        assertEquals(2, exit.getLeftScores().size());
 
-        token2.collect();
+        score2.collect();
 
-        assertEquals(1, exit.getLeftScores());
+        assertEquals(1, exit.getLeftScores().size());
 
-        token3.collect();
+        score3.collect();
 
-        assertEquals(0, exit.getLeftScores());
+        assertEquals(0, exit.getLeftScores().size());
     }
 
     @Test
@@ -169,15 +168,13 @@ public class ExitScoreTest extends AbstractUnitTest<ExitScore> {
     void collect_twice_doesNotDecreaseExitTwice() {
         Exit exit = new Exit();
 
-        exit.setLeftScores(1);
-
-        unit.addExitScoreListener(exit.getExitScoreListener());
+        exit.addExitScore(unit);
 
         cell.putUnit(unit);
 
         unit.collect();
         unit.collect();
 
-        assertEquals(0, exit.getLeftScores());
+        assertEquals(0, exit.getLeftScores().size());
     }
 }
