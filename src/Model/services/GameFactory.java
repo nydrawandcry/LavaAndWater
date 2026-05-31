@@ -107,8 +107,7 @@ public class GameFactory {
         scores.add(t2);
 
         for(ExitScore score : scores) {
-            exit.setTheLeftScore(score);
-            score.addExitScoreListener(exit.getExitScoreListener());
+            exit.addExitScore(score);
         }
     }
 }

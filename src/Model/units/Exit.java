@@ -28,11 +28,12 @@ public class Exit extends Unit {
         return Collections.unmodifiableList(_leftScores);
     }
 
-    public void setTheLeftScore(ExitScore score) {
+    public void addExitScore(ExitScore score) {
         if(score == null) {
             return;
         }
         _leftScores.add(score);
+        score.addExitScoreListener(this.getExitScoreListener());
     }
 
     public void decreaseLeftScores(ExitScore score) {
