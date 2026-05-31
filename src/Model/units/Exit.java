@@ -5,9 +5,13 @@ import Model.gamefield.Cell;
 import Model.units.interactive.ExitScore;
 import Model.units.solid.Solid;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class Exit extends Unit {
 
-    private int _leftScores;
+    private ArrayList<ExitScore> _leftScores = new ArrayList<>();
 
     private ExitScoreActionListener _scoreListener = new ExitScoreActionHandler();
 
@@ -20,22 +24,28 @@ public class Exit extends Unit {
         return _scoreListener;
     }
 
-    public int getLeftScores() {
-        return _leftScores;
+    public List<ExitScore> getLeftScores() {
+        return Collections.unmodifiableList(_leftScores);
     }
 
-    public void setLeftScores(int amount) {
-        _leftScores = amount;
+    public void setTheLeftScore(ExitScore score) {
+        if(score == null) {
+            return;
+        }
+        _leftScores.add(score);
     }
 
-    public void decreaseLeftScores() {
-        _leftScores--;
+    public void decreaseLeftScores(ExitScore score) {
+        if(score == null || _leftScores.isEmpty()) {
+            return;
+        }
+        _leftScores.remove(score);
     }
 
     private class ExitScoreActionHandler implements ExitScoreActionListener {
         @Override
         public void scoreCollected(ExitScore score) {
-            decreaseLeftScores();
+            decreaseLeftScores(score);
         }
     }
 }

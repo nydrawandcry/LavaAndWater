@@ -26,12 +26,8 @@ public class GameFactory {
 
         Player player = placePlayer(field, 2, 8);
         Exit exit = placeExit(field, 14, 3);
-        exit.setLeftScores(2);
 
-        List<ExitScore> scores = placeExitScores(field);
-        for(ExitScore score : scores) {
-            score.addExitScoreListener(exit.getExitScoreListener()); //подписываю выход на события каждого жетончика
-        }
+        placeExitScores(field, exit);
 
         Lava lava = new Lava();
         Water water = new Water();
@@ -99,7 +95,7 @@ public class GameFactory {
         water.addSource(field.getCell(6, 8));
     }
 
-    private List<ExitScore> placeExitScores(Gamefield field) {
+    private void placeExitScores(Gamefield field, Exit exit) {
         List<ExitScore> scores = new ArrayList<>();
 
         ExitScore t1 = new ExitScore();
@@ -110,6 +106,9 @@ public class GameFactory {
         field.getCell(12, 8).putUnit(t2);
         scores.add(t2);
 
-        return scores;
+        for(ExitScore score : scores) {
+            exit.setTheLeftScore(score);
+            score.addExitScoreListener(exit.getExitScoreListener());
+        }
     }
 }
