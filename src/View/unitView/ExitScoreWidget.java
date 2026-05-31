@@ -69,7 +69,7 @@ public class ExitScoreWidget extends UnitWidget {
 
     private class ExitScoreActionHandler implements ExitScoreActionListener{
         @Override
-        public void tokenCollected (ExitScore token) {
+        public void scoreCollected(ExitScore token) {
 
         }
     }

@@ -113,7 +113,7 @@ public class ExitScoreTest extends AbstractUnitTest<ExitScore> {
 
         exit.setLeftScores(1);
 
-        unit.addExitScoreListener(exit.getTokenListener());
+        unit.addExitScoreListener(exit.getExitScoreListener());
 
         cell.putUnit(unit);
 
@@ -132,9 +132,9 @@ public class ExitScoreTest extends AbstractUnitTest<ExitScore> {
         ExitScore token2 = new ExitScore();
         ExitScore token3 = new ExitScore();
 
-        token1.addExitScoreListener(exit.getTokenListener());
-        token2.addExitScoreListener(exit.getTokenListener());
-        token3.addExitScoreListener(exit.getTokenListener());
+        token1.addExitScoreListener(exit.getExitScoreListener());
+        token2.addExitScoreListener(exit.getExitScoreListener());
+        token3.addExitScoreListener(exit.getExitScoreListener());
 
         token1.collect();
 
@@ -171,7 +171,7 @@ public class ExitScoreTest extends AbstractUnitTest<ExitScore> {
 
         exit.setLeftScores(1);
 
-        unit.addExitScoreListener(exit.getTokenListener());
+        unit.addExitScoreListener(exit.getExitScoreListener());
 
         cell.putUnit(unit);
 

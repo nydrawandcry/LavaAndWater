@@ -9,15 +9,15 @@ public class Exit extends Unit {
 
     private int _leftScores;
 
-    private ExitScoreActionListener _tokenListener = new ExitScoreActionHandler();
+    private ExitScoreActionListener _scoreListener = new ExitScoreActionHandler();
 
     @Override
     public boolean canBelongTo(Cell cell) {
         return cell != null && cell.getUnit(Exit.class) == null && cell.getUnit(Solid.class) == null;
     }
 
-    public ExitScoreActionListener getTokenListener() {
-        return _tokenListener;
+    public ExitScoreActionListener getExitScoreListener() {
+        return _scoreListener;
     }
 
     public int getLeftScores() {
@@ -34,7 +34,7 @@ public class Exit extends Unit {
 
     private class ExitScoreActionHandler implements ExitScoreActionListener {
         @Override
-        public void tokenCollected(ExitScore token) {
+        public void scoreCollected(ExitScore score) {
             decreaseLeftScores();
         }
     }

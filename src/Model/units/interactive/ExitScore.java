@@ -40,7 +40,7 @@ public class ExitScore extends Unit implements Collectable {
 
     private void fireScoreCollected() {
         for (ExitScoreActionListener l : new ArrayList<>(_listeners)) {
-            l.tokenCollected(this);
+            l.scoreCollected(this);
         }
     }
 }
