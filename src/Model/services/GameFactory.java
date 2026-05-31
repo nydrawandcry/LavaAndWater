@@ -106,6 +106,8 @@ public class GameFactory {
         field.getCell(12, 8).putUnit(t2);
         scores.add(t2);
 
+        exit.deactivate();
+
         for(ExitScore score : scores) {
             exit.addExitScore(score);
         }

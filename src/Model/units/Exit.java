@@ -37,10 +37,15 @@ public class Exit extends Unit {
     }
 
     public void decreaseLeftScores(ExitScore score) {
-        if(score == null || _leftScores.isEmpty()) {
+        if(score == null) {
             return;
         }
+
         _leftScores.remove(score);
+
+        if(_leftScores.isEmpty()) {
+            this.activate();
+        }
     }
 
     private class ExitScoreActionHandler implements ExitScoreActionListener {
