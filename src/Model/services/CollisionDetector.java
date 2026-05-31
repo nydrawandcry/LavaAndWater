@@ -1,6 +1,5 @@
 package Model.services;
 
-import Model.events.liquids.LiquidAppearanceInCellListener;
 import Model.events.liquids.LiquidSystemCollisionListener;
 import Model.gamefield.Cell;
 import Model.units.solid.Wall;
