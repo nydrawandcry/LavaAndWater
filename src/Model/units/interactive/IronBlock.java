@@ -8,7 +8,7 @@ import Model.units.solid.Solid;
 
 import java.util.ArrayList;
 
-public class IronBlock extends Unit implements Solid, Pushable {
+public class IronBlock extends InteractiveUnit implements Solid {
 
     private ArrayList<IronBlockActionListener> _listeners = new ArrayList<>();
 
@@ -17,22 +17,25 @@ public class IronBlock extends Unit implements Solid, Pushable {
         return cell != null && cell.getUnit(Solid.class) == null;
     }
 
-    boolean push(Direction dir) {
+    @Override
+    void interact(Direction dir) {
         if(dir == null) {
             throw new NullPointerException("Направление не может быть null!");
+        }
+        if(owner() == null) {
+            throw new IllegalStateException("Нельзя толкнуть блок, который не находится на поле");
         }
 
         Cell destination = this.owner().getNeighbour(dir);
 
         if(canBelongTo(destination)) {
 
-            owner().extractUnit(this);
-            if(destination.putUnit(this)) {
-                fireIronBlockMoved();
-                return true;
+            if(owner().extractUnit(this)){
+                if (destination.putUnit(this)) {
+                    fireIronBlockMoved();
+                }
             }
         }
-        return false;
     }
 
     public void addIronBlockActionListener(IronBlockActionListener l) {

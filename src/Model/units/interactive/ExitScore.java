@@ -2,12 +2,13 @@ package Model.units.interactive;
 
 import Model.events.collectable.ExitScoreActionListener;
 import Model.gamefield.Cell;
+import Model.gamefield.Direction;
 import Model.units.Unit;
 import Model.units.solid.Solid;
 
 import java.util.ArrayList;
 
-public class ExitScore extends Unit implements Collectable {
+public class ExitScore extends InteractiveUnit {
 
     private boolean _isCollected;
 
@@ -18,7 +19,8 @@ public class ExitScore extends Unit implements Collectable {
         return cell != null && cell.getUnit(Solid.class) == null && cell.getUnit(ExitScore.class) == null;
     }
 
-    void collect() {
+    @Override
+    void interact(Direction dir) {
         if(_isCollected) {
             return;
         }

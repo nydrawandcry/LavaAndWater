@@ -33,22 +33,10 @@ public class Player extends Unit {
             return false;
         }
 
-        Unit blocking = destination.getUnit(Solid.class);
+        InteractiveUnit unit = (InteractiveUnit) destination.getUnit(InteractiveUnit.class);
 
-        if(blocking instanceof IronBlock) { //тут все равно был уже instanceof, убрала в целом Pushable (есть ли теперь вообще в нем смысл?)
-            boolean pushed = ((IronBlock) blocking).push(dir);
-            if(!pushed) {
-                return false;
-            }
-        } 
-        else if(blocking != null){
-            return false;
-        }
-
-        Collectable collectable = (Collectable) destination.getUnit(Collectable.class);
-
-        if(collectable instanceof ExitScore) { // ???
-            ((ExitScore) collectable).collect();
+        if(unit != null) {
+            unit.interact(dir);
         }
 
         owner().extractUnit(this);
