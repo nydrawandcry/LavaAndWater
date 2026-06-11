@@ -125,7 +125,7 @@ public class GamefieldTest {
         Exit ex = new Exit();
         field.getCell(0,0).putUnit(ex);
 
-        field.destroy();
+        field.deactivate();
 
         assertFalse(ex.isActive());
     }

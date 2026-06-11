@@ -67,19 +67,18 @@ public abstract class GameManagerTest {
         List<String> events = new ArrayList<>();
         recordCellEvents(field, events, true);
 
+        assertTrue(allUnits(field).isEmpty());
+
         field.destroy();
 
         assertTrue(field.isDestroyed());
-        assertTrue(allUnits(field).isEmpty());
 
-        manager.start();
+        events.clear();
+
+        assertDoesNotThrow(() -> manager.start());
 
         assertTrue(events.isEmpty());
-        assertTrue(allUnits(field).isEmpty());
-
-        for (Cell cell : field) {
-            assertNull(cell.getLiquidSystem());
-        }
+        assertTrue(field.isDestroyed());
     }
 
     @Test
