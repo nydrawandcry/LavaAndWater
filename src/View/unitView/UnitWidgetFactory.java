@@ -2,6 +2,7 @@ package View.unitView;
 
 import Model.units.Exit;
 import Model.units.Unit;
+import Model.units.interactive.Boat;
 import Model.units.interactive.ExitScore;
 import Model.units.interactive.IronBlock;
 import Model.units.interactive.Player;
@@ -33,6 +34,10 @@ public class UnitWidgetFactory {
 
         if(unit instanceof ExitScore score) {
             return new ExitScoreWidget(score);
+        }
+
+        if(unit instanceof Boat boat) {
+            return new BoatWidget(boat);
         }
 
         return null;

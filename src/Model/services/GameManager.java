@@ -49,6 +49,7 @@ public abstract class GameManager {
         Player player = placePlayer(_field, 2, 8);
         Exit exit = placeExit(_field, 14, 3);
         placeExitScores(_field, exit);
+        placeBoats(_field);
 
         Lava lava = new Lava();
         Water water = new Water();
@@ -82,4 +83,5 @@ public abstract class GameManager {
     protected abstract void placeLavaSources(Gamefield field, Lava lava);
     protected abstract void placeWaterSources(Gamefield field, Water water);
     protected abstract void placeExitScores(Gamefield field, Exit exit);
+    protected abstract void placeBoats(Gamefield field);
 }

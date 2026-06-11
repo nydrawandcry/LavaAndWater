@@ -3,6 +3,7 @@ package Model.services;
 import Model.Game;
 import Model.gamefield.Gamefield;
 import Model.units.Exit;
+import Model.units.interactive.Boat;
 import Model.units.interactive.ExitScore;
 import Model.units.interactive.IronBlock;
 import Model.units.interactive.Player;
@@ -93,5 +94,9 @@ public class SimpleGameManager extends GameManager{
             exit.addExitScore(score);
             score.addExitScoreListener(exit.getExitScoreListener());
         }
+    }
+
+    protected void placeBoats(Gamefield field) {
+        field.getCell(3,7).putUnit(new Boat());
     }
 }
