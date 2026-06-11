@@ -112,7 +112,7 @@ public class GamefieldTest {
         field.getCell(0,0).putUnit(p);
         field.getCell(1,1).putUnit(w);
 
-        field.destroy();
+        field.deactivate();
 
         assertFalse(p.isActive());
         assertFalse(w.isActive());

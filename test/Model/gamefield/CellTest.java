@@ -1,11 +1,14 @@
 package Model.gamefield;
 
+import Model.events.cell.CellActionEvent;
+import Model.events.cell.CellActionListener;
 import Model.units.Exit;
 import Model.units.interactive.Player;
 import Model.units.interactive.IronBlock;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,6 +18,14 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CellTest {
+
+    private static final class TestUnit extends Unit {
+        @Override
+        public boolean canBelongTo(Cell cell) {
+            return cell != null && cell.getUnit(TestUnit.class) == null;
+        }
+    }
+
     @Test
     void cell_canStoreZeroUnits() {
         Gamefield field = new Gamefield(4,4);
@@ -100,6 +111,115 @@ public class CellTest {
         boolean result = cell.extractUnit(block);
 
         assertFalse(result);
+    }
+
+    @Test
+    void extractUnit_foreignUnitMustNotBeExtracted_andMustNotFireEvent() {
+        Gamefield field = new Gamefield(1, 2);
+        Cell firstCell = field.getCell(0, 0);
+        Cell secondCell = field.getCell(1, 0);
+
+        TestUnit unitInFirstCell = new TestUnit();
+        TestUnit foreignUnit = new TestUnit();
+
+        assertTrue(firstCell.putUnit(unitInFirstCell));
+        assertTrue(secondCell.putUnit(foreignUnit));
+
+        List<String> events = new ArrayList<>();
+
+        firstCell.addCellActionListener(new CellActionListener() {
+            @Override
+            public void unitPlaced(CellActionEvent e) {
+                events.add("unitPlaced");
+            }
+
+            @Override
+            public void unitExtracted(CellActionEvent e) {
+                events.add("unitExtracted");
+            }
+        });
+
+        assertSame(firstCell, unitInFirstCell.owner());
+        assertSame(secondCell, foreignUnit.owner());
+
+        assertFalse(firstCell.extractUnit(foreignUnit));
+
+        assertTrue(events.isEmpty());
+        assertSame(firstCell, unitInFirstCell.owner());
+        assertSame(secondCell, foreignUnit.owner());
+        assertTrue(firstCell.getUnits().contains(unitInFirstCell));
+        assertTrue(secondCell.getUnits().contains(foreignUnit));
+    }
+
+    @Test
+    void extractUnit_fromEmptyCell_doesNotFireUnitExtracted() {
+        Gamefield field = new Gamefield(1, 1);
+        Cell cell = field.getCell(0, 0);
+        TestUnit unit = new TestUnit();
+
+        List<String> events = new ArrayList<>();
+
+        cell.addCellActionListener(new CellActionListener() {
+            @Override
+            public void unitPlaced(CellActionEvent e) {
+                events.add("unitPlaced");
+            }
+
+            @Override
+            public void unitExtracted(CellActionEvent e) {
+                events.add("unitExtracted");
+            }
+        });
+
+        assertTrue(cell.isEmpty());
+        assertNull(unit.owner());
+
+        assertFalse(cell.extractUnit(unit));
+
+        assertTrue(events.isEmpty());
+        assertTrue(cell.isEmpty());
+        assertNull(unit.owner());
+    }
+
+    @Test
+    void extractUnit_foreignUnit_doesNotFireUnitExtractedAndDoesNotBreakForeignOwner() {
+        Gamefield field = new Gamefield(1, 2);
+
+        Cell firstCell = field.getCell(0, 0);
+        Cell secondCell = field.getCell(1, 0);
+
+        TestUnit firstUnit = new TestUnit();
+        TestUnit foreignUnit = new TestUnit();
+
+        assertTrue(firstCell.putUnit(firstUnit));
+        assertTrue(secondCell.putUnit(foreignUnit));
+
+        List<String> events = new ArrayList<>();
+
+        firstCell.addCellActionListener(new CellActionListener() {
+            @Override
+            public void unitPlaced(CellActionEvent e) {
+                events.add("unitPlaced");
+            }
+
+            @Override
+            public void unitExtracted(CellActionEvent e) {
+                events.add("unitExtracted");
+            }
+        });
+
+        assertSame(firstCell, firstUnit.owner());
+        assertSame(secondCell, foreignUnit.owner());
+
+        assertFalse(firstCell.extractUnit(foreignUnit));
+
+        assertTrue(events.isEmpty());
+
+        assertSame(firstCell, firstUnit.owner());
+        assertSame(secondCell, foreignUnit.owner());
+
+        assertTrue(firstCell.getUnits().contains(firstUnit));
+        assertTrue(secondCell.getUnits().contains(foreignUnit));
     }
 
     @Test
