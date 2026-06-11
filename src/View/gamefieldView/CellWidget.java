@@ -80,7 +80,7 @@ public class CellWidget extends JPanel{
         repaint();
     }
 
-    public void addUnitWidgets() {
+    private void addUnitWidgets() {
         _unitWidgets.clear();
 
         for (Unit u : _cell.getUnits()) {
@@ -91,7 +91,7 @@ public class CellWidget extends JPanel{
         repaint();
     }
 
-    public void addUnitWidget(Unit u) {
+    private void addUnitWidget(Unit u) {
         if(_unitWidgets.containsKey(u)){
             return;
         }
@@ -113,7 +113,7 @@ public class CellWidget extends JPanel{
         repaint();
     }
 
-    public void removeUnitWidget(Unit u) {
+    private void removeUnitWidget(Unit u) {
         UnitWidget widget = _unitWidgets.remove(u);
 
         if(widget == null) {
