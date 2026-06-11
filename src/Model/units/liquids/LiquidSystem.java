@@ -3,10 +3,10 @@ package Model.units.liquids;
 import Model.events.liquids.LiquidSystemCollisionListener;
 import Model.events.player.PlayerMovementListener;
 import Model.gamefield.Cell;
-import Model.units.Exit;
 import Model.units.solid.Solid;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -50,7 +50,7 @@ public abstract class LiquidSystem {
 
     }
 
-    public boolean canOccupy(Cell cell) {
+    protected boolean canOccupy(Cell cell) {
         return cell != null && cell.getUnit(Solid.class) == null;
     }
 
@@ -67,7 +67,7 @@ public abstract class LiquidSystem {
     }
 
     public Set<Cell> getCells() {
-        return Set.copyOf(_cells);
+        return Collections.unmodifiableSet(_cells);
     }
 
     public void addLiquidSystemCollisionListener(LiquidSystemCollisionListener l) {
@@ -82,13 +82,13 @@ public abstract class LiquidSystem {
         }
     }
 
-    public void fireConflictAppeared(Cell cell) {
+    private void fireConflictAppeared(Cell cell) {
         for(LiquidSystemCollisionListener l : _listeners) {
             l.conflictAppeared(cell);
         }
     }
 
-    private class PlayerMovementHandler implements PlayerMovementListener {
+    private class PlayerMovementHandler implements PlayerMovementListener{
         @Override
         public void playerMoved () {
             spread();

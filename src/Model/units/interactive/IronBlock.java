@@ -43,13 +43,13 @@ public class IronBlock extends InteractiveUnit implements Solid {
         }
     }
 
-    public void removePlayerActionListener(IronBlockActionListener l) {
+    public void removeIronBlockActionListener(IronBlockActionListener l) {
         if(l != null){
             _listeners.remove(l);
         }
     }
 
-    public void fireIronBlockMoved() {
+    private void fireIronBlockMoved() {
         for(IronBlockActionListener l : _listeners) {
             l.ironBlockMoved();
         }

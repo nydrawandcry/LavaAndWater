@@ -17,7 +17,7 @@ public class Exit extends Unit {
     private ExitScoreActionListener _scoreListener = new ExitScoreActionHandler();
 
     @Override
-    public boolean canBelongTo(Cell cell) {
+    protected boolean canBelongTo(Cell cell) {
         return cell != null && cell.getUnit(Exit.class) == null && cell.getUnit(Solid.class) == null;
     }
 
@@ -36,7 +36,7 @@ public class Exit extends Unit {
         _leftScores.add(score);
     }
 
-    public void decreaseLeftScores(ExitScore score) {
+    private void decreaseLeftScores(ExitScore score) {
         if(score == null) {
             return;
         }

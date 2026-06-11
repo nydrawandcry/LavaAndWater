@@ -2,8 +2,8 @@ package Model;
 
 import Model.events.game.GameActionListener;
 import Model.events.player.PlayerReachListener;
-import Model.gamefield.Gamefield;
 import Model.services.GameManager;
+import Model.gamefield.Gamefield;
 import Model.services.SimpleGameManager;
 
 import java.util.ArrayList;
@@ -30,18 +30,6 @@ public class Game {
         manager.start();
     }
 
-    public PlayerReachListener getPlayerListener() {
-        return _playerListener;
-    }
-
-    public Gamefield getField() {
-        return _field;
-    }
-
-    public boolean isOver() {
-        return _isLost || _isWon;
-    }
-
     private class PlayerReachHandler implements PlayerReachListener {
         @Override
         public void playerInLava() {
@@ -57,6 +45,18 @@ public class Game {
         public void playerInExit() {
             fireGameIsWon();
         }
+    }
+
+    public PlayerReachListener getPlayerListener() {
+        return _playerListener;
+    }
+
+    public Gamefield getField() {
+        return _field;
+    }
+
+    public boolean isOver() {
+        return _isLost || _isWon;
     }
 
     public void addGameActionListener(GameActionListener l) {
