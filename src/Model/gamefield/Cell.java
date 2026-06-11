@@ -19,7 +19,7 @@ public class Cell {
     private ArrayList<CellActionListener> _listeners = new ArrayList<>();
     private ArrayList<LiquidAppearanceInCellListener> _liquidListeners = new ArrayList<>();
 
-    public Cell(Gamefield field){
+    Cell(Gamefield field){
 
         if(field == null) {
             throw new NullPointerException("Игровое поле не может быть null");
@@ -34,20 +34,15 @@ public class Cell {
         }
 
         if(u.owner() != null) {
-            u.owner()._units.remove(u);
-            u.removeOwner();
+            if (u.owner().extractUnit(u)) { //при старом владельце юнит полностью удаляется из клетки
+                return false;
+            }
         }
 
-        if(u.owner() != null) {
+        if(!u.setOwner(this)){
             return false;
         }
-
-        if(!u.canBelongTo(this)){
-            return false;
-        }
-
         _units.add(u);
-        u.setOwner(this);
         u.activate();
 
         fireUnitPlaced(u);
@@ -58,7 +53,7 @@ public class Cell {
         if(u == null) {
             return false;
         }
-        if(this._units.isEmpty()) {
+        if(!_units.contains(u) || u.owner() != this) { //проверка, что клетка извлекает не чужой юнит
             return false;
         }
 
@@ -87,7 +82,7 @@ public class Cell {
 
         if(old == null && liquid != null) {
             fireLiquidAdded(liquid);
-        } else if(old != null && liquid == null) { //бля эт надо вообще?
+        } else if(old != null && liquid == null) {
             fireLiquidRemoved(old);
         }
     }
@@ -96,7 +91,7 @@ public class Cell {
         return _units.isEmpty();
     }
 
-    public ArrayList<Unit> getUnits(Class<?> c){
+    ArrayList<Unit> getUnits(Class<?> c) {
         ArrayList<Unit> res = new ArrayList<>();
 
         for(Unit u : _units) {
@@ -129,7 +124,7 @@ public class Cell {
         return _neighbours.containsValue(cell);
     }
 
-    public void setNeighbour(Direction dir, Cell neighbour) {
+    void setNeighbour(Direction dir, Cell neighbour) {
         if(neighbour == null || neighbour == this) {
             return;
         }
@@ -171,21 +166,9 @@ public class Cell {
         }
     }
 
-    public void removeCellActionListener(CellActionListener l) {
-        if(l != null){
-            _listeners.remove(l);
-        }
-    }
-
     public void addLiquidAppearanceInCellListener(LiquidAppearanceInCellListener l) {
         if(l != null && !_liquidListeners.contains(l)) {
             _liquidListeners.add(l);
-        }
-    }
-
-    public void removeLiquidAppearanceInCellListener(LiquidAppearanceInCellListener l) {
-        if(l != null) {
-            _liquidListeners.remove(l);
         }
     }
 
@@ -203,7 +186,7 @@ public class Cell {
         }
     }
 
-    public void fireUnitPlaced(Unit u) {
+    private void fireUnitPlaced(Unit u) {
         CellActionEvent e = new CellActionEvent(this, u);
 
         for(CellActionListener l : _listeners) {
@@ -211,7 +194,7 @@ public class Cell {
         }
     }
 
-    public void fireUnitExtracted(Unit u) {
+    private void fireUnitExtracted(Unit u) {
         CellActionEvent e = new CellActionEvent(this, u);
 
         for(CellActionListener l : _listeners) {

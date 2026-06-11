@@ -66,7 +66,7 @@ public class CollisionDetectorTest {
         detector.getLiquidListener().conflictAppeared(cell);
         detector.getLiquidListener().conflictAppeared(cell);
 
-        assertEquals(0, cell.getUnits(Wall.class).size());
+        assertEquals(0, cell.getUnits().size());
     }
 
     @Test
