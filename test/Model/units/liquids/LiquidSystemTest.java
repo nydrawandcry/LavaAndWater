@@ -1,5 +1,7 @@
 package Model.units.liquids;
 
+import Model.events.liquids.LiquidAppearanceInCellEvent;
+import Model.events.liquids.LiquidAppearanceInCellListener;
 import Model.events.liquids.LiquidSystemCollisionListener;
 import Model.gamefield.Cell;
 import Model.gamefield.Gamefield;
@@ -8,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -220,6 +223,113 @@ public abstract class LiquidSystemTest<T extends LiquidSystem> {
         liquid.addSource(field.getCell(1, 1));
 
         assertFalse(liquid.contains(field.getCell(0, 0)));
+    }
+
+    @Test
+    void spread_toEmptyNeighbour_doesNotFireConflict() {
+        Cell source = field.getCell(0, 0);
+        Cell emptyNeighbour = field.getCell(1, 0);
+
+        liquid.addSource(source);
+
+        List<Cell> conflicts = new ArrayList<>();
+
+        liquid.addLiquidSystemCollisionListener(conflicts::add);
+
+        assertNull(emptyNeighbour.getLiquidSystem());
+
+        liquid.spread();
+
+        assertTrue(conflicts.isEmpty());
+        assertTrue(liquid.contains(emptyNeighbour));
+        assertSame(liquid, emptyNeighbour.getLiquidSystem());
+    }
+
+    @Test
+    void spread_toCellWithSameLiquid_doesNotFireConflict() {
+        Cell firstSource = field.getCell(0, 0);
+        Cell secondSource = field.getCell(1, 0);
+
+        liquid.addSource(firstSource);
+        liquid.addSource(secondSource);
+
+        List<Cell> conflicts = new ArrayList<>();
+
+        liquid.addLiquidSystemCollisionListener(conflicts::add);
+
+        liquid.spread();
+
+        assertTrue(conflicts.isEmpty());
+        assertSame(liquid, secondSource.getLiquidSystem());
+        assertTrue(liquid.contains(secondSource));
+    }
+
+    @Test
+    void spread_toCellWithForeignLiquid_firesConflictOnce_andListenerSeesConflictState() {
+        LiquidSystem other = createAnotherLiquid();
+
+        Cell source = field.getCell(1, 1);
+        Cell conflictCell = field.getCell(1, 2);
+
+        liquid.addSource(source);
+        other.addSource(conflictCell);
+
+        List<String> events = new ArrayList<>();
+
+        liquid.addLiquidSystemCollisionListener(cell -> {
+            events.add("conflictAppeared");
+
+            // Проверка В МОМЕНТ события.
+            assertSame(conflictCell, cell);
+            assertSame(other, conflictCell.getLiquidSystem());
+            assertTrue(other.contains(conflictCell));
+            assertFalse(liquid.contains(conflictCell));
+        });
+
+        liquid.spread();
+
+        assertEquals(List.of("conflictAppeared"), events);
+        assertSame(other, conflictCell.getLiquidSystem());
+        assertTrue(other.contains(conflictCell));
+        assertFalse(liquid.contains(conflictCell));
+    }
+
+    @Test
+    void spread_liquidAddedEventMustSeeBothCellAndLiquidSystemAlreadyLinked() {
+        Gamefield field = new Gamefield(1, 2);
+        Cell source = field.getCell(0, 0);
+        Cell destination = field.getCell(1, 0);
+        List<String> events = new ArrayList<>();
+
+        liquid.addSource(source);
+
+        destination.addLiquidAppearanceInCellListener(new LiquidAppearanceInCellListener() {
+            @Override
+            public void liquidAdded(LiquidAppearanceInCellEvent e) {
+                events.add("destinationLiquidAdded");
+
+                assertSame(destination, e.getCell());
+                assertSame(liquid, e.getLiquidSystem());
+
+                // Контракт: проверяем связь между классами в момент события.
+                assertSame(liquid, destination.getLiquidSystem());
+                assertTrue(liquid.contains(destination));
+            }
+
+            @Override
+            public void liquidRemoved(LiquidAppearanceInCellEvent e) {
+                fail("liquidRemoved не должен вызываться при spread");
+            }
+        });
+
+        assertNull(destination.getLiquidSystem());
+        assertFalse(liquid.contains(destination));
+
+        liquid.spread();
+
+        assertEquals(List.of("destinationLiquidAdded"), events);
+        assertSame(liquid, destination.getLiquidSystem());
+        assertTrue(liquid.contains(destination));
     }
 
     private LiquidSystem createAnotherLiquid() {
