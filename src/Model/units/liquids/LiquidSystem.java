@@ -37,13 +37,17 @@ public abstract class LiquidSystem {
                     }
                     else {
                         next.add(neighbour);
-                        neighbour.setLiquidSystem(this);
                     }
                 }
             }
         }
 
-        _cells.addAll(next);
+        for(Cell c : next) {
+            _cells.add(c);
+            c.setLiquidSystem(this); //на момент наступления события клетка и жидкость уже связаны
+            //т.е. cell.getLiquidSystem == liquid и liquid.contains(cell) == true
+        }
+
     }
 
     public boolean canOccupy(Cell cell) {
