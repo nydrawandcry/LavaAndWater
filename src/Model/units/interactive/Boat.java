@@ -13,7 +13,7 @@ public class Boat extends InteractiveUnit {
     private ArrayList<BoatActionListener> _listeners = new ArrayList<>();
 
     @Override
-    public boolean canBelongTo(Cell cell) {  //нельзя двигать на твердые объекты и на воду
+    protected boolean canBelongTo(Cell cell) {  //нельзя двигать на твердые объекты и на воду
         return cell != null
                 && cell.getUnit(Solid.class) == null
                 && cell.getUnit(Boat.class) == null

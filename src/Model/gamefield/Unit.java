@@ -1,7 +1,6 @@
-package Model.units;
+package Model.gamefield;
 
 import Model.events.units.ActivationListener;
-import Model.gamefield.Cell;
 
 import java.util.ArrayList;
 
@@ -25,25 +24,40 @@ public abstract class Unit {
         return _owner;
     }
 
-    public void setOwner(Cell cell){
+    boolean setOwner(Cell cell){
         if(cell == null) {
             throw new NullPointerException("Ячейка не должна быть null");
         }
-
-        _owner = cell;
+        boolean ok = (owner() == null) && !isDestroyed() && canBelongTo(cell);
+        if(ok) {
+            _owner = cell;
+        }
+        return ok;
     }
 
-    public void removeOwner(){
+    void removeOwner(){
         _owner = null;
     }
 
     public void activate(){
-        _isActive = true;
+        if(isDestroyed()) {
+            return;
+        }
+
+        if(!_isActive){
+            _isActive = true;
+        }
         fireActivateChanged();
     }
 
     public void deactivate(){
-        _isActive = false;
+        if(isDestroyed()) {
+            return;
+        }
+
+        if(_isActive){
+            _isActive = false;
+        }
         fireActivateChanged();
     }
 
@@ -51,11 +65,12 @@ public abstract class Unit {
         if (_owner != null) {
             _owner.extractUnit(this);
         }
+        _listeners.clear();
         _isDestroyed = true;
         _isActive = false;
     }
 
-    public abstract boolean canBelongTo(Cell cell);
+    protected abstract boolean canBelongTo(Cell cell);
 
     public void addUnitActivationListener(ActivationListener l) {
         if (l != null && !_listeners.contains(l)) {
@@ -69,7 +84,7 @@ public abstract class Unit {
         }
     }
 
-    protected void fireActivateChanged() {
+    private void fireActivateChanged() {
         for (ActivationListener listener : _listeners) {
             listener.activateChanged();
         }

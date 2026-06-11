@@ -1,7 +1,6 @@
 package Model.gamefield;
 
 import Model.events.units.ActivationListener;
-import Model.units.Unit;
 
 import java.awt.*;
 import java.awt.geom.Dimension2D;

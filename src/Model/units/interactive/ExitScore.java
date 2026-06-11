@@ -3,7 +3,6 @@ package Model.units.interactive;
 import Model.events.collectable.ExitScoreActionListener;
 import Model.gamefield.Cell;
 import Model.gamefield.Direction;
-import Model.units.Unit;
 import Model.units.solid.Solid;
 
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ public class ExitScore extends InteractiveUnit {
     private ArrayList<ExitScoreActionListener> _listeners = new ArrayList<>();
 
     @Override
-    public boolean canBelongTo(Cell cell) {
+    protected boolean canBelongTo(Cell cell) {
         return cell != null && cell.getUnit(Solid.class) == null && cell.getUnit(ExitScore.class) == null;
     }
 

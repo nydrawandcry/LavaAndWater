@@ -1,7 +1,7 @@
 package Model.units.interactive;
 
 import Model.gamefield.Direction;
-import Model.units.Unit;
+import Model.gamefield.Unit;
 
 public abstract class InteractiveUnit extends Unit {
 

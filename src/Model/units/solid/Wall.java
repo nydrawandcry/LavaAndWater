@@ -1,7 +1,7 @@
 package Model.units.solid;
 
 import Model.gamefield.Cell;
-import Model.units.Unit;
+import Model.gamefield.Unit;
 
 public class Wall extends Unit implements Solid {
 

@@ -5,7 +5,7 @@ import Model.events.cell.CellActionListener;
 import Model.events.liquids.LiquidAppearanceInCellEvent;
 import Model.events.liquids.LiquidAppearanceInCellListener;
 import Model.gamefield.Cell;
-import Model.units.Unit;
+import Model.gamefield.Unit;
 import Model.units.liquids.LiquidSystem;
 import View.liquidSystemView.LiquidSystemWidget;
 import View.liquidSystemView.LiquidSystemWidgetFactory;

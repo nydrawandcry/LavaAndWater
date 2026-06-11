@@ -2,6 +2,7 @@ package Model.units;
 
 import Model.events.collectable.ExitScoreActionListener;
 import Model.gamefield.Cell;
+import Model.gamefield.Unit;
 import Model.units.interactive.ExitScore;
 import Model.units.solid.Solid;
 

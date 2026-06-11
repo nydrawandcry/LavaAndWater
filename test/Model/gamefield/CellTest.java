@@ -2,7 +2,6 @@ package Model.gamefield;
 
 import Model.units.Exit;
 import Model.units.interactive.Player;
-import Model.units.Unit;
 import Model.units.interactive.IronBlock;
 import org.junit.jupiter.api.Test;
 

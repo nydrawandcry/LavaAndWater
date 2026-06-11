@@ -1,7 +1,7 @@
 package View.unitView;
 
 import Model.events.units.ActivationListener;
-import Model.units.Unit;
+import Model.gamefield.Unit;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,14 +1,12 @@
 package View.unitView;
 
 import Model.units.Exit;
-import Model.units.Unit;
+import Model.gamefield.Unit;
 import Model.units.interactive.Boat;
 import Model.units.interactive.ExitScore;
 import Model.units.interactive.IronBlock;
 import Model.units.interactive.Player;
 import Model.units.solid.Wall;
-
-import java.awt.*;
 
 public class UnitWidgetFactory {
 

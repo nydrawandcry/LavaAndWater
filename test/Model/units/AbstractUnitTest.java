@@ -2,6 +2,7 @@ package Model.units;
 
 import Model.gamefield.Cell;
 import Model.gamefield.Gamefield;
+import Model.gamefield.Unit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,15 +25,15 @@ public abstract class AbstractUnitTest<T extends Unit> {
 
     @Test
     void setOwnerTest() {
-        unit.setOwner(cell);
+        cell.putUnit(unit);
 
         assertEquals(cell, unit.owner());
     }
 
     @Test
     void removeOwnerTest() {
-        unit.setOwner(cell);
-        unit.removeOwner();
+        cell.putUnit(unit);
+        cell.extractUnit(unit);
 
         assertNull(unit.owner());
     }

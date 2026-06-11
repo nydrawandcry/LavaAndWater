@@ -1,6 +1,6 @@
 package Model.events.cell;
 
-import Model.units.Unit;
+import Model.gamefield.Unit;
 
 import java.util.EventObject;
 

@@ -5,7 +5,7 @@ import Model.events.player.PlayerReachListener;
 import Model.gamefield.Cell;
 import Model.gamefield.Direction;
 import Model.units.Exit;
-import Model.units.Unit;
+import Model.gamefield.Unit;
 import Model.units.liquids.Lava;
 import Model.units.solid.Solid;
 
@@ -18,7 +18,7 @@ public class Player extends Unit {
     private ArrayList<PlayerReachListener> _reachListeners = new ArrayList<>();
 
     @Override
-    public boolean canBelongTo(Cell cell) {
+    protected boolean canBelongTo(Cell cell) {
         return cell != null && cell.getUnit(Solid.class) == null;
     }
 

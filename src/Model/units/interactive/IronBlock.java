@@ -3,7 +3,6 @@ package Model.units.interactive;
 import Model.events.units.IronBlockActionListener;
 import Model.gamefield.Cell;
 import Model.gamefield.Direction;
-import Model.units.Unit;
 import Model.units.solid.Solid;
 
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ public class IronBlock extends InteractiveUnit implements Solid {
     private ArrayList<IronBlockActionListener> _listeners = new ArrayList<>();
 
     @Override
-    public boolean canBelongTo(Cell cell) {
+    protected boolean canBelongTo(Cell cell) {
         return cell != null && cell.getUnit(Solid.class) == null;
     }
 

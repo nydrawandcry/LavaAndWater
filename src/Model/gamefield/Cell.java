@@ -4,7 +4,6 @@ import Model.events.cell.CellActionEvent;
 import Model.events.cell.CellActionListener;
 import Model.events.liquids.LiquidAppearanceInCellEvent;
 import Model.events.liquids.LiquidAppearanceInCellListener;
-import Model.units.Unit;
 import Model.units.liquids.LiquidSystem;
 
 import java.util.*;
