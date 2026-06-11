@@ -92,7 +92,7 @@ public class SimpleGameManager extends GameManager{
 
         for(ExitScore score : scores) {
             exit.addExitScore(score);
-            score.addExitScoreListener(exit.getExitScoreListener());
+            score.addModelExitScoreListener(exit.getExitScoreListener());
         }
     }
 

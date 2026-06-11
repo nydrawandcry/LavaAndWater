@@ -10,21 +10,28 @@ import Model.units.liquids.Lava;
 import Model.units.solid.Solid;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Player extends Unit {
 
-    private ArrayList<PlayerMovementListener> _listeners = new ArrayList<>();
+    private final ArrayList<PlayerMovementListener> _modelMovementListeners = new ArrayList<>();
+    private final ArrayList<PlayerMovementListener> _viewMovementListeners = new ArrayList<>();
 
     private ArrayList<PlayerReachListener> _reachListeners = new ArrayList<>();
 
     @Override
     protected boolean canBelongTo(Cell cell) {
-        return cell != null && cell.getUnit(Solid.class) == null;
+        return cell != null
+                && cell.getUnit(Solid.class) == null
+                && cell.getUnit(Player.class) == null;
     }
 
     public boolean moveTo(Direction dir) {
-        if(owner().getUnit(Solid.class) != null) {
-            return false; //обработка случая "игрок в стене" (а то он из нее щас может вылехти)
+        if(dir == null) {
+            throw new IllegalStateException("Направление не может быть null");
+        }
+        if(owner() == null) {
+            throw new IllegalStateException("Игрок не находится на поле");
         }
 
         Cell destination = owner().getNeighbour(dir);
@@ -39,26 +46,40 @@ public class Player extends Unit {
             unit.interact(dir);
         }
 
-        owner().extractUnit(this);
-        destination.putUnit(this);
-        firePlayerMoved();
+        if(canBelongTo(destination)){
+            if(!owner().extractUnit(this)) {
+                return false;
+            }
+            if(!destination.putUnit(this)) {
+                return false;
+            }
 
-        if (destination.getLiquidSystem() != null
-                && destination.getLiquidSystem().contains(destination)
-                && destination.getLiquidSystem().getClass().equals(Lava.class)) {
-            firePlayerInLava();
-        } else if (destination.getUnit(Solid.class) != null) {
-            firePlayerInWall();
-        } else if (destination.getUnit(Exit.class) != null && destination.getUnit(Exit.class).isActive()) {
-            firePlayerInExit();
+            firePlayerMoved();
+
+            if (destination.getLiquidSystem() != null
+                    && destination.getLiquidSystem().contains(destination)
+                    && destination.getLiquidSystem().getClass().equals(Lava.class)) {
+                firePlayerInLava();
+            } else if (destination.getUnit(Solid.class) != null) {
+                firePlayerInWall();
+            } else if (destination.getUnit(Exit.class) != null && destination.getUnit(Exit.class).isActive()) {
+                firePlayerInExit();
+            }
+
+            return true;
         }
-
-        return true;
+        return false;
     }
 
-    public void addPlayerActionListener(PlayerMovementListener l) {
-        if(l != null && !_listeners.contains(l)){
-            _listeners.add(l);
+    public void addModelPlayerMovementListener(PlayerMovementListener l) {
+        if (l != null && !_modelMovementListeners.contains(l)) {
+            _modelMovementListeners.add(l);
+        }
+    }
+
+    public void addViewPlayerMovementListener(PlayerMovementListener l) {
+        if (l != null && !_viewMovementListeners.contains(l)) {
+            _viewMovementListeners.add(l);
         }
     }
 
@@ -68,14 +89,12 @@ public class Player extends Unit {
         }
     }
 
-    public void removePlayerActionListener(PlayerMovementListener l) {
-        if(l != null){
-            _listeners.remove(l);
+    private void firePlayerMoved() {
+        for (PlayerMovementListener l : List.copyOf(_modelMovementListeners)) {
+            l.playerMoved();
         }
-    }
 
-    public void firePlayerMoved() {
-        for(PlayerMovementListener l : _listeners) {
+        for (PlayerMovementListener l : List.copyOf(_viewMovementListeners)) {
             l.playerMoved();
         }
     }

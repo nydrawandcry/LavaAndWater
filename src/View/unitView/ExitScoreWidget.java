@@ -13,7 +13,7 @@ public class ExitScoreWidget extends UnitWidget {
 
     public ExitScoreWidget(ExitScore score) {
         super(score);
-        score.addExitScoreListener(_scoreListener);
+        score.addViewExitScoreListener(_scoreListener);
 
         setOpaque(false);
         setPreferredSize(new Dimension(SIZE, SIZE));

@@ -42,7 +42,7 @@ public class Exit extends Unit {
         }
 
         _leftScores.remove(score);
-        score.removeExitScoreListener(this.getExitScoreListener());
+        score.removeModelExitScoreListener(this.getExitScoreListener());
 
         if(_leftScores.isEmpty()) {
             this.activate();

@@ -13,7 +13,7 @@ public class PlayerWidget extends UnitWidget{
 
     public PlayerWidget(Player player){
         super(player);
-        player.addPlayerActionListener(_playerListener);
+        player.addViewPlayerMovementListener(_playerListener);
 
         setOpaque(false);
         setPreferredSize(new Dimension(SIZE, SIZE));
