@@ -49,12 +49,6 @@ public class ExitScore extends InteractiveUnit {
         }
     }
 
-    public void removeViewExitScoreListener(ExitScoreActionListener l) {
-        if (l != null) {
-            _viewListeners.remove(l);
-        }
-    }
-
     private void fireScoreCollected() {
         for (ExitScoreActionListener l : List.copyOf(_modelListeners)) {
             l.scoreCollected(this);

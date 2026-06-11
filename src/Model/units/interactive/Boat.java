@@ -44,12 +44,6 @@ public class Boat extends InteractiveUnit {
         }
     }
 
-    public void removeBoatActionListener(BoatActionListener l) {
-        if(l != null){
-            _listeners.remove(l);
-        }
-    }
-
     private void fireBoatMoved() {
         for(BoatActionListener l : _listeners) {
             l.boatMoved();
