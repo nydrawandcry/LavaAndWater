@@ -1,6 +1,6 @@
 package View.unitView;
 
-import Model.events.units.UnitActivationListener;
+import Model.events.units.ActivationListener;
 import Model.units.Unit;
 
 import javax.swing.*;
@@ -9,7 +9,7 @@ import java.awt.*;
 public abstract class UnitWidget extends JComponent {
 
     protected Unit _unit;
-    protected UnitActivationListener _unitListener = new UnitActivationHandler();
+    protected ActivationListener _unitListener = new UnitActivationHandler();
 
     protected UnitWidget(Unit unit) {
         _unit = unit;
@@ -33,7 +33,7 @@ public abstract class UnitWidget extends JComponent {
         repaint();
     }
 
-    private class UnitActivationHandler implements UnitActivationListener {
+    private class UnitActivationHandler implements ActivationListener {
         @Override
         public void activateChanged() {
             changeColorByActivity();

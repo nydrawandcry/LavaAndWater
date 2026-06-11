@@ -1,6 +1,7 @@
 package View.gamefieldView;
 
 import Model.Game;
+import Model.events.units.ActivationListener;
 import Model.gamefield.Cell;
 import Model.gamefield.Direction;
 import Model.gamefield.Gamefield;
@@ -18,6 +19,8 @@ public class GamefieldView extends JPanel {
     private HashMap<Cell, CellWidget> _cells = new HashMap<>();
     private final Game _game;
 
+    private ActivationListener _listener = new ActivationListenerHandler();
+
     public GamefieldView(Gamefield field, Game game) {
         if(field == null) {
             throw new NullPointerException("Поле не может быть null");
@@ -29,7 +32,7 @@ public class GamefieldView extends JPanel {
         removeAll();
 
         _field = field;
-        //тут подписать на события? я пока не оч понимаю кто на кого и как события будут работать
+        _field.addGamefieldActivationListener(_listener);
 
         _game = game;
 
@@ -121,6 +124,13 @@ public class GamefieldView extends JPanel {
             changeColor(getActiveColor());
         } else {
             changeColor(getInactiveColor());
+        }
+    }
+
+    private class ActivationListenerHandler implements ActivationListener {
+        @Override
+        public void activateChanged() {
+            changeColorByActivity();
         }
     }
 

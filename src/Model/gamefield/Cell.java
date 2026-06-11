@@ -15,6 +15,7 @@ public class Cell {
     private ArrayList<Unit> _units = new ArrayList<>();
     private Gamefield _field;
     private LiquidSystem _liquidSystem;
+    private boolean _isDestroyed;
 
     private ArrayList<CellActionListener> _listeners = new ArrayList<>();
     private ArrayList<LiquidAppearanceInCellListener> _liquidListeners = new ArrayList<>();
@@ -71,6 +72,10 @@ public class Cell {
 
     public Gamefield getOwner(){
         return _field;
+    }
+
+    public boolean isDestroyed() {
+        return _isDestroyed;
     }
 
     public LiquidSystem getLiquidSystem() {
@@ -138,6 +143,24 @@ public class Cell {
 
     public Cell getNeighbour(Direction dir) {
         return _neighbours.get(dir);
+    }
+
+    void destroy() {
+        if(isDestroyed()) {
+            return;
+        }
+
+        for(Cell neighbour : _neighbours.values()) {
+            neighbour._neighbours.values().remove(this);
+        }
+        _neighbours.clear();
+
+        for(Unit u : _units) {
+            u.destroy();
+        }
+
+        _field = null;
+        _isDestroyed = true;
     }
 
 

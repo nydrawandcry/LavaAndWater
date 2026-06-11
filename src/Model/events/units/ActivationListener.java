@@ -2,7 +2,7 @@ package Model.events.units;
 
 import java.util.EventListener;
 
-public interface UnitActivationListener extends EventListener {
+public interface ActivationListener extends EventListener {
 
     void activateChanged();
 }
