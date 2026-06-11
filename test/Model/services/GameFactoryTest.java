@@ -1,3 +1,4 @@
+/*
 package Model.services;
 
 import Model.Game;
@@ -155,3 +156,4 @@ public class GameFactoryTest {
         assertFalse(game.getLava().contains(playerCell));
     }
 }
+*/

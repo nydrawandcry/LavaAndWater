@@ -2,7 +2,6 @@ package View.gamefieldView;
 
 import Model.Game;
 import Model.events.game.GameActionListener;
-import Model.services.GameFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +9,7 @@ import java.awt.*;
 public class GameFrame extends JFrame {
 
     private Game _game;
-    private GameFactory _factory;
+    //private GameFactory _factory;
     private GamefieldView _fieldView;
 
     private final GameActionListener _gameListener = new GameActionHandler();
@@ -18,7 +17,7 @@ public class GameFrame extends JFrame {
     public GameFrame() {
         super("Lava & Water");
 
-        _factory = new GameFactory();
+        //_factory = new GameFactory();
         startNewGame();
 
         pack();
@@ -36,7 +35,7 @@ public class GameFrame extends JFrame {
         }
 
         //тут создание игры и подписка GameFrame на события Game (и еще манипуляции с gamefieldView)
-        _game = _factory.createGame();
+        //_game = _factory.createGame();
         _game.addGameActionListener(_gameListener);
 
         _fieldView = new GamefieldView(_game.getField(), _game);
