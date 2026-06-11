@@ -1,6 +1,7 @@
 package Model.units.liquids;
 
 import Model.events.liquids.LiquidSystemCollisionListener;
+import Model.events.player.PlayerMovementListener;
 import Model.gamefield.Cell;
 import Model.units.Exit;
 import Model.units.solid.Solid;
@@ -15,8 +16,14 @@ public abstract class LiquidSystem {
 
     private ArrayList<LiquidSystemCollisionListener> _listeners = new ArrayList<>();
 
+    private PlayerMovementListener _listener = new PlayerMovementHandler();
+
     public boolean contains(Cell cell) {
         return _cells.contains(cell);
+    }
+
+    public PlayerMovementListener getPlayerMovementListener() {
+        return _listener;
     }
 
     public void spread() {
@@ -74,6 +81,13 @@ public abstract class LiquidSystem {
     public void fireConflictAppeared(Cell cell) {
         for(LiquidSystemCollisionListener l : _listeners) {
             l.conflictAppeared(cell);
+        }
+    }
+
+    private class PlayerMovementHandler implements PlayerMovementListener {
+        @Override
+        public void playerMoved () {
+            spread();
         }
     }
 }

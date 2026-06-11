@@ -53,7 +53,8 @@ public abstract class GameManager {
         Lava lava = new Lava();
         Water water = new Water();
 
-        //здесь будет подписка слушателей на плеера
+        player.addPlayerActionListener(lava.getPlayerMovementListener());
+        player.addPlayerActionListener(water.getPlayerMovementListener());
 
         placeLavaSources(_field, lava);
         placeWaterSources(_field, water);
