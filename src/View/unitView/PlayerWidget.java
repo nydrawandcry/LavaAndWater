@@ -1,6 +1,6 @@
 package View.unitView;
 
-import Model.events.player.PlayerActionListener;
+import Model.events.player.PlayerMovementListener;
 import Model.units.interactive.Player;
 
 import java.awt.*;
@@ -9,7 +9,7 @@ public class PlayerWidget extends UnitWidget{
 
     private static int SIZE = 50;
 
-    private final PlayerActionListener _playerListener = new PlayerMovementHandler();
+    private final PlayerMovementListener _playerListener = new PlayerMovementHandler();
 
     public PlayerWidget(Player player){
         super(player);
@@ -56,7 +56,7 @@ public class PlayerWidget extends UnitWidget{
         return new Color(170,149,129);
     }
 
-    private class PlayerMovementHandler implements PlayerActionListener{
+    private class PlayerMovementHandler implements PlayerMovementListener {
         @Override
         public void playerMoved () {
             //тут будет анимация движения игрока

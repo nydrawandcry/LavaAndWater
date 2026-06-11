@@ -51,7 +51,7 @@ public class SimpleGameManager extends GameManager{
     @Override
     protected Player placePlayer(Gamefield field, int x, int y) {
         Player player = new Player();
-        player.addPlayerActionListener(getGame().getPlayerListener());
+        player.addPlayerReachListener(getGame().getPlayerListener());
         field.getCell(x, y).putUnit(player);
         return player;
     }

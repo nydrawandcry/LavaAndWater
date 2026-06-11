@@ -1,6 +1,7 @@
 package Model;
 
 import Model.events.game.GameActionListener;
+import Model.events.player.PlayerReachListener;
 import Model.gamefield.Gamefield;
 import Model.services.GameManager;
 import Model.services.SimpleGameManager;
@@ -15,6 +16,8 @@ public class Game {
 
     private Gamefield _field;
 
+    private final PlayerReachListener _playerListener = new PlayerReachHandler();
+
     private ArrayList<GameActionListener> _gameListeners = new ArrayList<>();
 
     public void start() {
@@ -27,6 +30,10 @@ public class Game {
         manager.start();
     }
 
+    public PlayerReachListener getPlayerListener() {
+        return _playerListener;
+    }
+
     public Gamefield getField() {
         return _field;
     }
@@ -35,8 +42,21 @@ public class Game {
         return _isLost || _isWon;
     }
 
-    public boolean isWon() {
-        return _isWon;
+    private class PlayerReachHandler implements PlayerReachListener {
+        @Override
+        public void playerInLava() {
+            fireGameIsLost();
+        }
+
+        @Override
+        public void playerInWall() {
+            fireGameIsLost();
+        }
+
+        @Override
+        public void playerInExit() {
+            fireGameIsWon();
+        }
     }
 
     public void addGameActionListener(GameActionListener l) {
@@ -52,7 +72,9 @@ public class Game {
     }
 
     private void fireGameIsWon() {
-        winTheGame();
+        if(!winTheGame()) {
+            return;
+        }
 
         List<GameActionListener> listenersCopy =
                 new ArrayList<>(_gameListeners);
@@ -63,7 +85,9 @@ public class Game {
     }
 
     private void fireGameIsLost() {
-        loseTheGame();
+        if(!loseTheGame()) {
+            return;
+        }
 
         List<GameActionListener> listenersCopy =
                 new ArrayList<>(_gameListeners);
@@ -73,23 +97,36 @@ public class Game {
         }
     }
 
-    private void winTheGame() {
-        if(_isLost) {
-            return;
+    private boolean winTheGame() {
+        //предотвращение вызова метода до инициализации игры
+        if(_field == null) {
+            throw new IllegalStateException("Игра не запущена");
         }
-        _isWon = true;
 
-        deactivate();
+        if (isOver()) {
+            return false;
+        }
+
+        _isWon = true;
+        _field.deactivate();
+
+        return true;
     }
 
-    private void loseTheGame() {
+    private boolean loseTheGame() {
+        //предотвращение вызова метода до инициализации игры
+        if(_field == null) {
+            throw new IllegalStateException("Игра не запущена");
+        }
+
+        if (isOver()) {
+            return false;
+        }
+
         _isLost = true;
         _isWon = false;
-
-        deactivate();
-    }
-
-    private void deactivate() {
         _field.deactivate();
+
+        return true;
     }
 }
