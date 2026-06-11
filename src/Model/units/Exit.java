@@ -33,7 +33,6 @@ public class Exit extends Unit {
             return;
         }
         _leftScores.add(score);
-        score.addExitScoreListener(this.getExitScoreListener());
     }
 
     public void decreaseLeftScores(ExitScore score) {
@@ -42,6 +41,7 @@ public class Exit extends Unit {
         }
 
         _leftScores.remove(score);
+        score.removeExitScoreListener(this.getExitScoreListener());
 
         if(_leftScores.isEmpty()) {
             this.activate();

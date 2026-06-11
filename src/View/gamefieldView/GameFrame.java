@@ -9,15 +9,12 @@ import java.awt.*;
 public class GameFrame extends JFrame {
 
     private Game _game;
-    //private GameFactory _factory;
     private GamefieldView _fieldView;
 
     private final GameActionListener _gameListener = new GameActionHandler();
 
     public GameFrame() {
         super("Lava & Water");
-
-        //_factory = new GameFactory();
         startNewGame();
 
         pack();
@@ -30,12 +27,8 @@ public class GameFrame extends JFrame {
     }
 
     private void startNewGame() {
-        if(_game != null) {
-            return; //пока не знаю что сюда надо добавить
-        }
-
-        //тут создание игры и подписка GameFrame на события Game (и еще манипуляции с gamefieldView)
-        //_game = _factory.createGame();
+        _game = new Game();
+        _game.start();
         _game.addGameActionListener(_gameListener);
 
         _fieldView = new GamefieldView(_game.getField(), _game);
