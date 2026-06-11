@@ -1,11 +1,14 @@
 package Model.units.interactive;
 
 import Model.events.collectable.ExitScoreActionListener;
+import Model.gamefield.Direction;
 import Model.units.AbstractUnitTest;
 import Model.units.Exit;
 import Model.units.solid.Wall;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -54,7 +57,7 @@ public class ExitScoreTest extends AbstractUnitTest<ExitScore> {
     void collect_removesTokenFromCell() {
         cell.putUnit(unit);
 
-        unit.collect();
+        unit.interact(Direction.EAST);
 
         assertNull(cell.getUnit(ExitScore.class));
         assertNull(unit.owner());
@@ -64,11 +67,11 @@ public class ExitScoreTest extends AbstractUnitTest<ExitScore> {
     void collect_firesEvent() {
         AtomicBoolean fired = new AtomicBoolean(false);
 
-        unit.addExitScoreListener(token -> fired.set(true));
+        unit.addModelExitScoreListener(token -> fired.set(true));
 
         cell.putUnit(unit);
 
-        unit.collect();
+        unit.interact(Direction.EAST);
 
         assertTrue(fired.get());
     }
@@ -80,12 +83,12 @@ public class ExitScoreTest extends AbstractUnitTest<ExitScore> {
         ExitScoreActionListener listener =
                 token -> fired.set(true);
 
-        unit.addExitScoreListener(listener);
-        unit.removeExitScoreListener(listener);
+        unit.addModelExitScoreListener(listener);
+        unit.removeModelExitScoreListener(listener);
 
         cell.putUnit(unit);
 
-        unit.collect();
+        unit.interact(Direction.EAST);
 
         assertFalse(fired.get());
     }
@@ -97,12 +100,12 @@ public class ExitScoreTest extends AbstractUnitTest<ExitScore> {
         ExitScoreActionListener listener =
                 token -> calls.incrementAndGet();
 
-        unit.addExitScoreListener(listener);
-        unit.addExitScoreListener(listener);
+        unit.addModelExitScoreListener(listener);
+        unit.addModelExitScoreListener(listener);
 
         cell.putUnit(unit);
 
-        unit.collect();
+        unit.interact(Direction.EAST);
 
         assertEquals(1, calls.get());
     }
@@ -111,10 +114,11 @@ public class ExitScoreTest extends AbstractUnitTest<ExitScore> {
     void exitUnlocksAfterCollectingSingleScore() {
         Exit exit = new Exit();
         exit.addExitScore(unit);
+        unit.addModelExitScoreListener(exit.getExitScoreListener());
 
         cell.putUnit(unit);
 
-        unit.collect();
+        unit.interact(Direction.EAST);
 
         assertEquals(0, exit.getLeftScores().size());
     }
@@ -131,19 +135,19 @@ public class ExitScoreTest extends AbstractUnitTest<ExitScore> {
         exit.addExitScore(score2);
         exit.addExitScore(score3);
 
-        score1.addExitScoreListener(exit.getExitScoreListener());
-        score2.addExitScoreListener(exit.getExitScoreListener());
-        score3.addExitScoreListener(exit.getExitScoreListener());
+        score1.addModelExitScoreListener(exit.getExitScoreListener());
+        score2.addModelExitScoreListener(exit.getExitScoreListener());
+        score3.addModelExitScoreListener(exit.getExitScoreListener());
 
-        score1.collect();
+        score1.interact(Direction.EAST);
 
         assertEquals(2, exit.getLeftScores().size());
 
-        score2.collect();
+        score2.interact(Direction.EAST);
 
         assertEquals(1, exit.getLeftScores().size());
 
-        score3.collect();
+        score3.interact(Direction.EAST);
 
         assertEquals(0, exit.getLeftScores().size());
     }
@@ -152,14 +156,14 @@ public class ExitScoreTest extends AbstractUnitTest<ExitScore> {
     void collect_twice_firesEventOnlyOnce() {
         AtomicInteger calls = new AtomicInteger();
 
-        unit.addExitScoreListener(
+        unit.addModelExitScoreListener(
                 token -> calls.incrementAndGet()
         );
 
         cell.putUnit(unit);
 
-        unit.collect();
-        unit.collect();
+        unit.interact(Direction.EAST);
+        unit.interact(Direction.EAST);
 
         assertEquals(1, calls.get());
     }
@@ -169,12 +173,74 @@ public class ExitScoreTest extends AbstractUnitTest<ExitScore> {
         Exit exit = new Exit();
 
         exit.addExitScore(unit);
+        unit.addModelExitScoreListener(exit.getExitScoreListener());
 
         cell.putUnit(unit);
 
-        unit.collect();
-        unit.collect();
+        unit.interact(Direction.EAST);
+        unit.interact(Direction.EAST);
 
         assertEquals(0, exit.getLeftScores().size());
+    }
+
+    @Test
+    void collect_processesModelExitListenerBeforeViewListener_evenIfViewWasRegisteredFirst() {
+        Exit exit = new Exit();
+        ExitScore score = new ExitScore();
+
+        cell = field.getCell(0, 0);
+
+        assertTrue(cell.putUnit(score));
+
+        exit.deactivate();
+        exit.addExitScore(score);
+
+        List<String> events = new ArrayList<>();
+
+        // View подписан ПЕРВЫМ, но должен вызваться ПОСЛЕ модели.
+        score.addViewExitScoreListener(collectedScore -> {
+            events.add("view:ExitWidget");
+
+            assertSame(score, collectedScore);
+
+            // View должен видеть уже обработанную вычислительную модель.
+            assertTrue(exit.isActive());
+            assertTrue(exit.getLeftScores().isEmpty());
+
+            assertTrue(score.isDestroyed());
+            assertNull(score.owner());
+            assertNull(cell.getUnit(ExitScore.class));
+        });
+
+        exit.addUnitActivationListener(() -> {
+            events.add("model:ExitActivated");
+
+            assertTrue(exit.isActive());
+            assertTrue(exit.getLeftScores().isEmpty());
+            assertTrue(score.isDestroyed());
+            assertNull(score.owner());
+        });
+
+        // Model подписан ВТОРЫМ, но должен обработаться ПЕРВЫМ.
+        score.addModelExitScoreListener(exit.getExitScoreListener());
+
+        assertFalse(exit.isActive());
+        assertEquals(List.of(score), exit.getLeftScores());
+        assertSame(cell, score.owner());
+
+        score.interact(Direction.EAST);
+
+        assertEquals(
+                List.of(
+                        "model:ExitActivated",
+                        "view:ExitWidget"
+                ),
+                events
+        );
+
+        assertTrue(exit.isActive());
+        assertTrue(exit.getLeftScores().isEmpty());
+        assertTrue(score.isDestroyed());
+        assertNull(score.owner());
     }
 }
