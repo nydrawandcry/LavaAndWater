@@ -58,6 +58,17 @@ public class GamefieldView extends JPanel {
         repaint();
     }
 
+    private Player findPlayer() {
+        for(Cell c : _field) {
+            Player player = (Player) c.getUnit(Player.class);
+
+            if(player != null) {
+                return player;
+            }
+        }
+        return null;
+    }
+
     private class KeyController implements KeyListener {
 
         @Override
@@ -67,7 +78,7 @@ public class GamefieldView extends JPanel {
 
         @Override
         public void keyPressed(KeyEvent e) {
-            Player player = _game.getPlayer();
+            Player player = findPlayer();
             if(player == null || _game.isOver()) {
                 return;
             }
