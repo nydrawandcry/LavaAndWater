@@ -1,14 +1,9 @@
 package Model;
 
-import Model.events.player.PlayerActionListener;
 import Model.events.game.GameActionListener;
 import Model.gamefield.Gamefield;
-import Model.services.CollisionDetector;
-import Model.units.Exit;
-import Model.units.interactive.Player;
-import Model.units.liquids.Lava;
-import Model.units.liquids.Water;
-import Model.units.solid.Wall;
+import Model.services.GameManager;
+import Model.services.SimpleGameManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,88 +13,22 @@ public class Game {
     private boolean _isLost;
     private boolean _isWon;
 
-    private final Gamefield _field;
-    private final Player _player;
-    private Lava _lava;
-    private Water _water;
-    private CollisionDetector _collisionDetector;
-
-    private final PlayerActionListener _playerListener = new PlayerMovementHandler();
+    private Gamefield _field;
 
     private ArrayList<GameActionListener> _gameListeners = new ArrayList<>();
 
-    public Game(Gamefield field, Player player, Lava lava, Water water) {
-        if (field == null || player == null || lava == null || water == null) {
-            throw new NullPointerException("Параметры игры не должны быть null");
-        }
-
-        _field = field;
-        _player = player;
-        _player.addPlayerActionListener(_playerListener);
-        _lava = lava;
-        _water = water;
-        _collisionDetector = new CollisionDetector();
-        _lava.addLiquidSystemCollisionListener(_collisionDetector.getLiquidListener());
-        _water.addLiquidSystemCollisionListener(_collisionDetector.getLiquidListener());
+    public void start() {
         _isLost = false;
         _isWon = false;
-    }
 
-    private class PlayerMovementHandler implements PlayerActionListener{
-        @Override
-        public void playerMoved () {
-            spreadLiquids();
-            updateGameState();
-        }
-    }
+        _field = new Gamefield(11,16);
 
-    public PlayerActionListener getPlayerListener() {
-        return _playerListener;
-    }
-
-    private void spreadLiquids() {
-        _lava.spread();
-        _water.spread();
-    }
-
-    private void updateGameState() {
-        if (isPlayerOnExit()) {
-            fireGameIsWon(); //сообщение о победе для GUI-классов
-            return;
-        }
-
-        if (isPlayerInLava() || isPlayerInWall()) {
-            fireGameIsLost();
-        }
-    }
-
-    private boolean isPlayerInLava() {
-        return _lava.contains(_player.owner());
-    }
-
-    private boolean isPlayerInWall() {
-        return _player.owner().getUnit(Wall.class) != null;
-    }
-
-    private boolean isPlayerOnExit() {
-        Exit exit = (Exit)_player.owner().getUnit(Exit.class);
-        return  exit != null && exit.isActive();
+        GameManager manager = new SimpleGameManager(_field, this);
+        manager.start();
     }
 
     public Gamefield getField() {
         return _field;
-    }
-
-    public Player getPlayer() {
-        return _player;
-    }
-
-    public Lava getLava() {
-        return _lava;
-    }
-
-    public Water getWater() {
-        return _water;
     }
 
     public boolean isOver() {
@@ -162,8 +91,5 @@ public class Game {
 
     private void deactivate() {
         _field.deactivate();
-        _collisionDetector = null;
-        _water = null;
-        _lava = null;
     }
 }
